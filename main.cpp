@@ -1,5 +1,8 @@
 #include <cstdio>
 #include <cmath>
+#include <vector>
+#include <algorithm>
+#include <functional>
 using namespace std;
 
 int main() {
@@ -10,14 +13,13 @@ int main() {
   double dT = 100.0 / (double) nlayer;
   
   int nlevel = nlayer + 1;
-  double player[nlayer];
-  double p[nlevel];
-  double T[nlayer];
-  double theta[nlayer];
-  
+  vector<double> player(nlayer);
+  vector<double> p(nlevel);
+  vector<double> T(nlayer);
+  vector<double> theta(nlayer);
+
   for (int i=0; i<nlevel; i++) {
     p[i] = dp * (double) i;
-//    printf("%3d, %6.1f\n", i, p[i]);
   }
   
   for (int i=0; i<nlayer; i++) {
@@ -30,25 +32,7 @@ int main() {
   
   /* end of initialization */
 
-  int unstable = 1;
-  int counter = 0;
-  while (unstable) {
-    unstable=0;
-    counter++;
-    if (counter>10) {
-      break;
-    }
-    printf("\n");
-    for (int i=nlayer-1; i>=1; i--) {
-      if (theta[i]>theta[i-1]) {
-        // convection = exchange pot. temperatures
-        double temp = theta[i];
-        theta[i] = theta[i-1];
-        theta[i-1] = temp;
-        unstable = 1;
-      }
-    }
-  }
+  sort(theta.begin(), theta.end(), greater<double>());
 
   
   for (int i=0; i<nlayer; i++) {
