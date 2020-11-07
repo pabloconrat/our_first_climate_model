@@ -1,5 +1,6 @@
-#include <stdio.h>
-#include <math.h>
+#include <cstdio>
+#include <cmath>
+using namespace std;
 
 int main() {
   int nlayer = 10;
