@@ -23,7 +23,7 @@ void heating(vector<double> &theta, const double &dp, const double &E_abs,
              const double &dt, const double &g, const double &c_air,
              const vector<double> &t_to_theta) {
   // computation of heating
-  double delta_T = E_abs * dt * g / (c_air * dp);
+  double delta_T = E_abs * dt * g / (c_air * dp * 100.0);
   theta[theta.size()-1] += delta_T * t_to_theta[theta.size()-1];
   return;
 }
