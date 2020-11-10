@@ -5,6 +5,7 @@
 #include <functional>
 using namespace std;
 
+freopen("output.csv","w",stdout);
 // First version of an output function, gets called for one timestep
 void output(const float &time, const vector<double> &player,
             const vector<double> &T, const vector<double> &theta) {
