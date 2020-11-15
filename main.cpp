@@ -19,13 +19,28 @@ void output(const float &time, const vector<double> &player,
   return;
 }
 
+void t_to_theta(const vector<double> &T, vector<double> &theta, const vector<double> &conversion_factors) {
+  transform(T.begin(), T.end(),
+            conversion_factors.begin(), theta.begin(), multiplies<double>());
+  return;
+}
+
+void theta_to_t(const vector<double> &theta, vector<double> &T, const vector<double> &conversion_factors) {
+  transform(theta.begin(), theta.end(),
+            conversion_factors.begin(), T.begin(), divides<double>());
+  return;
+}
+
 // heating function - so far only surface heating
-void heating(vector<double> &theta, const double &dp, const double &E_abs,
-             const double &dt, const double &g, const double &c_air,
-             const vector<double> &t_to_theta) {
-  // computation of heating
-  double delta_T = E_abs * dt * g / (c_air * dp * 100.0);
-  theta[theta.size()-1] += delta_T * t_to_theta[theta.size()-1];
+void thermodynamics(vector<double> &T, const double &dp, const double &E_abs,
+             const double &dt, const double &g, const double &c_air, const double cooling_rate,
+             const vector<double> &conversion_factors) {
+  // computation of surface heating
+  T[T.size()-1]+= E_abs * dt * g / (c_air * dp * 100.0);
+  
+  // prescribed cooling of atmosphere
+  double delta_T = cooling_rate * dt;
+  transform(T.begin(), T.end(), T.begin(), bind2nd(plus<double>(), delta_T));
   return;
 }
 
@@ -38,6 +53,7 @@ int main() {
   double n_steps = 1000; // number of timesteps [/]
   int output_steps = 100; // Intervall in which the model produces output [/]
   double E_abs = 235; // heating rate from surface [W/m^2]
+  double cooling_rate = - 3.0 / 86400.0; // prescribed cooling rate [K/s]
 
   double dp = 1000.0 / (double) nlayer;
   double dT = 100.0 / (double) nlayer;
@@ -47,7 +63,7 @@ int main() {
   vector<double> p(nlevel); // vector of pressures between the layers
   vector<double> T(nlayer); // vector of temperatures for each layer
   vector<double> theta(nlayer); // vector of pot. temperatures for each layer
-  vector<double> t_to_theta(nlayer); // vector for the conversion factors between t and theta
+  vector<double> conversion_factors(nlayer); // vector for the conversion factors between t and theta
 
   for (int i=0; i<nlevel; i++) {
     p[i] = dp * (double) i; // the pressure levels are spaced equally between 0 and 1000 hPa
@@ -56,8 +72,8 @@ int main() {
   for (int i=0; i<nlayer; i++) {
     T[i] = 180.0 + dT * (double) i; // just a first guess for the T-profile for each layer
     player[i] = (p[i]+p[i+1])/2.0; // computation of pressure between the levels
-    t_to_theta[i] = pow(1000.0 / player[i], kappa); // computation of conversion factors
-    theta[i] = T[i] * t_to_theta[i]; // computation of theta for each layer
+    conversion_factors[i] = pow(1000.0 / player[i], kappa); // computation of conversion factors
+    theta[i] = T[i] * conversion_factors[i]; // computation of theta for each layer
   }
 
 
@@ -67,20 +83,19 @@ int main() {
   for (int i=0; i<=n_steps; i++) {
     // Compute current time in hours from start
     float time = (float) i * dt / 360; // [hours]
+    // calculate theta values from new T values
+    t_to_theta(T, theta, conversion_factors);
 
     // Sort theta to simulate a stabilizing mixing
     sort(theta.begin(), theta.end(), greater<double>());
 
     // call output function every n=output_steps times
     if (i % output_steps == 0) {
-      // calculate temperature (vectorized). This is an elementwise division
-      transform(theta.begin(), theta.end(),
-                t_to_theta.begin(), T.begin(), divides<double>());
       // call output function
       output(time, player, T, theta);
     }
 
-    heating(theta, dp, E_abs, dt, g, c_air, t_to_theta);
+    thermodynamics(T, dp, E_abs, dt, g, c_air, cooling_rate, conversion_factors);
   }
 
   return 0;
