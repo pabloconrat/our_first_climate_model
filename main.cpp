@@ -60,11 +60,11 @@ const double consts::E_abs = 235;
 
 int main() {
     
-  int nlayer = 25; // number of layers
+  int nlayer = 10; // number of layers
   double dt = 360.0; // time step length [s]
-  double n_steps = 1000; // number of timesteps [/]
-  int output_steps = 100; // intervall in which the model produces output [/]
-  double cooling_rate = - 3.0 / 86400.0; // prescribed cooling rate [K/s]
+  double n_steps = 100000; // number of timesteps [/]
+  int output_steps = 10000; // intervall in which the model produces output [/]
+  double cooling_rate = - 1.475 / 86400.0; // prescribed cooling rate [K/s]
 
   double dp = 1000.0 / (double) nlayer;
   double dT = 100.0 / (double) nlayer;
@@ -98,6 +98,7 @@ int main() {
 
     // sort theta to simulate a stabilizing mixing
     sort(theta.begin(), theta.end(), greater<double>());
+    theta_to_t(theta, T, conversion_factors);
 
     // call output function every n=output_steps times
     if (i % output_steps == 0) {
