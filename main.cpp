@@ -74,7 +74,6 @@ const int consts::output_steps = 100;
 const double consts::cooling_rate = - 3.0 / 86400.0; 
 
 int main() {
-
   double dp = 1000.0 / (double) consts::nlayer;
   double dT = 100.0 / (double) consts::nlayer;
 
@@ -106,6 +105,7 @@ int main() {
 
     // sort theta to simulate a stabilizing mixing
     sort(theta.begin(), theta.end(), greater<double>());
+    theta_to_t(theta, T, conversion_factors);
 
     // call output function every n=output_steps times
     if (i % consts::output_steps == 0) {
