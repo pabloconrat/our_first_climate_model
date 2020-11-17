@@ -31,20 +31,18 @@ void theta_to_t(const vector<double> &theta, vector<double> &T, const vector<dou
 }
 
 // heating function - so far only surface heating
-void thermodynamics(vector<double> &T, const double &dp, const double &E_abs,
-             const double &dt, const double &g, const double &c_air, const double &sigma, const double cooling_rate,
-             const vector<double> &conversion_factors) {
+void thermodynamics(vector<double> &T) {
   // computation of surface heating
-  T[T.size()-1]+= E_abs * dt * g / (c_air * dp * 100.0);
+  T[T.size()-1]+= Consts::E_abs * Consts::dt * Consts::g / (Consts::c_air * Consts::dp * 100.0);
     
   // prescribed cooling of atmosphere
-  double delta_T = cooling_rate * dt;
+  double delta_T = Consts::cooling_rate * Consts::dt;
   transform(T.begin(), T.end(), T.begin(), bind2nd(plus<double>(), delta_T));
   return;
 }
 
 // declaration and initialization of physical constants and model parameters
-class consts {
+class Consts {
 public: 
     static const double kappa; // adiabatic exponent [/]
     static const double c_air; // specific heat capacity [J/kg K]
@@ -60,46 +58,48 @@ public:
     static const double cooling_rate; // prescribed cooling rate [K/s]
 };
 
-const double consts::kappa = 2.0 / 7.0;
-const double consts::c_air = 1004;
-const double consts::g = 9.80665; 
-const double consts::E_abs = 235;
-const double consts::sigma = 5.670373e-8;
+const double Consts::kappa = 2.0 / 7.0;
+const double Consts::c_air = 1004;
+const double Consts::g = 9.80665; 
+const double Consts::E_abs = 235;
+const double Consts::sigma = 5.670373e-8;
 
-const int consts::nlayer = 25; 
-const int consts::nlevel = consts::nlayer + 1; 
-const double consts::dt = 360.0; 
-const int consts::n_steps = 1000;
-const int consts::output_steps = 100;
-const double consts::cooling_rate = - 3.0 / 86400.0; 
+const int Consts::nlayer = 25; 
+const int Consts::nlevel = Consts::nlayer + 1; 
+const double Consts::dt = 360.0; 
+const int Consts::n_steps = 10000;
+const int Consts::output_steps = 1000;
+const double Consts::cooling_rate = - 1.475/ 86400.0; 
 
 int main() {
-  double dp = 1000.0 / (double) consts::nlayer;
-  double dT = 100.0 / (double) consts::nlayer;
+  double dp = 1000.0 / (double) Consts::nlayer;
+  double dT = 100.0 / (double) Consts::nlayer;
 
-  vector<double> player(consts::nlayer); // vector of pressures for each layer
-  vector<double> p(consts::nlevel); // vector of pressures between the layers
-  vector<double> T(consts::nlayer); // vector of temperatures for each layer
-  vector<double> theta(consts::nlayer); // vector of pot. temperatures for each layer
-  vector<double> conversion_factors(consts::nlayer); // vector for the conversion factors between t and theta
 
-  for (int i=0; i<consts::nlevel; i++) {
+
+  vector<double> player(Consts::nlayer); // vector of pressures for each layer
+  vector<double> p(Consts::nlevel); // vector of pressures between the layers
+  vector<double> T(Consts::nlayer); // vector of temperatures for each layer
+  vector<double> theta(Consts::nlayer); // vector of pot. temperatures for each layer
+  vector<double> conversion_factors(Consts::nlayer); // vector for the conversion factors between t and theta
+
+  for (int i=0; i<Consts::nlevel; i++) {
     p[i] = dp * (double) i; // the pressure levels are spaced equally between 0 and 1000 hPa
   }
 
-  for (int i=0; i<consts::nlayer; i++) {
+  for (int i=0; i<Consts::nlayer; i++) {
     T[i] = 180.0 + dT * (double) i; // just a first guess for the T-profile for each layer
     player[i] = (p[i]+p[i+1])/2.0; // computation of pressure between the levels
-    conversion_factors[i] = pow(1000.0 / player[i], consts::kappa); // computation of conversion factors
+    conversion_factors[i] = pow(1000.0 / player[i], Consts::kappa); // computation of conversion factors
     theta[i] = T[i] * conversion_factors[i]; // computation of theta for each layer
   }
 
   /* end of initialization */
 
   // loop over time steps
-  for (int i=0; i<=consts::n_steps; i++) {
+  for (int i=0; i<=Consts::n_steps; i++) {
     // compute current time in hours from start
-    float time = (float) i * consts::dt / 360; // [hours]
+    float time = (float) i * Consts::dt / 360; // [hours]
     // calculate theta values from new T values
     t_to_theta(T, theta, conversion_factors);
 
@@ -108,13 +108,12 @@ int main() {
     theta_to_t(theta, T, conversion_factors);
 
     // call output function every n=output_steps times
-    if (i % consts::output_steps == 0) {
+    if (i % Consts::output_steps == 0) {
       // call output function
       output(time, player, T, theta);
     }
 
-    thermodynamics(T, dp, consts::E_abs, consts::dt, consts::g, consts::c_air, consts::sigma, consts::cooling_rate, 
-                   conversion_factors);
+    thermodynamics(T);
   }
 
   return 0;
