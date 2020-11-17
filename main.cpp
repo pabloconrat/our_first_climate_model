@@ -5,42 +5,6 @@
 #include <functional>
 using namespace std;
 
-// first version of an output function, gets called for one timestep
-void output(const float &time, const vector<double> &player,
-            const vector<double> &T, const vector<double> &theta) {
-  // print at what timestep the model is
-  printf("Output at %2.1f hours \n", time);
-  // print the pressure, temperature and potential temperature of each layer
-  for (int i=0; i<player.size(); i++) {
-    printf("%3d %6.1f %5.1f %5.1f\n",
-           i, player[i], T[i], theta[i]);
-  }
-  return;
-}
-
-void t_to_theta(const vector<double> &T, vector<double> &theta, const vector<double> &conversion_factors) {
-  transform(T.begin(), T.end(),
-            conversion_factors.begin(), theta.begin(), multiplies<double>());
-  return;
-}
-
-void theta_to_t(const vector<double> &theta, vector<double> &T, const vector<double> &conversion_factors) {
-  transform(theta.begin(), theta.end(),
-            conversion_factors.begin(), T.begin(), divides<double>());
-  return;
-}
-
-// heating function - so far only surface heating
-void thermodynamics(vector<double> &T) {
-  // computation of surface heating
-  T[T.size()-1]+= Consts::E_abs * Consts::dt * Consts::g / (Consts::c_air * Consts::dp * 100.0);
-    
-  // prescribed cooling of atmosphere
-  double delta_T = Consts::cooling_rate * Consts::dt;
-  transform(T.begin(), T.end(), T.begin(), bind2nd(plus<double>(), delta_T));
-  return;
-}
-
 // declaration and initialization of physical constants and model parameters
 class Consts {
 public: 
@@ -71,11 +35,46 @@ const int Consts::n_steps = 10000;
 const int Consts::output_steps = 1000;
 const double Consts::cooling_rate = - 1.475/ 86400.0; 
 
+// first version of an output function, gets called for one timestep
+void output(const float &time, const vector<double> &player,
+            const vector<double> &T, const vector<double> &theta) {
+  // print at what timestep the model is
+  printf("Output at %2.1f hours \n", time);
+  // print the pressure, temperature and potential temperature of each layer
+  for (int i=0; i<player.size(); i++) {
+    printf("%3d %6.1f %5.1f %5.1f\n",
+           i, player[i], T[i], theta[i]);
+  }
+  return;
+}
+
+void t_to_theta(const vector<double> &T, vector<double> &theta, const vector<double> &conversion_factors) {
+  transform(T.begin(), T.end(),
+            conversion_factors.begin(), theta.begin(), multiplies<double>());
+  return;
+}
+
+void theta_to_t(const vector<double> &theta, vector<double> &T, const vector<double> &conversion_factors) {
+  transform(theta.begin(), theta.end(),
+            conversion_factors.begin(), T.begin(), divides<double>());
+  return;
+}
+
+// heating function - so far only surface heating
+void thermodynamics(vector<double> &T, const double &dp) {
+  // computation of surface heating
+  T[T.size()-1]+= Consts::E_abs * Consts::dt * Consts::g / (Consts::c_air * dp * 100.0);
+    
+  // prescribed cooling of atmosphere
+  double delta_T = Consts::cooling_rate * Consts::dt;
+  transform(T.begin(), T.end(), T.begin(), bind2nd(plus<double>(), delta_T));
+  return;
+}
+
+
 int main() {
   double dp = 1000.0 / (double) Consts::nlayer;
   double dT = 100.0 / (double) Consts::nlayer;
-
-
 
   vector<double> player(Consts::nlayer); // vector of pressures for each layer
   vector<double> p(Consts::nlevel); // vector of pressures between the layers
@@ -113,7 +112,7 @@ int main() {
       output(time, player, T, theta);
     }
 
-    thermodynamics(T);
+    thermodynamics(T, dp);
   }
 
   return 0;
