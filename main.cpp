@@ -32,10 +32,13 @@ void theta_to_t(const vector<double> &theta, vector<double> &T, const vector<dou
 
 // heating function - so far only surface heating
 void thermodynamics(vector<double> &T, const double &dp, const double &E_abs,
-             const double &dt, const double &g, const double &c_air, const double &sigma, const double cooling_rate,
+             const double &dt, const double &g, const double &c_air, const double &eps, const double &sigma, const double cooling_rate,
              const vector<double> &conversion_factors) {
   // computation of surface heating
   T[T.size()-1]+= E_abs * dt * g / (c_air * dp * 100.0);
+    
+  // computation of thermal cooling at the ground (according to Stefan-Boltzmann law)
+  T[T.size()-1]-= eps * pow(T[T.size()-1], 4) * sigma * dt * g / (c_air * dp * 100.0); 
     
   // prescribed cooling of atmosphere
   double delta_T = cooling_rate * dt;
@@ -51,6 +54,7 @@ public:
     static const double g;     // gravity acceleration [m/s^2]
     static const double E_abs; // heating rate from surface [W/m^2]
     static const double sigma; // Stefan–Boltzmann constant [W/m^2 K^4]
+    static const double eps;   // emissivity [/]
     
     static const int nlayer; // number of layers
     static const int nlevel; // number of levels
@@ -65,13 +69,14 @@ const double consts::c_air = 1004;
 const double consts::g = 9.80665; 
 const double consts::E_abs = 235;
 const double consts::sigma = 5.670373e-8;
+const double consts::eps = 0.3;
 
 const int consts::nlayer = 25; 
 const int consts::nlevel = consts::nlayer + 1; 
 const double consts::dt = 360.0; 
-const int consts::n_steps = 1000;
-const int consts::output_steps = 100;
-const double consts::cooling_rate = - 3.0 / 86400.0; 
+const int consts::n_steps = 100000;
+const int consts::output_steps = 10000;
+const double consts::cooling_rate = - 1.0 / 86400.0; 
 
 int main() {
 
@@ -106,15 +111,16 @@ int main() {
 
     // sort theta to simulate a stabilizing mixing
     sort(theta.begin(), theta.end(), greater<double>());
-
+    theta_to_t(theta, T, conversion_factors);
+      
     // call output function every n=output_steps times
     if (i % consts::output_steps == 0) {
       // call output function
       output(time, player, T, theta);
     }
 
-    thermodynamics(T, dp, consts::E_abs, consts::dt, consts::g, consts::c_air, consts::sigma, consts::cooling_rate, 
-                   conversion_factors);
+    thermodynamics(T, dp, consts::E_abs, consts::dt, consts::g, consts::c_air, consts::eps, consts::sigma,
+                   consts::cooling_rate, conversion_factors);
   }
 
   return 0;
