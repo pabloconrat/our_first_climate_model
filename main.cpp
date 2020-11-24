@@ -13,6 +13,7 @@ public:
     static const double g;     // gravity acceleration [m/s^2]
     static const double E_abs; // heating rate from surface [W/m^2]
     static const double sigma; // Stefan–Boltzmann constant [W/m^2 K^4]
+    static const double eps;   // emissivity [/]
     
     static const int nlayer; // number of layers
     static const int nlevel; // number of levels
@@ -27,6 +28,7 @@ const double Consts::c_air = 1004;
 const double Consts::g = 9.80665; 
 const double Consts::E_abs = 235;
 const double Consts::sigma = 5.670373e-8;
+const double Consts::eps = 0.3;
 
 const int Consts::nlayer = 25; 
 const int Consts::nlevel = Consts::nlayer + 1; 
@@ -65,12 +67,14 @@ void thermodynamics(vector<double> &T, const double &dp) {
   // computation of surface heating
   T[T.size()-1]+= Consts::E_abs * Consts::dt * Consts::g / (Consts::c_air * dp * 100.0);
     
+  // computation of thermal cooling at the ground (according to Stefan-Boltzmann law)
+  T[T.size()-1]-= Consts::eps * pow(T[T.size()-1], 4) * Consts::sigma * Consts::dt * Consts::g / (Consts::c_air * dp * 100.0); 
+    
   // prescribed cooling of atmosphere
   double delta_T = Consts::cooling_rate * Consts::dt;
   transform(T.begin(), T.end(), T.begin(), bind2nd(plus<double>(), delta_T));
   return;
 }
-
 
 int main() {
   double dp = 1000.0 / (double) Consts::nlayer;
