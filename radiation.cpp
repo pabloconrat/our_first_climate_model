@@ -22,6 +22,7 @@ public:
     static const int nlevel; // number of levels
     static const int nangle; // number of angles
     static const int nlamda; // number of wavelengths
+    static const double tau_total; // total optical thickness of whole atmosphere
 };
 
 const double Consts::c_air = 1004.0;
@@ -38,6 +39,7 @@ const int Consts::nlayer = 10;
 const int Consts::nlevel = Consts::nlayer + 1; 
 const int Consts::nangle = 10; 
 const int Consts::nlamda = 1000; 
+const double Consts::tau_total = 10; 
 
 // first version of an output function, gets called for one timestep
 void output(const vector<double> &z, const vector<double> &p,
@@ -78,22 +80,23 @@ double window_atmosphere(const double &T_layer, const double &lamda0, const doub
 
 // absorption coeficient 
 double alpha (const double &tau, const double &mu){
-  return 1.0 - exp(-tau / mu);
+  return 1.0 - exp(- tau / mu);
 }
 
-void radiative_transfer(vector<double> &B, vector<double> &E_down, vector<double> &E_up, 
-                        vector<double> &tau, vector<double> &mu, const double &dmu){
+void thermal_radiative_transfer_monochromatic(vector<double> &T, vector<double> &E_down, 
+        vector<double> &E_up, vector<double> &tau, vector<double> &mu, const double &dmu, 
+                                              const double &lamda_i, const double &dlamda){
   for (int imu=0; imu<Consts::nangle; imu++) {
   // boundary conditions
   double L_down = 0.0; 
-  double L_up = B[B.size()-1]; // ???
+  double L_up = planck(T[Consts::nlayer-1], lamda_i); 
     for (int ilev=1; ilev<Consts::nlevel; ilev++) {
-      L_down = (1 - alpha(tau[ilev - 1], mu[imu])) * L_down + alpha(tau[ilev - 1], mu[imu]) * B[ilev - 1];
+      L_down = (1 - alpha(tau[ilev - 1], mu[imu])) * L_down + alpha(tau[ilev - 1], mu[imu]) * planck(T[ilev - 1], lamda_i);
       E_down[ilev] += 2 * M_PI * L_down * mu[imu] * dmu;
     } 
     for (int ilev=Consts::nlevel-2; ilev >= 0; ilev--) {
-      L_up = (1 - alpha(tau[ilev], mu[imu]))*L_up + alpha(tau[ilev], mu[imu])*B[ilev];
-      E_up[ilev] += 2 * M_PI * L_up * mu[imu] * dmu;;
+      L_up = (1 - alpha(tau[ilev], mu[imu]))*L_up + alpha(tau[ilev], mu[imu]) * planck(T[ilev], lamda_i);
+      E_up[ilev] += 2 * M_PI * L_up * mu[imu] * dmu * dlamda;
     }
   } 
   return; 
@@ -102,9 +105,10 @@ void radiative_transfer(vector<double> &B, vector<double> &E_down, vector<double
 int main() {
 
   double dp = 1000.0 / (double) Consts::nlayer;  
-  double dmu = 1.0 / (double) Consts::nangle;    
+  double dmu = 1.0 / (double) Consts::nangle;   
+  double dtau = Consts::tau_total / (double) Consts::nlayer;   
   double dlamda = 1000e-6 / (double) Consts::nlamda; 
-  double lamda_interval[3][2] = {{7e-9,8e-6},{8e-6,12e-6},{12e-6,1000e-6}};
+  double lamda_interval[3][2] = {{1e-6,8e-6},{8e-6,12e-6},{12e-6,1000e-6}};
 
   vector<double> p(Consts::nlevel); // vector of pressures between the layers
   vector<double> z(Consts::nlevel); // vector of altitudes between the layers
@@ -120,12 +124,16 @@ int main() {
   for (int i=0; i<Consts::nlevel; i++) {
     p[i] = dp * (double) i; // the pressure levels are spaced equally between 0 and 1000 hPa
     z[i] = p_to_z(p[i]); // altitude levels
-    tau[i] = (double) i + 1.0;  // ???
+    tau[i] = dtau;  // values of optical thickness for every layer are the same  
   }
-    
+  
+  /*  
   for (int i=Consts::nlevel-1; i>=0; i--) {
     T[i] = Consts::T0 - 6.5 * z[i] ; // T-profile for each layer
   }
+  */
+  // given initial temperature profile
+  T = {127.28, 187.09, 212.42, 229.22, 242.03, 252.48, 261.37, 269.13, 276.04, 282.29, 288.00};
     
   for (int i=0; i<Consts::nangle; i++) {
     mu[i] = dmu / 2.0 + dmu * (double) i; // angles are spaced equally between 0 and pi/2
@@ -133,7 +141,7 @@ int main() {
   }
     
   for (int i=0; i<Consts::nlamda; i++) {
-    lamda[i] = 1.0 + dlamda * (double) i; // wavelengths are spaced equally between 1 and 15 microns
+    lamda[i] = 1e-6 + dlamda * (double) i; // wavelengths are spaced equally between 1 and 1000 microns
   }
 
   for (int i=0; i<Consts::nlayer; i++) {
@@ -143,12 +151,9 @@ int main() {
     
   /* end of initialization */
   
-  // grey atmosphere
-  for (int i=0; i<Consts::nlayer; i++) {
-    B[i] = grey_atmosphere(T[i]);
+  for (int i=0; i<Consts::nlamda; i++) {
+    thermal_radiative_transfer_monochromatic(T, E_down, E_up, tau, mu, dmu, lamda[i], dlamda);
   } 
-   
-  radiative_transfer(B, E_down, E_up, tau, mu, dmu);
     
   output(z, p, T, E_down, E_up);
     
