@@ -92,7 +92,7 @@ void thermal_radiative_transfer_monochromatic(vector<double> &T, vector<double> 
   double L_up = planck(T[Consts::nlayer-1], lamda_i); 
     for (int ilev=1; ilev<Consts::nlevel; ilev++) {
       L_down = (1 - alpha(tau[ilev - 1], mu[imu])) * L_down + alpha(tau[ilev - 1], mu[imu]) * planck(T[ilev - 1], lamda_i);
-      E_down[ilev] += 2 * M_PI * L_down * mu[imu] * dmu;
+      E_down[ilev] += 2 * M_PI * L_down * mu[imu] * dmu * dlamda;
     } 
     for (int ilev=Consts::nlevel-2; ilev >= 0; ilev--) {
       L_up = (1 - alpha(tau[ilev], mu[imu]))*L_up + alpha(tau[ilev], mu[imu]) * planck(T[ilev], lamda_i);
