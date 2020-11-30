@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <functional>
+#include "cplkavg.h"
 using namespace std;
 
 // declaration and initialization of physical constants and model parameters
@@ -37,9 +38,9 @@ const double Consts::sigma = 5.670373e-8;
 
 const int Consts::nlayer = 10; 
 const int Consts::nlevel = Consts::nlayer + 1; 
-const int Consts::nangle = 10; 
+const int Consts::nangle = 20; 
 const int Consts::nlamda = 1000; 
-const double Consts::tau_total = 10; 
+const double Consts::tau_total = 1; 
 
 // first version of an output function, gets called for one timestep
 void output(const vector<double> &z, const vector<double> &p,
@@ -67,36 +68,54 @@ double grey_atmosphere(const double &T_layer) {
   return Consts::sigma * pow(T_layer, 4) / M_PI;
 }
 
-// Planck function for 'window' atmosphere integrated over the thermal spectral range
-double window_atmosphere(const double &T_layer, const double &lamda0, const double &lamda1, const double &dlamda) { 
-  double integral = 0.0;
-  int nlamda = (int) ceil (lamda1 - lamda0) / dlamda;
-  for (int i=0; i<nlamda; i++) {
-    double lamda = lamda0 + dlamda * (double) i;
-    integral += planck(T_layer, lamda) * dlamda;
+/*
+// Planck function integrated over the thermal spectral range (sent by Pablo) 
+double planck_integrated_infinity(const double &T_layer, const double &lamda){
+  // compute powers of x, the dimensionless spectral coordinate
+  double x = (Consts::h * Consts::c / Consts::kB) * lamda / T_layer;
+  double x2 = pow(x, 2);
+  double x3 = pow(x, 3);
+
+  // decide how many terms of sum are needed
+  double iterations = 2.0 + 20.0/x;
+  iterations = (iterations<512) ? iterations : 512;
+  int iter = int(iterations) ;
+
+  // add up terms of sum
+  double sum = 0;
+  for (int n=1;  n<iter; n++){
+    double dn = 1.0/n;
+    sum += exp(-n * x) * (x3 + (3.0 * x2 + 6.0 * (x + dn) * dn) * dn) * dn;
   }
-  return integral;
+  return 2.0 * Consts::h * pow(Consts::c, 2) * pow(T_layer / (Consts::h * Consts::c / Consts::kB), 4) * sum;
 }
+
+double planck_integrated(const double &T_layer, const double &lamda0, const double &lamda1){
+  double integral0 = planck_integrated_infinity(T_layer, lamda0);
+  double integral1 = planck_integrated_infinity(T_layer, lamda1);
+  return integral1 - integral0;
+}
+*/
 
 // absorption coeficient 
 double alpha (const double &tau, const double &mu){
   return 1.0 - exp(- tau / mu);
 }
 
-void thermal_radiative_transfer_monochromatic(vector<double> &T, vector<double> &E_down, 
-        vector<double> &E_up, vector<double> &tau, vector<double> &mu, const double &dmu, 
-                                              const double &lamda_i, const double &dlamda){
+void thermal_radiative_transfer_monochromatic(vector<double> &T, vector<double> &E_down, vector<double> &E_up,
+                                              vector<double> &tau, vector<double> &mu, const double &dmu, 
+                                              const double &lamda0, const double &lamda1){
   for (int imu=0; imu<Consts::nangle; imu++) {
   // boundary conditions
   double L_down = 0.0; 
-  double L_up = planck(T[Consts::nlayer-1], lamda_i); 
+  double L_up = cplkavg(lamda0, lamda1, 288.0);
     for (int ilev=1; ilev<Consts::nlevel; ilev++) {
-      L_down = (1 - alpha(tau[ilev - 1], mu[imu])) * L_down + alpha(tau[ilev - 1], mu[imu]) * planck(T[ilev - 1], lamda_i);
-      E_down[ilev] += 2 * M_PI * L_down * mu[imu] * dmu * dlamda;
+      L_down = (1 - alpha(tau[ilev - 1], mu[imu])) * L_down + alpha(tau[ilev - 1], mu[imu]) * cplkavg(lamda0, lamda1, T[ilev - 1]);
+      E_down[ilev] += 2 * M_PI * L_down * mu[imu] * dmu;
     } 
     for (int ilev=Consts::nlevel-2; ilev >= 0; ilev--) {
-      L_up = (1 - alpha(tau[ilev], mu[imu]))*L_up + alpha(tau[ilev], mu[imu]) * planck(T[ilev], lamda_i);
-      E_up[ilev] += 2 * M_PI * L_up * mu[imu] * dmu * dlamda;
+      L_up = (1 - alpha(tau[ilev], mu[imu])) * L_up + alpha(tau[ilev], mu[imu]) * cplkavg(lamda0, lamda1, T[ilev]);
+      E_up[ilev] += 2 * M_PI * L_up * mu[imu] * dmu;
     }
   } 
   return; 
@@ -107,16 +126,16 @@ int main() {
   double dp = 1000.0 / (double) Consts::nlayer;  
   double dmu = 1.0 / (double) Consts::nangle;   
   double dtau = Consts::tau_total / (double) Consts::nlayer;   
-  double dlamda = 1000e-6 / (double) Consts::nlamda; 
-  double lamda_interval[3][2] = {{1e-6,8e-6},{8e-6,12e-6},{12e-6,1000e-6}};
+  double dlamda = 1000000.0 / (double) Consts::nlamda; // [nm]
+  double lamda_interval[3][2] = {{1000,8000},{8000,12000},{12000,1000000}}; // [nm]
 
   vector<double> p(Consts::nlevel); // vector of pressures between the layers
   vector<double> z(Consts::nlevel); // vector of altitudes between the layers
+  vector<double> Tlevel(Consts::nlevel); // vector of temperatures between the layers
   vector<double> T(Consts::nlayer); // vector of temperatures for each layer
   vector<double> tau(Consts::nlayer); // vector of optical thickness
   vector<double> mu(Consts::nangle); // vector of cosines of zenith angles, characterize direction of radiation
   vector<double> lamda(Consts::nlamda); // vector of wavelengths
-  vector<double> B(Consts::nlayer); // vector of spectral radiances for each layer
   vector<double> E_down(Consts::nlayer); // vector of downgoing thermal irradiances for each layer
   vector<double> E_up(Consts::nlayer); // vector of upgoing thermal irradiances for each layer
 
@@ -132,8 +151,13 @@ int main() {
     T[i] = Consts::T0 - 6.5 * z[i] ; // T-profile for each layer
   }
   */
+    
   // given initial temperature profile
-  T = {127.28, 187.09, 212.42, 229.22, 242.03, 252.48, 261.37, 269.13, 276.04, 282.29, 288.00};
+  Tlevel = {127.28, 187.09, 212.42, 229.22, 242.03, 252.48, 261.37, 269.13, 276.04, 282.29, 288.00};
+    
+  for (int i=0; i<Consts::nlayer; i++) {
+    T[i] = (Tlevel[i] + Tlevel[i+1])/2.0; // T-profile for each layer
+  }
     
   for (int i=0; i<Consts::nangle; i++) {
     mu[i] = dmu / 2.0 + dmu * (double) i; // angles are spaced equally between 0 and pi/2
@@ -141,7 +165,7 @@ int main() {
   }
     
   for (int i=0; i<Consts::nlamda; i++) {
-    lamda[i] = 1e-6 + dlamda * (double) i; // wavelengths are spaced equally between 1 and 1000 microns
+    lamda[i] = 1000.0 + dlamda * (double) i; // [nm], wavelengths are spaced equally between 1 and 1000 microns 
   }
 
   for (int i=0; i<Consts::nlayer; i++) {
@@ -151,10 +175,10 @@ int main() {
     
   /* end of initialization */
   
-  for (int i=0; i<Consts::nlamda; i++) {
-    thermal_radiative_transfer_monochromatic(T, E_down, E_up, tau, mu, dmu, lamda[i], dlamda);
+  for (int i=0; i<Consts::nlamda - 1; i++) {
+    thermal_radiative_transfer_monochromatic(T, E_down, E_up, tau, mu, dmu, lamda[i], lamda[i+1]);
   } 
-    
+  
   output(z, p, T, E_down, E_up);
     
   return 0;   
