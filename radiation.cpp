@@ -75,10 +75,12 @@ double planck_integrated_infinity(const double &T_layer, const double &lamda){
   double x = (Consts::h * Consts::c / Consts::kB) * lamda / T_layer;
   double x2 = pow(x, 2);
   double x3 = pow(x, 3);
+
   // decide how many terms of sum are needed
   double iterations = 2.0 + 20.0/x;
   iterations = (iterations<512) ? iterations : 512;
   int iter = int(iterations) ;
+
   // add up terms of sum
   double sum = 0;
   for (int n=1;  n<iter; n++){
@@ -87,6 +89,7 @@ double planck_integrated_infinity(const double &T_layer, const double &lamda){
   }
   return 2.0 * Consts::h * pow(Consts::c, 2) * pow(T_layer / (Consts::h * Consts::c / Consts::kB), 4) * sum;
 }
+
 double planck_integrated(const double &T_layer, const double &lamda0, const double &lamda1){
   double integral0 = planck_integrated_infinity(T_layer, lamda0);
   double integral1 = planck_integrated_infinity(T_layer, lamda1);
@@ -109,7 +112,8 @@ void thermal_radiative_transfer_monochromatic(vector<double> &T, vector<double> 
     for (int ilev=1; ilev<Consts::nlevel; ilev++) {
       L_down = (1 - alpha(tau[ilev - 1], mu[imu])) * L_down + alpha(tau[ilev - 1], mu[imu]) * cplkavg(lamda0, lamda1, T[ilev - 1]);
       E_down[ilev] += 2 * M_PI * L_down * mu[imu] * dmu;
-    } 
+    }
+    E_up[Consts::nlevel-1] += 2 * M_PI * L_up * mu[imu] * dmu;
     for (int ilev=Consts::nlevel-2; ilev >= 0; ilev--) {
       L_up = (1 - alpha(tau[ilev], mu[imu])) * L_up + alpha(tau[ilev], mu[imu]) * cplkavg(lamda0, lamda1, T[ilev]);
       E_up[ilev] += 2 * M_PI * L_up * mu[imu] * dmu;
