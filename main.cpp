@@ -43,7 +43,7 @@ void output(const float &time, const vector<double> &player,
   // print at what timestep the model is
   printf("Output at %2.1f hours \n", time);
   // print the pressure, temperature and potential temperature of each layer
-  for (int i=0; i<player.size(); i++) {
+  for (int i=0; i<Consts::nlayer; i++) {
     printf("%3d %6.1f %5.1f %5.1f\n",
            i, player[i], T[i], theta[i]);
   }
