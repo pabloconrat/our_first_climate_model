@@ -75,12 +75,10 @@ double planck_integrated_infinity(const double &T_layer, const double &lamda){
   double x = (Consts::h * Consts::c / Consts::kB) * lamda / T_layer;
   double x2 = pow(x, 2);
   double x3 = pow(x, 3);
-
   // decide how many terms of sum are needed
   double iterations = 2.0 + 20.0/x;
   iterations = (iterations<512) ? iterations : 512;
   int iter = int(iterations) ;
-
   // add up terms of sum
   double sum = 0;
   for (int n=1;  n<iter; n++){
@@ -89,7 +87,6 @@ double planck_integrated_infinity(const double &T_layer, const double &lamda){
   }
   return 2.0 * Consts::h * pow(Consts::c, 2) * pow(T_layer / (Consts::h * Consts::c / Consts::kB), 4) * sum;
 }
-
 double planck_integrated(const double &T_layer, const double &lamda0, const double &lamda1){
   double integral0 = planck_integrated_infinity(T_layer, lamda0);
   double integral1 = planck_integrated_infinity(T_layer, lamda1);
