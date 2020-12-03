@@ -49,12 +49,12 @@ const int Consts::nlamda = Consts::lamdas.size();
 
 
 // first version of an output function, gets called for one timestep
-void output(const vector<double> &zlayer, const vector<double> &player,
-            const vector<double> &T, const vector<double> &E_down, const vector<double> &E_up) {
+void output(const vector<double> &z, const vector<double> &p,
+            const vector<double> &E_down, const vector<double> &E_up) {
   // print the altitude, pressure and temperature of each level
-  for (int i=0; i<zlayer.size(); ++i) {
-    printf("lvl: %3d z: %6.3f p: %5.1f T: %5.2f E_dn: %6.3f E_up: %6.3f\n",
-           i, zlayer[i], player[i], T[i], E_down[i], E_up[i]);
+  for (int i=0; i<z.size(); ++i) {
+    printf("lvl: %3d z: %6.3f p: %5.1f E_dn: %6.3f E_up: %6.3f\n",
+           i, z[i], p[i], E_down[i], E_up[i]);
   }
   return;
 }
@@ -87,7 +87,7 @@ void monochromatic_radiative_transfer(vector<double> &E_down, vector<double> &E_
       L_down = (1 - alpha(tau[ilev - 1], mu[imu])) * L_down + alpha(tau[ilev - 1], mu[imu]) * cplkavg(Consts::lamdas[i_rad], Consts::lamdas[i_rad+1], T[ilev]);
       E_down[ilev] += 2 * M_PI * L_down * mu[imu] * dmu;
     }
-    for (int ilev=E_up.size(); ilev >= 0; --ilev) {
+    for (int ilev=E_up.size()-1; ilev >= 0; --ilev) {
       L_up = (1 - alpha(tau[ilev], mu[imu]))*L_up + alpha(tau[ilev], mu[imu]) * cplkavg(Consts::lamdas[i_rad], Consts::lamdas[i_rad+1], T[ilev]);;
       E_up[ilev] += 2 * M_PI * L_up * mu[imu] * dmu;
     }
@@ -117,20 +117,25 @@ int main() {
 
   vector<double> p(Consts::nlevel); // vector of pressures between the layers
   vector<double> z(Consts::nlevel); // vector of altitudes between the layers
-  vector<double> T(Consts::nlayer); // vector of temperatures for each layer, last value is surface temperature
+  vector<double> T(Consts::nlevel); // vector of temperatures for each layer, last value is surface temperature
   vector<double> tau(Consts::nlayer); // vector of optical thickness
   vector<double> mu(Consts::nangle); // vector of cosines of zenith angles, characterize direction of radiation
   vector<double> lamda(Consts::nlamda); // vector of wavelengths
   vector<double> B(Consts::nlayer); // vector of spectral radiances for each layer
-  vector<double> E_down(Consts::nlayer); // vector of downgoing thermal irradiances for each layer
-  vector<double> E_up(Consts::nlayer); // vector of upgoing thermal irradiances for each layer
+  vector<double> E_down(Consts::nlevel); // vector of downgoing thermal irradiances for each level
+  vector<double> E_up(Consts::nlevel); // vector of upgoing thermal irradiances for each level
   vector<double> player(Consts::nlayer); // vector of pressures for each layer
   vector<double> zlayer(Consts::nlayer); // vector of heights for each layer
   vector<double> Radiances(Consts::nlayer); // Initialize vector of radiances
 
   vector<double> Test_T(Consts::nlevel);
   Test_T = {127.28, 187.09, 212.42, 229.22, 242.03, 252.48, 261.37, 269.13, 276.04, 282.29, 288.00};
-  T = Test_T;
+  
+  for (int i=0; i<T.size(); ++i) {
+    T[i] = (Test_T[i] + Test_T[i+1])/2.0; // T-profile for each layer
+  }
+  
+  T[10] = Test_T[10];
 
   for (int i=0; i<p.size(); i++) {
     p[i] = dp * (double) i; // the pressure levels are spaced equally between 0 and 1000 hPa
@@ -157,7 +162,7 @@ int main() {
   
   radiative_transfer(T, E_down, E_up, tau, mu, dmu);
     
-  output(zlayer, player, T, E_down, E_up);
+  output(z, p, E_down, E_up);
 
   return 0;   
 }
