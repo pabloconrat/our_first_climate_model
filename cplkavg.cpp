@@ -59,6 +59,7 @@ void c_errmsg (std::string messag, int type) {
 
 /*
   Computes Planck function integrated between two wavelengths
+<<<<<<< HEAD
 
   INPUT :  wvllo  : Lower wavelength (nm) of spectral interval
            wvlhi  : Upper wavelength (nm)
@@ -94,6 +95,31 @@ void c_errmsg (std::string messag, int type) {
 
   LOCAL VARIABLES
 
+=======
+  INPUT :  wvllo  : Lower wavelength (nm) of spectral interval
+           wvlhi  : Upper wavelength (nm)
+           t      : Temperature (K)
+  OUTPUT : ans    : Integrated Planck function ( Watts/sq m ) = Integral (WNUMLO to WNUMHI) of
+                    2h c*c nu*nu*nu / ( exp(hc nu/kT) - 1) (where h=Plancks constant, c=speed of
+                    light, nu=wavenumber, T=temperature, and k = Boltzmann constant)
+  Reference : Specifications of the Physical World: New Value of the Fundamental Constants,
+                Dimensions/N.B.S., Jan. 1974
+  Method :  For wnumlo close to wnumhi, a Simpson-rule quadrature is done to avoid
+            ill-conditioning; otherwise
+            (1)  For wnumlo or wnumhi small, integral(0 to WNUMLO/HI) is calculated by expanding
+                 the integrand in a power series and integrating term by term;
+            (2)  Otherwise, integral (wnumlo/hi to infinity) is calculated by expanding the
+                 denominator of the integrand in powers of the exponential and integrating
+                 term by term.
+  Accuracy :  At least 6 significant digits, assuming the physical constants are infinitely accurate
+  ERRORS WHICH ARE NOT TRAPPED:
+      * Power or exponential series may underflow, giving no significant digits.  
+        This may or may not be of concern, depending on the application.
+      * Simpson-rule special case is skipped when denominator of integrand will cause overflow.
+        In that case the normal procedure is used, which may be inaccurate if the wavenumber limits
+        (wnumlo, wnumhi) are close together.
+  LOCAL VARIABLES
+>>>>>>> pablo
         a1,2,... :  Power series coefficients
         c2       :  h * c / k, in units cm*K (h = Plancks constant,
                       c = speed of light, k = Boltzmann constant)
@@ -114,7 +140,10 @@ void c_errmsg (std::string messag, int type) {
         vcut     :  Power-series cutoff point
         vcp      :  Exponential series cutoff points
         vmax     :  Largest allowable argument of EXP function
+<<<<<<< HEAD
 
+=======
+>>>>>>> pablo
    Called by- c_disort
    Calls- c_errmsg
  ----------------------------------------------------------------------*/
@@ -267,6 +296,4 @@ double cplkavg (double wvllo, double wvlhi, double t) {
 #undef PLKF
 
 /*============================= end of c_planck_func() =================*/
-
-
 
