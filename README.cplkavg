@@ -1,0 +1,16 @@
+Fast integration of Planck function for a given wavelength interval.
+
+cplkavg.c     source code
+cplkavg.h     header file
+testcplkavg.c example code
+
+Compile example with
+  gcc -o testcplkavg testcplkavg.c cplkavg.c
+
+double cplkavg (double wvllo, double wvlhi, double T)
+   wvllo lower wavelength [nm]
+   wvlhi upper wavelength [nm]
+   T     temperature [K]
+
+return value: integrated Planck function [W / (m**2 sterad)]
+   
