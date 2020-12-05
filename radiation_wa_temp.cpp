@@ -9,32 +9,23 @@ using namespace std;
 
 // declaration and initialization of physical constants and model parameters
 class Consts {
-public: 
-    static const double c_air; // specific heat capacity [J/kg K]
-    static const double g;  // gravity acceleration [m/s^2]
+public:
     static const double T0; // sea level standard temperature [K]
-    static const double M;  // molar mass of dry air [kg/mol]
-    static const double R0; // universal gas constant [J/mol K]
     
     static const int nlayer; // number of layers
     static const int nlevel; // number of levels
     static const int nangle; // number of angles
-    static const int nlambda; // number of wavelengths
-    static const int dlambda; // integration interval for wavelenghts [nm]
+    static const vector<double> lambdas; // vector of wavelengths dividing the intervals [nm]
+    static const int nlambda; // number of wavelengths packages
 };
 
-const double Consts::c_air = 1004.0;
-const double Consts::g = 9.80665; 
 const double Consts::T0 = 288.0;
-const double Consts::M = 0.02896;
-const double Consts::R0 = 8.3144;
 
 const int Consts::nlayer = 10; 
 const int Consts::nlevel = Consts::nlayer + 1; 
 const int Consts::nangle = 20;  
-const int Consts::nlambda = 9990;
-const int Consts::dlambda = 100;
-
+const vector<double> Consts::lambdas = {1000, 8000, 12000, 1000000}; 
+const int Consts::nlambda = Consts::lambdas.size() - 1;
 
 // output function addapted for window atmosphere output
 void output(const double &tau_total, const vector<double> &E_down, const vector<double> &E_up) {
@@ -44,52 +35,42 @@ void output(const double &tau_total, const vector<double> &E_down, const vector<
   return;
 }
 
-// barometric formula (includes conversion to km)
-double p_to_z(const double &plevel) {
-    return Consts::c_air * Consts::T0 / Consts::g * (1 - pow(plevel / 1000.0, Consts::R0 / (Consts::c_air * Consts::M))) / 1000.0;
-}
-
 // absorption coeficient 
 double alpha (const double &tau, const double &mu){
   return 1.0 - exp(- tau / mu);
 }
 
-// define tau(wavelength, height) for deffirent tau_total
-void tau_definition(vector<vector<double>> &tau, const double &tau_total_value,
-                    vector<double> &lambdas, const int &nintervals, double intervals[3][2]){
+// define tau(wavelengths band, altitude) for deffirent tau_total
+void tau_definition(vector<vector<double>> &tau, const double &tau_total_value){
   
-  double tau_total[nintervals] = {tau_total_value, 0, tau_total_value}; // total optical thickness of whole atmosphere for every interval
+  double tau_total[Consts::nlambda] = {tau_total_value, 0, tau_total_value}; // total optical thickness of whole atmosphere for every interval
   for (int i=0; i<Consts::nlambda; ++i){
     for (int ilev=0; ilev<Consts::nlayer; ++ilev){
-      for (int i_int=0; i_int<nintervals; ++i_int){
-        if (lambdas[i]>=intervals[i_int][0] && lambdas[i]<=intervals[i_int][1]){
-          double dtau = tau_total[i_int] / (double) Consts::nlayer;
-          tau[i][ilev] = dtau;
-        }
-      }
+      double dtau = tau_total[i] / (double) Consts::nlayer;
+      tau[i][ilev] = dtau;
     }
   } 
+    
   return;
 }
 
 void monochromatic_radiative_transfer(vector<double> &E_down, vector<double> &E_up,
-                                      const int &i_rad, vector<double> &tau, vector<double> &lambdas,
+                                      const int &i_rad, vector<double> &tau,
                                       vector<double> &mu, const vector<double> &T, const double &dmu) {
 
-  // substitute this for loop by for_each?
   for (int imu=0; imu<Consts::nangle; ++imu) {
 
     // boundary conditions
     double L_down = 0.0;
-    double L_up = cplkavg(lambdas[i_rad], lambdas[i_rad+1], Consts::T0);
+    double L_up = cplkavg(Consts::lambdas[i_rad], Consts::lambdas[i_rad+1], Consts::T0);
     E_up[Consts::nlevel-1] += 2 * M_PI * L_up * mu[imu] * dmu;
     
     for (int ilev=1; ilev<Consts::nlevel; ++ilev) {
-      L_down = (1 - alpha(tau[ilev - 1], mu[imu])) * L_down + alpha(tau[ilev - 1], mu[imu]) * cplkavg(lambdas[i_rad], lambdas[i_rad+1], T[ilev - 1]);
+      L_down = (1 - alpha(tau[ilev - 1], mu[imu])) * L_down + alpha(tau[ilev - 1], mu[imu]) * cplkavg(Consts::lambdas[i_rad], Consts::lambdas[i_rad+1], T[ilev - 1]);
       E_down[ilev] += 2 * M_PI * L_down * mu[imu] * dmu;
     }
     for (int ilev=Consts::nlevel-2; ilev >= 0; --ilev) {
-      L_up = (1 - alpha(tau[ilev], mu[imu]))*L_up + alpha(tau[ilev], mu[imu]) * cplkavg(lambdas[i_rad], lambdas[i_rad+1], T[ilev]);
+      L_up = (1 - alpha(tau[ilev], mu[imu]))*L_up + alpha(tau[ilev], mu[imu]) * cplkavg(Consts::lambdas[i_rad], Consts::lambdas[i_rad+1], T[ilev]);
       E_up[ilev] += 2 * M_PI * L_up * mu[imu] * dmu;
     }
   }
@@ -98,40 +79,30 @@ void monochromatic_radiative_transfer(vector<double> &E_down, vector<double> &E_
 }
 
 void radiative_transfer(vector<double> &T, vector<double> &E_down, vector<double> &E_up, 
-                        vector<vector<double>> &tau, vector<double> &lambdas, 
-                        vector<double> &mu, const double &dmu) {
+                        vector<vector<double>> &tau, vector<double> &mu, const double &dmu) {
   
-  for (int i_rad=0; i_rad<Consts::nlambda-1; i_rad++) {   
-       
-    monochromatic_radiative_transfer(E_down, E_up, i_rad, tau[i_rad], lambdas, mu, T, dmu);
+  for (int i_rad=0; i_rad<Consts::nlambda; i_rad++) {      
+    monochromatic_radiative_transfer(E_down, E_up, i_rad, tau[i_rad], mu, T, dmu);
   }
+    
   return;
 }
 
 int main() {
     
-  double dp = 1000.0 / (double) Consts::nlayer;  
   double dmu = 1.0 / (double) Consts::nangle;
-    
-  int nintervals = 3; // number of wavelength intervals
-  double intervals[3][2] = {{1000,8000},{8000,12000},{12000,1000000}}; // wavelength intervals
   setvbuf(stdout, NULL, _IOLBF, 0);
 
-  vector<double> plevel(Consts::nlevel); // vector of pressures between the layers
-  vector<double> zlevel(Consts::nlevel); // vector of heights between the layers
   vector<double> Tlevel(Consts::nlevel); // vector of temperatures between the layers
   vector<double> Tlayer(Consts::nlayer); // vector of temperatures for each layer
   vector<double> mu(Consts::nangle); // vector of cosines of zenith angles, characterize direction of radiation
-  vector<double> lambdas(Consts::nlambda); // vector of wavelengths
-  vector<double> taus(101); // vector of tau_total
+  vector<double> taus(101); // vector of total optical thickness of whole atmosphere
+  vector<vector<double>> tau; // vector of optical thickness for every layer are the same
   vector<double> E_down(Consts::nlevel); // vector of downgoing thermal irradiances for each layer
   vector<double> E_up(Consts::nlevel); // vector of upgoing thermal irradiances for each layer
     
   for (int i=0; i<Consts::nlevel; i++) {
-    plevel[i] = dp * (double) i; // the pressure levels are spaced equally between 0 and 1000 hPa 
-    zlevel[i] = p_to_z(plevel[i]); // compute height of pressure levels by barometric formula
-   
-    // Initialize irradiance vectors to 0
+    // initialize irradiance vectors to 0
     E_down[i] = 0.0; 
     E_up[i] = 0.0;
   }
@@ -147,33 +118,31 @@ int main() {
     mu[i] = dmu / 2.0 + dmu * (double) i; // angles are spaced equally between 0 and pi/2
                                           //mu[i] is the center of the i-interval
   }
+  
     
-  for (int i=0; i<Consts::nlambda; i++) {
-    lambdas[i] = 1000.0 + Consts::dlambda * (double) i; // [nm], wavelengths are spaced equally between 1 and 1000 microns 
-  }
-
-  vector<vector<double>> tau; // vector of optical thickness for every layer are the same 
+  // initialization of tau as vector<vector<double>>  
   for (int i=0; i<Consts::nlambda; ++i){
     tau.push_back(vector<double>());
     for (int ilev=0; ilev<Consts::nlayer; ++ilev){
       tau[i].push_back(0);
     }
-  } 
+  }
+    
+  for (int i=0; i<=100; i++) {
+    taus[i] = 0.1 * (double) i; // from 0 to 10 with step 0.1
+  }
     
   /* end of initialization */
-
-  for (int i=0; i<=100; i++) {
-    taus[i] = 0.1 * (double) i; // different tau_total values
-  }
     
   for (int i_tau=0; i_tau<=100; ++i_tau){ 
   
-    tau_definition(tau, taus[i_tau], lambdas, nintervals, intervals);
+    tau_definition(tau, taus[i_tau]);
       
-    radiative_transfer(Tlayer, E_down, E_up, tau, lambdas, mu, dmu);
+    radiative_transfer(Tlayer, E_down, E_up, tau, mu, dmu);
     
     output(taus[i_tau], E_down, E_up);
     
+    // initialize irradiance vectors to 0 for new tau_total
     for (int i=0; i<Consts::nlevel; i++) {
       E_down[i] = 0.0; 
       E_up[i] = 0.0;
