@@ -133,7 +133,9 @@ int main() {
   }
     
   /* end of initialization */
+  
     
+  // loop over different tau_total
   for (int i_tau=0; i_tau<=100; ++i_tau){ 
   
     tau_definition(tau, taus[i_tau]);
