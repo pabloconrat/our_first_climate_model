@@ -15,12 +15,12 @@ public:
     static const double T0; // sea level standard temperature [K]
     static const double M;  // molar mass of dry air [kg/mol]
     static const double R0; // universal gas constant [J/mol K]
-    
+  
     static const int nlayer; // number of layers
     static const int nlevel; // number of levels
     static const int nangle; // number of angles
-    static const double tau_total; // total optical thickness of whole atmosphere
     static const vector<double> lamdas; // vector of wavelengths dividing the intervals
+    static const vector<double> total_taus; // vector containing the total optical thicknesses
     static const int nlamda; // number of wavelengths
 };
 
@@ -32,9 +32,9 @@ const double Consts::R0 = 8.3144;
 
 const int Consts::nlayer = 10; 
 const int Consts::nlevel = Consts::nlayer + 1; 
-const int Consts::nangle = 20; 
-const double Consts::tau_total = 10; 
+const int Consts::nangle = 30; 
 const vector<double> Consts::lamdas = {1, 1e6}; // [nm]
+const vector<double> Consts::total_taus = {10};
 const int Consts::nlamda = Consts::lamdas.size();
 
 
@@ -62,9 +62,6 @@ double alpha (const double &tau, const double &mu){
 void monochromatic_radiative_transfer(vector<double> &E_down, vector<double> &E_up,
                                       const int &i_rad, const vector<double> &tau,
                                       vector<double> &mu, const vector<double> &T, const double &dmu) {
-
-
-
   // substitute this for loop by for_each?
   for (int imu=0; imu<Consts::nangle; ++imu) {
 
@@ -87,10 +84,12 @@ void monochromatic_radiative_transfer(vector<double> &E_down, vector<double> &E_
 }
 
 void radiative_transfer(vector<double> &T, vector<double> &E_down, vector<double> &E_up, 
-                        const vector<double> &tau, vector<double> &mu, const double &dmu) {
+                        vector<double> &mu, const double &dmu) {
   
   for (int i_rad=0; i_rad<Consts::nlamda-1; i_rad++) {
-       
+    double dtau = Consts::total_taus[i_rad] / Consts::nlayer;
+    vector<double> tau(Consts::nlayer, dtau);
+
     monochromatic_radiative_transfer(E_down, E_up, i_rad, tau, mu, T, dmu);
   }
   return;
@@ -100,24 +99,20 @@ int main() {
 
   double dp = 1000.0 / (double) Consts::nlayer;  
   double dmu = 1.0 / (double) Consts::nangle;   
-  double dtau = Consts::tau_total / (double) Consts::nlayer;
   setvbuf(stdout, NULL, _IOLBF, 0);
 
   vector<double> plevel(Consts::nlevel); // vector of pressures between the layers
   vector<double> zlevel(Consts::nlevel); // vector of heights between the layers
   vector<double> Tlevel(Consts::nlevel); // vector of temperatures between the layers
   vector<double> Tlayer(Consts::nlayer); // vector of temperatures for each layer
-  vector<double> tau(Consts::nlayer); // vector of optical thickness
   vector<double> mu(Consts::nangle); // vector of cosines of zenith angles, characterize direction of radiation
   vector<double> E_down(Consts::nlevel); // vector of downgoing thermal irradiances for each layer
   vector<double> E_up(Consts::nlevel); // vector of upgoing thermal irradiances for each layer
   vector<double> Radiances(Consts::nlayer); // initialize vector of radiances
     
-  for (int i=0; i<Consts::nlevel; i++) {
+  for (int i=0; i<Consts::nlevel; ++i) {
     plevel[i] = dp * (double) i; // the pressure levels are spaced equally between 0 and 1000 hPa 
-    zlevel[i] = p_to_z(plevel[i]); // compute height of pressure levels by barometric formula
-    tau[i] = dtau;  // values of optical thickness for every layer are the same 
-      
+    zlevel[i] = p_to_z(plevel[i]); // compute height of pressure levels by barometric formula      
     // Initialize irradiance vectors to 0
     E_down[i] = 0.0; 
     E_up[i] = 0.0;
@@ -126,7 +121,7 @@ int main() {
   // given initial temperature profile
   Tlevel = {127.28, 187.09, 212.42, 229.22, 242.03, 252.48, 261.37, 269.13, 276.04, 282.29, 288.00};
     
-  for (int i=0; i<Consts::nlayer; i++) {
+  for (int i=0; i<Consts::nlayer; ++i) {
     Tlayer[i] = (Tlevel[i] + Tlevel[i+1]) / 2.0; // T-profile for each layer
   }
     
@@ -138,7 +133,7 @@ int main() {
   /* end of initialization */
 
   
-  radiative_transfer(Tlayer, E_down, E_up, tau, mu, dmu);
+  radiative_transfer(Tlayer, E_down, E_up, mu, dmu);
     
   output(zlevel, plevel, Tlevel, E_down, E_up);
 
