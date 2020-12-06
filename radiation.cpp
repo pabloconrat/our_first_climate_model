@@ -34,7 +34,7 @@ const int Consts::nlayer = 10;
 const int Consts::nlevel = Consts::nlayer + 1; 
 const int Consts::nangle = 30; 
 const vector<double> Consts::lamdas = {1, 1e6}; // [nm]
-const vector<double> Consts::total_taus = {10};
+const vector<double> Consts::total_taus = {1};
 const int Consts::nlamda = Consts::lamdas.size();
 
 
