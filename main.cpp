@@ -20,7 +20,6 @@ public:
     static const double dt; // time step length [s]
     static const int n_steps; // number of timesteps [/]
     static const int output_steps; // intervall in which the model produces output [/]
-    static const double cooling_rate; // prescribed cooling rate [K/s]
 };
 
 const double Consts::kappa = 2.0 / 7.0;
@@ -35,7 +34,6 @@ const int Consts::nlevel = Consts::nlayer + 1;
 const double Consts::dt = 360.0; 
 const int Consts::n_steps = 10000;
 const int Consts::output_steps = 1000;
-const double Consts::cooling_rate = - 1.475/ 86400.0; 
 
 // first version of an output function, gets called for one timestep
 void output(const float &time, const vector<double> &player,
@@ -62,19 +60,16 @@ void theta_to_t(const vector<double> &theta, vector<double> &T, const vector<dou
   return;
 }
 
-// heating function - so far only surface heating
-void thermodynamics(vector<double> &T, const double &dp) {
-  // computation of surface heating
-  T[T.size()-1]+= Consts::E_abs * Consts::dt * Consts::g / (Consts::c_air * dp * 100.0);
+void thermodynamics(vector<double> &T, const double &dp, vector<double> &dE) {
     
-  // computation of thermal cooling at the ground (according to Stefan-Boltzmann law)
-  T[T.size()-1]-= Consts::eps * pow(T[T.size()-1], 4) * Consts::sigma * Consts::dt * Consts::g / (Consts::c_air * dp * 100.0); 
+  // temperature changes due to thermal radiative transfer
+  for (int i=0; i<Const::nlayer; i++){
+    T[i] += dE[i] * Consts::dt * Consts::g / (Consts::c_air * dp * 100.0);
+  }
     
-  // prescribed cooling of atmosphere
-  double delta_T = Consts::cooling_rate * Consts::dt;
-  transform(T.begin(), T.end(), T.begin(), bind2nd(plus<double>(), delta_T));
   return;
 }
+
 
 int main() {
   double dp = 1000.0 / (double) Consts::nlayer;
@@ -85,7 +80,7 @@ int main() {
   vector<double> T(Consts::nlayer); // vector of temperatures for each layer
   vector<double> theta(Consts::nlayer); // vector of pot. temperatures for each layer
   vector<double> conversion_factors(Consts::nlayer); // vector for the conversion factors between t and theta
-
+    
   for (int i=0; i<Consts::nlevel; i++) {
     p[i] = dp * (double) i; // the pressure levels are spaced equally between 0 and 1000 hPa
   }
@@ -116,7 +111,7 @@ int main() {
       output(time, player, T, theta);
     }
 
-    thermodynamics(T, dp);
+    thermodynamics(T, dp, dE);
   }
 
   return 0;
