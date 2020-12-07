@@ -22,16 +22,13 @@ Declaration of Constants & Parameters
 =================================================================
 */
 
-// declaration and initialization of physical constants and model parameters
 class Consts {
 public: 
     static const double kappa; // adiabatic exponent [/]
     static const double c_air; // specific heat capacity [J/kg K]
     static const double g;     // gravity acceleration [m/s^2]
-    static const double T0; // sea level standard temperature [K]
     static const double E_abs; // heating rate from surface [W/m^2]
     static const double sigma; // Stefan–Boltzmann constant [W/m^2 K^4]
-    static const double eps;   // emissivity [/]
     static const double M;  // molar mass of dry air [kg/mol]
     static const double R0; // universal gas constant [J/mol K]
   
@@ -51,10 +48,8 @@ public:
 const double Consts::kappa = 2.0 / 7.0;
 const double Consts::c_air = 1004;
 const double Consts::g = 9.80665; 
-const double Consts::T0 = 288.0;
 const double Consts::E_abs = 235;
 const double Consts::sigma = 5.670373e-8;
-const double Consts::eps = 0.3;
 const double Consts::M = 0.02896;
 const double Consts::R0 = 8.3144;
 
@@ -112,6 +107,12 @@ void t_to_theta(const vector<double> &Tlayer, vector<double> &theta, const vecto
   return;
 }
 
+double t_to_theta(double Temperature, double conversion_factor) {
+  double theta;
+  theta = Temperature * conversion_factor;
+  return(theta);
+}
+
 void theta_to_t(const vector<double> &theta, vector<double> &Tlayer, const vector<double> &conversion_factors) {
   transform(theta.begin(), theta.end(),
             conversion_factors.begin(), Tlayer.begin(), divides<double>());
@@ -119,8 +120,8 @@ void theta_to_t(const vector<double> &theta, vector<double> &Tlayer, const vecto
 }
 
 // barometric formula (includes conversion to km)
-double p_to_z(const double &plevel) {
-    return Consts::c_air * Consts::T0 / Consts::g * (1 - pow(plevel / 1000.0, Consts::R0 / (Consts::c_air * Consts::M))) / 1000.0;
+double p_to_z(const double &plevel,const double &T_surface) {
+    return Consts::c_air * T_surface / Consts::g * (1 - pow(plevel / 1000.0, Consts::R0 / (Consts::c_air * Consts::M))) / 1000.0;
 }
 
 /*
@@ -130,13 +131,17 @@ Thermodynamics
 */
 
 // heating function - so far only surface heating
-void thermodynamics(vector<double> &T, const double &dp, vector<double> &dE) {
-    
+void thermodynamics(vector<double> &Tlayer, const double &dp, vector<double> &dE,
+                    double &T_surface, const vector<double> conversion_factors) {
+
   // temperature changes due to thermal radiative transfer
   for (int i=0; i<Consts::nlayer; i++){
-    T[i] += dE[i] * Consts::dt * Consts::g / (Consts::c_air * dp * 100.0);
+    Tlayer[i] += dE[i] * Consts::dt * Consts::g / (Consts::c_air * dp * 100.0);
   }
-    
+
+  // Assume the surface temperature to be the potential temperature of the lowermost layer
+  T_surface = t_to_theta(Tlayer[Tlayer.size()], conversion_factors[Tlayer.size()]);
+
   return;
 }
 
@@ -153,13 +158,14 @@ double alpha (const double &tau, const double &mu){
 
 void monochromatic_radiative_transfer(vector<double> &E_down, vector<double> &E_up,
                                       const int &i_rad, const vector<double> &tau,
-                                      vector<double> &mu, const vector<double> &Tlayer, const double &dmu) {
+                                      vector<double> &mu, const vector<double> &Tlayer, 
+                                      const double &dmu, const double &T_surface) {
   // substitute this for loop by for_each?
   for (int imu=0; imu<Consts::nangle; ++imu) {
 
     // boundary conditions
     double L_down = 0.0;
-    double L_up = cplkavg(Consts::lamdas[i_rad], Consts::lamdas[i_rad+1], Consts::T0);
+    double L_up = cplkavg(Consts::lamdas[i_rad], Consts::lamdas[i_rad+1], T_surface);
     E_up[Consts::nlevel-1] += 2 * M_PI * L_up * mu[imu] * dmu;
     
     for (int ilev=1; ilev<Consts::nlevel; ++ilev) {
@@ -176,13 +182,13 @@ void monochromatic_radiative_transfer(vector<double> &E_down, vector<double> &E_
 }
 
 void radiative_transfer(vector<double> &Tlayer, vector<double> &E_down, vector<double> &E_up, 
-                        vector<double> &mu, const double &dmu) {
+                        vector<double> &mu, const double &dmu, const double &T_surface) {
   
   for (int i_rad=0; i_rad<Consts::nlamda-1; i_rad++) {
     double dtau = Consts::total_taus[i_rad] / Consts::nlayer;
     vector<double> tau(Consts::nlayer, dtau);
 
-    monochromatic_radiative_transfer(E_down, E_up, i_rad, tau, mu, Tlayer, dmu);
+    monochromatic_radiative_transfer(E_down, E_up, i_rad, tau, mu, Tlayer, dmu, T_surface);
   }
   return;
 }
@@ -196,7 +202,8 @@ Initialization of model
 int main() {
   double dp = 1000.0 / (double) Consts::nlayer;
   double dT = 100.0 / (double) Consts::nlayer;
-  double dmu = 1.0 / (double) Consts::nangle;   
+  double dmu = 1.0 / (double) Consts::nangle;
+  double T_surface = 288.0;   
 
   vector<double> player(Consts::nlayer); // vector of pressures for each layer
   vector<double> plevel(Consts::nlevel); // vector of pressures between the layers
@@ -213,7 +220,7 @@ int main() {
 
   for (int i=0; i<Consts::nlevel; ++i) {
     plevel[i] = dp * (double) i; // the pressure levels are spaced equally between 0 and 1000 hPa 
-    zlevel[i] = p_to_z(plevel[i]); // compute height of pressure levels by barometric formula      
+    zlevel[i] = p_to_z(plevel[i], T_surface); // compute height of pressure levels by barometric formula      
     // Initialize irradiance vectors to 0
     E_down[i] = 0.0; 
     E_up[i] = 0.0;
@@ -254,9 +261,9 @@ int main() {
       output_conv(time, player, Tlayer, theta);
     }
 
-    radiative_transfer(Tlayer, E_down, E_up, mu, dmu);
+    radiative_transfer(Tlayer, E_down, E_up, mu, dmu, T_surface);
 
-    thermodynamics(Tlayer, dp, dE);
+    thermodynamics(Tlayer, dp, dE, T_surface, conversion_factors);
 
   return 0;
 }
