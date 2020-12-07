@@ -1,3 +1,12 @@
+/*
+=================================================================
+Authors: Tatsiana Bardachova, Samkeyat Shohan, Pablo Conrat
+Date: 07.12.2020
+Description: 1D Radiation-Convection Model
+=================================================================
+*/
+
+
 #include <cstdio>
 #include <cmath>
 #include <vector>
@@ -6,6 +15,12 @@
 #include <iostream>
 #include "cplkavg.h"
 using namespace std;
+
+/*
+=================================================================
+Declaration of Constants & Parameters
+=================================================================
+*/
 
 // declaration and initialization of physical constants and model parameters
 class Consts {
@@ -55,6 +70,11 @@ const vector<double> Consts::lamdas = {1, 1e6}; // [nm]
 const vector<double> Consts::total_taus = {1};
 const int Consts::nlamda = Consts::lamdas.size();
 
+/*
+=================================================================
+Output Functions
+=================================================================
+*/
 
 // first version of an output function, gets called for one timestep
 void output_conv(const float &time, const vector<double> &player,
@@ -69,7 +89,6 @@ void output_conv(const float &time, const vector<double> &player,
   return;
 }
 
-
 // first version of an output function, gets called for one timestep
 void output_rad(const vector<double> &zlevel, const vector<double> &plevel,
                 const vector<double> &Tlevel, const vector<double> &E_down, const vector<double> &E_up) {
@@ -80,6 +99,12 @@ void output_rad(const vector<double> &zlevel, const vector<double> &plevel,
   }
   return;
 }
+
+/*
+=================================================================
+ Coordinate Change Functions
+=================================================================
+*/
 
 void t_to_theta(const vector<double> &Tlayer, vector<double> &theta, const vector<double> &conversion_factors) {
   transform(Tlayer.begin(), Tlayer.end(),
@@ -93,6 +118,17 @@ void theta_to_t(const vector<double> &theta, vector<double> &Tlayer, const vecto
   return;
 }
 
+// barometric formula (includes conversion to km)
+double p_to_z(const double &plevel) {
+    return Consts::c_air * Consts::T0 / Consts::g * (1 - pow(plevel / 1000.0, Consts::R0 / (Consts::c_air * Consts::M))) / 1000.0;
+}
+
+/*
+=================================================================
+Thermodynamics
+=================================================================
+*/
+
 // heating function - so far only surface heating
 void thermodynamics(vector<double> &T, const double &dp, vector<double> &dE) {
     
@@ -102,11 +138,6 @@ void thermodynamics(vector<double> &T, const double &dp, vector<double> &dE) {
   }
     
   return;
-}
-
-// barometric formula (includes conversion to km)
-double p_to_z(const double &plevel) {
-    return Consts::c_air * Consts::T0 / Consts::g * (1 - pow(plevel / 1000.0, Consts::R0 / (Consts::c_air * Consts::M))) / 1000.0;
 }
 
 /*
@@ -162,7 +193,6 @@ Initialization of model
 =================================================================
 */
 
-
 int main() {
   double dp = 1000.0 / (double) Consts::nlayer;
   double dT = 100.0 / (double) Consts::nlayer;
@@ -173,6 +203,7 @@ int main() {
   vector<double> zlevel(Consts::nlevel); // vector of heights between the layers
   vector<double> Tlevel(Consts::nlevel); // vector of temperatures between the layers
   vector<double> Tlayer(Consts::nlayer); // vector of temperatures for each layer
+  vector<double> dE(Consts::nlayer); // vector of net radiative fluxes after radiative transfer
   vector<double> mu(Consts::nangle); // vector of cosines of zenith angles, characterize direction of radiation
   vector<double> E_down(Consts::nlevel); // vector of downgoing thermal irradiances for each layer
   vector<double> E_up(Consts::nlevel); // vector of upgoing thermal irradiances for each layer
@@ -200,7 +231,11 @@ int main() {
                                           //mu[i] is the center of the i-interval
   }
 
-  /* end of initialization */
+  /*
+  =================================================================
+  Model Run
+  =================================================================
+  */
 
   // loop over time steps
   for (int i=0; i<=Consts::n_steps; i++) {
@@ -209,7 +244,7 @@ int main() {
     // calculate theta values from new T values
     t_to_theta(Tlayer, theta, conversion_factors);
 
-    // sort theta to simulate a stabilizing mixing
+    // sort theta to simulate a stabilizing convection
     sort(theta.begin(), theta.end(), greater<double>());
     theta_to_t(theta, Tlayer, conversion_factors);
 
