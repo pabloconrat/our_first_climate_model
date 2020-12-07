@@ -7,6 +7,7 @@
 #include "cplkavg.h"
 using namespace std;
 
+
 // declaration and initialization of physical constants and model parameters
 class Consts {
 public: 
