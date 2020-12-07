@@ -39,12 +39,16 @@ const vector<double> Consts::total_taus = {1};
 const int Consts::nlamda = Consts::lamdas.size();
 
 // first version of an output function, gets called for one timestep
-void output(const vector<double> &zlevel, const vector<double> &plevel,
-            const vector<double> &Tlevel, const vector<double> &E_down, const vector<double> &E_up) {
+void output(const vector<double> &zlevel, const vector<double> &plevel, const vector<double> &Tlevel,
+            const vector<double> &E_down, const vector<double> &E_up, const vector<double> &dE) {
   // print the altitude, pressure and temperature of each level
   for (int i=0; i<Consts::nlevel; ++i) {
     printf("lvl: %3d z: %6.3f p: %5.1f T: %5.2f E_dn: %6.3f E_up: %6.3f\n",
            i, zlevel[i], plevel[i], Tlevel[i], E_down[i], E_up[i]);
+  }
+    
+  for (int i=0; i<Consts::nlayer; ++i) {
+    printf("lvl: %3d dE: %6.3f\n", i, dE[i]);
   }
   return;
 }
@@ -85,7 +89,7 @@ void monochromatic_radiative_transfer(vector<double> &E_down, vector<double> &E_
 }
 
 void radiative_transfer(vector<double> &T, vector<double> &E_down, vector<double> &E_up, 
-                        vector<double> &mu, const double &dmu) {
+                        vector<double> &dE, vector<double> &mu, const double &dmu) {
   
   for (int i_rad=0; i_rad<Consts::nlamda-1; i_rad++) {
 
@@ -94,6 +98,11 @@ void radiative_transfer(vector<double> &T, vector<double> &E_down, vector<double
 
     monochromatic_radiative_transfer(E_down, E_up, i_rad, tau, mu, T, dmu);
   }
+    
+  for (int i=0; i<Consts::nlayer; i++){
+    dE[i] = E_down[i] - E_down[i+1] + E_up[i+1] - E_up[i];
+  }
+    
   return;
 }
 
@@ -110,13 +119,12 @@ int main() {
   vector<double> mu(Consts::nangle); // vector of cosines of zenith angles, characterize direction of radiation
   vector<double> E_down(Consts::nlevel); // vector of downgoing thermal irradiances for each layer
   vector<double> E_up(Consts::nlevel); // vector of upgoing thermal irradiances for each layer
-  vector<double> Radiances(Consts::nlayer); // initialize vector of radiances
+  vector<double> dE(Consts::nlayer); // initialize vector of radiances
     
   for (int i=0; i<Consts::nlevel; i++) {
     plevel[i] = dp * (double) i; // the pressure levels are spaced equally between 0 and 1000 hPa 
     zlevel[i] = p_to_z(plevel[i]); // compute height of pressure levels by barometric formula
-    tau[i] = dtau;  // values of optical thickness for every layer are the same 
-      
+  }   
   for (int i=0; i<Consts::nlevel; ++i) {
     plevel[i] = dp * (double) i; // the pressure levels are spaced equally between 0 and 1000 hPa 
     zlevel[i] = p_to_z(plevel[i]); // compute height of pressure levels by barometric formula      
@@ -124,6 +132,7 @@ int main() {
     // Initialize irradiance vectors to 0
     E_down[i] = 0.0; 
     E_up[i] = 0.0;
+    dE[i] = 0.0;
   }
   
   // given initial temperature profile
@@ -142,9 +151,9 @@ int main() {
   /* end of initialization */
 
 
-  radiative_transfer(Tlayer, E_down, E_up, mu, dmu);
+  radiative_transfer(Tlayer, E_down, E_up, dE, mu, dmu);
     
-  output(zlevel, plevel, Tlevel, E_down, E_up);
+  output(zlevel, plevel, Tlevel, E_down, E_up, dE);
 
-  return 0;   
+  return 0; 
 }
