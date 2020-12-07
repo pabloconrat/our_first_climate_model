@@ -27,7 +27,6 @@ public:
     static const double dt; // time step length [s]
     static const int n_steps; // number of timesteps [/]
     static const int output_steps; // intervall in which the model produces output [/]
-    static const double cooling_rate; // prescribed cooling rate [K/s]
 
     static const vector<double> lamdas; // vector of wavelengths dividing the intervals
     static const vector<double> total_taus; // vector containing the total optical thicknesses
@@ -51,7 +50,6 @@ const int Consts::nangle = 30;
 const double Consts::dt = 360.0; 
 const int Consts::n_steps = 10000;
 const int Consts::output_steps = 1000;
-const double Consts::cooling_rate = - 1.475/ 86400.0; 
 
 const vector<double> Consts::lamdas = {1, 1e6}; // [nm]
 const vector<double> Consts::total_taus = {1};
@@ -96,16 +94,13 @@ void theta_to_t(const vector<double> &theta, vector<double> &Tlayer, const vecto
 }
 
 // heating function - so far only surface heating
-void thermodynamics(vector<double> &Tlayer, const double &dp) {
-  // computation of surface heating
-  Tlayer[Tlayer.size()-1]+= Consts::E_abs * Consts::dt * Consts::g / (Consts::c_air * dp * 100.0);
+void thermodynamics(vector<double> &T, const double &dp, vector<double> &dE) {
     
-  // computation of thermal cooling at the ground (according to Stefan-Boltzmann law)
-  Tlayer[Tlayer.size()-1]-= Consts::eps * pow(Tlayer[Tlayer.size()-1], 4) * Consts::sigma * Consts::dt * Consts::g / (Consts::c_air * dp * 100.0); 
+  // temperature changes due to thermal radiative transfer
+  for (int i=0; i<Consts::nlayer; i++){
+    T[i] += dE[i] * Consts::dt * Consts::g / (Consts::c_air * dp * 100.0);
+  }
     
-  // prescribed cooling of atmosphere
-  double delta_T = Consts::cooling_rate * Consts::dt;
-  transform(Tlayer.begin(), Tlayer.end(), Tlayer.begin(), bind2nd(plus<double>(), delta_T));
   return;
 }
 
@@ -124,7 +119,6 @@ double p_to_z(const double &plevel) {
 double alpha (const double &tau, const double &mu){
   return 1.0 - exp(- tau / mu);
 }
-
 
 void monochromatic_radiative_transfer(vector<double> &E_down, vector<double> &E_up,
                                       const int &i_rad, const vector<double> &tau,
@@ -167,6 +161,7 @@ void radiative_transfer(vector<double> &Tlayer, vector<double> &E_down, vector<d
 Initialization of model
 =================================================================
 */
+
 
 int main() {
   double dp = 1000.0 / (double) Consts::nlayer;
@@ -226,8 +221,7 @@ int main() {
 
     radiative_transfer(Tlayer, E_down, E_up, mu, dmu);
 
-    thermodynamics(Tlayer, dp);
-  }
+    thermodynamics(Tlayer, dp, dE);
 
   return 0;
 }
