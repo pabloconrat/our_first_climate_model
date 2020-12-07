@@ -73,11 +73,11 @@ Output Functions
 
 // first version of an output function, gets called for one timestep
 void output_conv(const float &time, const vector<double> &player,
-            const vector<double> &Tlayer, const vector<double> &theta) {
+                 const vector<double> &Tlayer, const vector<double> &theta) {
   // print at what timestep the model is
   printf("output_conv at %2.1f hours \n", time);
   // print the pressure, temperature and potential temperature of each layer
-  for (int i=0; i<player.size(); i++) {
+  for (int i=0; i<Consts::nlayer; ++i) {
     printf("%3d %6.1f %5.1f %5.1f\n",
            i, player[i], Tlayer[i], theta[i]);
   }
@@ -182,14 +182,19 @@ void monochromatic_radiative_transfer(vector<double> &E_down, vector<double> &E_
 }
 
 void radiative_transfer(vector<double> &Tlayer, vector<double> &E_down, vector<double> &E_up, 
-                        vector<double> &mu, const double &dmu, const double &T_surface) {
+                        vector<double> &dE, vector<double> &mu, const double &dmu, const double &T_surface) {
   
-  for (int i_rad=0; i_rad<Consts::nlamda-1; i_rad++) {
+  for (int i_rad=0; i_rad<Consts::nlamda-1; ++i_rad) {
     double dtau = Consts::total_taus[i_rad] / Consts::nlayer;
     vector<double> tau(Consts::nlayer, dtau);
 
     monochromatic_radiative_transfer(E_down, E_up, i_rad, tau, mu, Tlayer, dmu, T_surface);
   }
+
+  for (int i=0; i<Consts::nlayer; ++i){
+    dE[i] = E_down[i] - E_down[i+1] + E_up[i+1] - E_up[i];
+  }
+
   return;
 }
 
@@ -231,6 +236,8 @@ int main() {
     player[i] = (plevel[i]+plevel[i+1])/2.0; // computation of pressure between the levels
     conversion_factors[i] = pow(1000.0 / player[i], Consts::kappa); // computation of conversion factors
     theta[i] = Tlayer[i] * conversion_factors[i]; // computation of theta for each layer
+
+    dE[i] = 0.0; // Initialize net radiances to 0
   }
 
   for (int i=0; i<Consts::nangle; i++) {
@@ -261,9 +268,10 @@ int main() {
       output_conv(time, player, Tlayer, theta);
     }
 
-    radiative_transfer(Tlayer, E_down, E_up, mu, dmu, T_surface);
+    radiative_transfer(Tlayer, E_down, E_up, dE, mu, dmu, T_surface);
 
     thermodynamics(Tlayer, dp, dE, T_surface, conversion_factors);
-
+  }
+  
   return 0;
 }
