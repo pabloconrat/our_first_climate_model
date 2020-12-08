@@ -58,11 +58,11 @@ const int Consts::nlevel = Consts::nlayer + 1;
 const int Consts::nangle = 30; 
 
 const double Consts::dt = 360.0; 
-const int Consts::n_steps = 10000;
-const int Consts::output_steps = 1000;
+const int Consts::n_steps = 12;
+const int Consts::output_steps = 3;
 
-const vector<double> Consts::lamdas = {1, 1e6}; // [nm]
-const vector<double> Consts::total_taus = {1};
+const vector<double> Consts::lamdas = {1000, 8000, 12000, 1e6}; // [nm]
+const vector<double> Consts::total_taus = {1, 0, 1};
 const int Consts::nlamda = Consts::lamdas.size();
 
 /*
@@ -140,7 +140,7 @@ void thermodynamics(vector<double> &Tlayer, const double &dp, vector<double> &dE
   }
 
   // Assume the surface temperature to be the potential temperature of the lowermost layer
-  T_surface = t_to_theta(Tlayer[Tlayer.size()], conversion_factors[Tlayer.size()]);
+  T_surface = t_to_theta(Tlayer[Tlayer.size()-1], conversion_factors[Tlayer.size()-1]);
 
   return;
 }
@@ -219,7 +219,6 @@ int main() {
   vector<double> mu(Consts::nangle); // vector of cosines of zenith angles, characterize direction of radiation
   vector<double> E_down(Consts::nlevel); // vector of downgoing thermal irradiances for each layer
   vector<double> E_up(Consts::nlevel); // vector of upgoing thermal irradiances for each layer
-  vector<double> Radiances(Consts::nlayer); // initialize vector of radiances
   vector<double> theta(Consts::nlayer); // vector of pot. temperatures for each layer
   vector<double> conversion_factors(Consts::nlayer); // vector for the conversion factors between t and theta
 
@@ -230,6 +229,7 @@ int main() {
     E_down[i] = 0.0; 
     E_up[i] = 0.0;
   }
+
 
   for (int i=0; i<Consts::nlayer; i++) {
     Tlayer[i] = 180.0 + dT * (double) i; // just a first guess for the T-profile for each layer
@@ -272,6 +272,6 @@ int main() {
 
     thermodynamics(Tlayer, dp, dE, T_surface, conversion_factors);
   }
-  
+
   return 0;
 }
