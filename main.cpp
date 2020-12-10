@@ -13,6 +13,7 @@ Description: 1D Radiation-Convection Model
 #include <algorithm>
 #include <functional>
 #include <iostream>
+#include <numeric>
 #include "cplkavg.h"
 using namespace std;
 
@@ -48,21 +49,21 @@ public:
 const double Consts::kappa = 2.0 / 7.0;
 const double Consts::c_air = 1004;
 const double Consts::g = 9.80665; 
-const double Consts::E_abs = 235;
+const double Consts::E_abs = 235.0;
 const double Consts::sigma = 5.670373e-8;
 const double Consts::M = 0.02896;
 const double Consts::R0 = 8.3144;
 
-const int Consts::nlayer = 25; 
+const int Consts::nlayer = 10; 
 const int Consts::nlevel = Consts::nlayer + 1; 
 const int Consts::nangle = 30; 
 
 const double Consts::dt = 360.0; 
-const int Consts::n_steps = 12;
-const int Consts::output_steps = 3;
+const int Consts::n_steps = 100000;
+const int Consts::output_steps = 50000;
 
 const vector<double> Consts::lamdas = {1000, 8000, 12000, 1e6}; // [nm]
-const vector<double> Consts::total_taus = {1, 0, 1};
+const vector<double> Consts::total_taus = {10, 0, 10};
 const int Consts::nlamda = Consts::lamdas.size();
 
 /*
@@ -78,7 +79,7 @@ void output_conv(const float &time, const vector<double> &player,
   printf("output_conv at %2.1f hours \n", time);
   // print the pressure, temperature and potential temperature of each layer
   for (int i=0; i<Consts::nlayer; ++i) {
-    printf("%3d %6.1f %5.1f %5.1f\n",
+    printf("level: %3d p: %6.1f T: %5.1f theta: %5.1f\n",
            i, player[i], Tlayer[i], theta[i]);
   }
   return;
@@ -133,9 +134,9 @@ Thermodynamics
 // heating function - so far only surface heating
 void thermodynamics(vector<double> &Tlayer, const double &dp, vector<double> &dE,
                     double &T_surface, const vector<double> conversion_factors) {
-
+  
   // temperature changes due to thermal radiative transfer
-  for (int i=0; i<Consts::nlayer; i++){
+  for (int i=0; i<Consts::nlayer; ++i){
     Tlayer[i] += dE[i] * Consts::dt * Consts::g / (Consts::c_air * dp * 100.0);
   }
 
@@ -194,6 +195,10 @@ void radiative_transfer(vector<double> &Tlayer, vector<double> &E_down, vector<d
   for (int i=0; i<Consts::nlayer; ++i){
     dE[i] = E_down[i] - E_down[i+1] + E_up[i+1] - E_up[i];
   }
+
+  fill(E_down.begin(), E_down.end(), 0.0);
+  fill(E_up.begin(), E_up.end(), 0.0);
+  dE[dE.size()-1] += Consts::E_abs;
 
   return;
 }
