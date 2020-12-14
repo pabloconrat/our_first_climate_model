@@ -30,8 +30,8 @@ public:
     static const double g;     // gravity acceleration [m/s^2]
     static const double E_abs; // heating rate from surface [W/m^2]
     static const double sigma; // Stefan–Boltzmann constant [W/m^2 K^4]
-    static const double M;  // molar mass of dry air [kg/mol]
-    static const double R0; // universal gas constant [J/mol K]
+    static const double M;   // molar mass of dry air [kg/mol]
+    static const double R0;  // universal gas constant [J/mol K]
   
     static const int nlayer; // number of layers
     static const int nlevel; // number of levels
@@ -60,10 +60,10 @@ const int Consts::nangle = 30;
 
 const double Consts::dt = 360.0; 
 const int Consts::n_steps = 100000;
-const int Consts::output_steps = 50000;
+const int Consts::output_steps = 100000;
 
-const vector<double> Consts::lamdas = {1000, 8000, 12000, 1e6}; // [nm]
-const vector<double> Consts::total_taus = {10, 0, 10};
+const vector<double> Consts::lamdas = {1, 1e6}; // [nm]
+const vector<double> Consts::total_taus = {1};
 const int Consts::nlamda = Consts::lamdas.size();
 
 /*
@@ -139,9 +139,10 @@ void thermodynamics(vector<double> &Tlayer, const double &dp, vector<double> &dE
   for (int i=0; i<Consts::nlayer; ++i){
     Tlayer[i] += dE[i] * Consts::dt * Consts::g / (Consts::c_air * dp * 100.0);
   }
-
+    
   // Assume the surface temperature to be the potential temperature of the lowermost layer
   T_surface = t_to_theta(Tlayer[Tlayer.size()-1], conversion_factors[Tlayer.size()-1]);
+    
 
   return;
 }
@@ -195,10 +196,12 @@ void radiative_transfer(vector<double> &Tlayer, vector<double> &E_down, vector<d
   for (int i=0; i<Consts::nlayer; ++i){
     dE[i] = E_down[i] - E_down[i+1] + E_up[i+1] - E_up[i];
   }
-
+  
+  // solar heating and thermal radiation budget at the ground
+  dE[dE.size()-1] += Consts::E_abs + E_down[Consts::nlevel - 1] - E_up[Consts::nlevel - 1];
+    
   fill(E_down.begin(), E_down.end(), 0.0);
   fill(E_up.begin(), E_up.end(), 0.0);
-  dE[dE.size()-1] += Consts::E_abs;
 
   return;
 }
