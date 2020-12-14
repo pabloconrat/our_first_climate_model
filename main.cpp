@@ -196,9 +196,11 @@ void radiative_transfer(vector<double> &Tlayer, vector<double> &E_down, vector<d
     dE[i] = E_down[i] - E_down[i+1] + E_up[i+1] - E_up[i];
   }
 
+  // solar heating and thermal radiation budget at the ground
+  dE[dE.size()-1] += Consts::E_abs + E_down[Consts::nlevel - 1] - E_up[Consts::nlevel - 1];
+    
   fill(E_down.begin(), E_down.end(), 0.0);
   fill(E_up.begin(), E_up.end(), 0.0);
-  dE[dE.size()-1] += Consts::E_abs;
 
   return;
 }
