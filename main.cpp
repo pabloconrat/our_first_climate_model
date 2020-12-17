@@ -202,6 +202,7 @@ void radiative_transfer(vector<double> &Tlayer, vector<double> &E_down, vector<d
 
   dE[dE.size()-1] += Consts::E_abs + E_down[Consts::nlevel - 1] - E_up[Consts::nlevel - 1];
 
+
   return;
 }
 
