@@ -1,0 +1,17 @@
+** fpda.lbl.atm
+ six columns: z[km], p[hPa], T[K], air density [1/cm**3], H2O [ppm], O3 [ppm];
+ altitude, pressure, temperature, density, H2O, and O3 volume mixing ratios  at 21 levels
+
+** lbl.xxx.asc, xxx = co2, h2o, o3, ch4, n2o
+ Absorption by CO2, H2O, O3, CH4, and N2O
+ 21 columns: wavelength [nm], delta_tau[] for the 20 layers 
+ defined in lbl.fpda.atm. The delta_tau's are sorted top-down! 
+ That is, column 2 is for layer 50-0 hPa, column 21 for 
+ layer 1000-950 hPa.
+
+ H2O and O3 mixing ratios are defined in fpda.lbl.atm;
+ the other components are assumed to be well-mixed with
+ CO2  400.000 ppm
+ CH4    1.700 ppm
+ N2O    0.315 ppm
+
