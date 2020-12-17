@@ -15,7 +15,7 @@ Description: 1D Radiation-Convection Model
 #include <iostream>
 #include <numeric>
 #include "cplkavg.h"
-#include ".\lbl.arts\ascii.h"
+#include "ascii.h"
 using namespace std;
 
 /*
@@ -41,10 +41,6 @@ public:
     static const double dt; // time step length [s]
     static const int n_steps; // number of timesteps [/]
     static const int output_steps; // intervall in which the model produces output [/]
-
-    static const vector<double> lamdas; // vector of wavelengths dividing the intervals
-    static const vector<double> total_taus; // vector containing the total optical thicknesses
-    static const int nlamda; // number of wavelengths
 };
 
 const double Consts::kappa = 2.0 / 7.0;
@@ -55,17 +51,13 @@ const double Consts::sigma = 5.670373e-8;
 const double Consts::M = 0.02896;
 const double Consts::R0 = 8.3144;
 
-const int Consts::nlayer = 10; 
+const int Consts::nlayer = 20; 
 const int Consts::nlevel = Consts::nlayer + 1; 
 const int Consts::nangle = 30; 
 
 const double Consts::dt = 360.0; 
-const int Consts::n_steps = 1;
-const int Consts::output_steps = 50000;
-
-const vector<double> Consts::lamdas = {10, 1e6}; // [nm]
-const vector<double> Consts::total_taus = {100};
-const int Consts::nlamda = Consts::lamdas.size();
+const int Consts::n_steps = 1000;
+const int Consts::output_steps = 500;
 
 /*
 =================================================================
@@ -159,23 +151,23 @@ double alpha (const double &tau, const double &mu){
 }
 
 void monochromatic_radiative_transfer(vector<double> &E_down, vector<double> &E_up,
-                                      const int &i_rad, const vector<double> &tau,
-                                      vector<double> &mu, const vector<double> &Tlayer, 
-                                      const double &dmu, const double &T_surface) {
-  // substitute this for loop by for_each?
+                                      const int &i_rad, const vector<double> &tau, double* wvl, int &nwvl,
+                                      vector<double> &mu, const double &dmu,
+                                      const vector<double> &Tlayer, const double &T_surface) {
+
   for (int imu=0; imu<Consts::nangle; ++imu) {
 
     // boundary conditions
     double L_down = 0.0;
-    double L_up = cplkavg(Consts::lamdas[i_rad], Consts::lamdas[i_rad+1], T_surface);
+    double L_up = cplkavg(wvl[i_rad], wvl[i_rad+1], T_surface);
     E_up[Consts::nlevel-1] += 2 * M_PI * L_up * mu[imu] * dmu;
     
     for (int ilev=1; ilev<Consts::nlevel; ++ilev) {
-      L_down = (1 - alpha(tau[ilev - 1], mu[imu])) * L_down + alpha(tau[ilev - 1], mu[imu]) * cplkavg(Consts::lamdas[i_rad], Consts::lamdas[i_rad+1], Tlayer[ilev - 1]);
+      L_down = (1 - alpha(tau[ilev - 1], mu[imu])) * L_down + alpha(tau[ilev - 1], mu[imu]) * cplkavg(wvl[i_rad], wvl[i_rad+1], Tlayer[ilev - 1]);
       E_down[ilev] += 2 * M_PI * L_down * mu[imu] * dmu;
     }
     for (int ilev=Consts::nlevel-2; ilev >= 0; --ilev) {
-      L_up = (1 - alpha(tau[ilev], mu[imu]))*L_up + alpha(tau[ilev], mu[imu]) * cplkavg(Consts::lamdas[i_rad], Consts::lamdas[i_rad+1], Tlayer[ilev]);
+      L_up = (1 - alpha(tau[ilev], mu[imu]))*L_up + alpha(tau[ilev], mu[imu]) * cplkavg(wvl[i_rad], wvl[i_rad+1], Tlayer[ilev]);
       E_up[ilev] += 2 * M_PI * L_up * mu[imu] * dmu;
     }
   }
@@ -183,17 +175,15 @@ void monochromatic_radiative_transfer(vector<double> &E_down, vector<double> &E_
   return;
 }
 
-void radiative_transfer(vector<double> &Tlayer, vector<double> &E_down, vector<double> &E_up, 
-                        vector<double> &dE, vector<double> &mu, const double &dmu, const double &T_surface) {
+void radiative_transfer(vector<double> &Tlayer, vector<double> &E_down, vector<double> &E_up, vector<double> &dE,
+                        vector<double> &mu, const double &dmu, const double &T_surface,
+                        vector<vector<double>> &tau, double* wvl, int &nwvl) {
   
   fill(E_down.begin(), E_down.end(), 0.0);
   fill(E_up.begin(), E_up.end(), 0.0);
 
-  for (int i_rad=0; i_rad<Consts::nlamda-1; ++i_rad) {
-    double dtau = Consts::total_taus[i_rad] / Consts::nlayer;
-    vector<double> tau(Consts::nlayer, dtau);
-
-    monochromatic_radiative_transfer(E_down, E_up, i_rad, tau, mu, Tlayer, dmu, T_surface);
+  for (int i_rad=0; i_rad<nwvl-1; ++i_rad) {
+    monochromatic_radiative_transfer(E_down, E_up, i_rad, tau[i_rad], wvl, nwvl, mu, dmu, Tlayer, T_surface);
   }
 
   for (int i=0; i<Consts::nlayer; ++i){
@@ -202,9 +192,24 @@ void radiative_transfer(vector<double> &Tlayer, vector<double> &E_down, vector<d
 
   dE[dE.size()-1] += Consts::E_abs + E_down[Consts::nlevel - 1] - E_up[Consts::nlevel - 1];
 
-
   return;
 }
+
+// calculation of optical thickness for the chosen atmospheric composition
+void optical_thickness(int nwvl, int nlyr, int ngases, double** gases[], double factors[], 
+                       vector<vector<double>> &tau) {
+    
+    for (int i=0; i<ngases; ++i) {
+      for (int iwvl=0; iwvl<nwvl; ++iwvl) {
+        for (int ilyr=0; ilyr<nlyr; ilyr++) {
+          tau[iwvl][ilyr] += gases[i][iwvl][ilyr] * factors[i];
+        }
+      }
+    }
+    
+  return;
+}
+
 
 /*
 =================================================================
@@ -212,7 +217,9 @@ Initialization of model
 =================================================================
 */
 
+
 int main() {
+    
   double dp = 1000.0 / (double) Consts::nlayer;
   double dT = 100.0 / (double) Consts::nlayer;
   double dmu = 1.0 / (double) Consts::nangle;
@@ -229,33 +236,13 @@ int main() {
   vector<double> E_up(Consts::nlevel); // vector of upgoing thermal irradiances for each layer
   vector<double> theta(Consts::nlayer); // vector of pot. temperatures for each layer
   vector<double> conversion_factors(Consts::nlayer); // vector for the conversion factors between t and theta
+  vector<vector<double>> tau; // 2D vector of optical thickness for every layer and every wavelength
 
-  int nwvl=0, nlyr=0;
-  int status=0;
-
-  char tauCO2filename[FILENAME_MAX]="./lbl.arts/lbl.co2.asc";
-
-  double *wvl=NULL;        // 1D array
-  double **tauCO2=NULL;    // 2D array
-
-  /* read CO2 optical thickness profile */
-
-  status = ASCII_file2xy2D (tauCO2filename,   
-                            &nwvl, &nlyr, 
-                            &wvl, &tauCO2);
-  if (status!=0) {
-    fprintf (stderr, "Error %d reading %s\n", status, tauCO2filename);
-    return status;
-  }
-
-  fprintf(stderr, " ... read %d wavelengths and %d layers from %s\n",
-          nwvl, nlyr, tauCO2filename);
-
-
+    
   for (int i=0; i<Consts::nlevel; ++i) {
     plevel[i] = dp * (double) i; // the pressure levels are spaced equally between 0 and 1000 hPa 
     zlevel[i] = p_to_z(plevel[i], T_surface); // compute height of pressure levels by barometric formula      
-    // Initialize irradiance vectors to 0
+    // initialize irradiance vectors to 0
     E_down[i] = 0.0; 
     E_up[i] = 0.0;
   }
@@ -267,14 +254,63 @@ int main() {
     conversion_factors[i] = pow(1000.0 / player[i], Consts::kappa); // computation of conversion factors
     theta[i] = Tlayer[i] * conversion_factors[i]; // computation of theta for each layer
 
-    dE[i] = 0.0; // Initialize net radiances to 0
+    dE[i] = 0.0; // initialize net radiances to 0
   }
 
   for (int i=0; i<Consts::nangle; i++) {
     mu[i] = dmu / 2.0 + dmu * (double) i; // angles are spaced equally between 0 and pi/2
                                           //mu[i] is the center of the i-interval
   }
+    
+    
+   /*
+  =========================================================================================================
+   Atmospheric optical thickness initialization 
+       ... reading tau profiles of individual gases and creation of 2D tau vector for combination of gases
+  =========================================================================================================
+  */ 
 
+  int nwvl=0, nlyr=Consts::nlayer;  // number of wavelength and atmospheric layers
+    
+  double *wvl = NULL;   // array of wavelengths 
+  double **tauCO2 = NULL;  // 2D array of optical thickness for CO2
+  double **tauH2O = NULL;  // 2D array of optical thickness for H2O
+  double **tauN2O = NULL;  // 2D array of optical thickness for N2O
+  double **tauCH4 = NULL;  // 2D array of optical thickness for CH4
+  double **tauO3  = NULL;  // 2D array of optical thickness for O3
+    
+  char tauCO2filename[FILENAME_MAX] = "./lbl.arts/lbl.co2.asc";
+  char tauH2Ofilename[FILENAME_MAX] = "./lbl.arts/lbl.h2o.asc";
+  char tauN2Ofilename[FILENAME_MAX] = "./lbl.arts/lbl.n2o.asc";
+  char tauCH4filename[FILENAME_MAX] = "./lbl.arts/lbl.ch4.asc";
+  char tauO3filename[FILENAME_MAX]  = "./lbl.arts/lbl.o3.asc";
+    
+  ASCII_file2xy2D (tauCO2filename, &nwvl, &nlyr, &wvl, &tauCO2);
+  ASCII_file2xy2D (tauH2Ofilename, &nwvl, &nlyr, &wvl, &tauH2O);
+  ASCII_file2xy2D (tauN2Ofilename, &nwvl, &nlyr, &wvl, &tauN2O);
+  ASCII_file2xy2D (tauCH4filename, &nwvl, &nlyr, &wvl, &tauCH4);
+  ASCII_file2xy2D (tauO3filename,  &nwvl, &nlyr, &wvl, &tauO3);
+    
+  // creation of atmosphere composition (change manualy)
+  int ngases = 2;
+  double*** gases = new double**[ngases];
+  gases[0] = tauH2O; gases[1] = tauCO2;
+      
+  double* factors = new double[ngases];  // array contains ratio of individual gases
+  factors[0] = 1.0; factors[1] = 280.0 / 400.0; 
+    
+  // initialization of tau as vector<vector<double>>  
+  for (int i=0; i<nwvl; ++i){
+    tau.push_back(vector<double>());
+    for (int ilyr=0; ilyr<nlyr; ++ilyr){
+      tau[i].push_back(0);
+    }
+  }
+  
+  // define optical thickness values for every wavelength and every layer
+  optical_thickness(nwvl, nlyr, ngases, gases, factors, tau);
+    
+      
   /*
   =================================================================
   Model Run
@@ -298,15 +334,15 @@ int main() {
       output_conv(time, player, Tlayer, theta);
     }
 
-    radiative_transfer(Tlayer, E_down, E_up, dE, mu, dmu, T_surface);
+    radiative_transfer(Tlayer, E_down, E_up, dE, mu, dmu, T_surface, tau, wvl, nwvl);
 
     thermodynamics(Tlayer, dp, dE, T_surface, conversion_factors);
   }
 
   for (int i=0; i<nwvl; ++i){
-      delete[] tauCO2[i];
+      delete[] tauCO2[i]; delete[] tauH2O[i]; delete[] tauN2O[i]; delete[] tauCH4[i]; delete[] tauO3[i];
   }
-  delete[] tauCO2;
+  delete[] tauCO2; delete[] tauH2O; delete[] tauN2O; delete[] tauCH4; delete[] tauO3;
   delete[] wvl;
 
   return 0;
