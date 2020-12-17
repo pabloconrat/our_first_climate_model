@@ -351,7 +351,7 @@ int main() {
     
   for (int i=0; i<ngases; ++i){
     for (int iwvl=0; iwvl<nwvl; ++iwvl){
-      delete[] gases[i];
+      delete[] gases[i][iwvl];
     }
   }
     
