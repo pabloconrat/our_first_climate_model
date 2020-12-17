@@ -1,0 +1,48 @@
+** The ascii library
+
+ascii.c contains a number of useful functions to read and interpret ASCII files.
+Documentation is available in the code. To use the ascii functions, 
+  #include "ascii.h" in your code
+You may need to provide the directory containing ascii.h on the 
+compiler command line:
+  gcc -c myprogram.c -I.
+You also need to link with ascii.o. For that purpose, compile
+the ascii library, 
+  gcc -c ascii.c
+and link your program with ascii.o:
+  gcc -o myprogram myprogram.o ascii.o
+
+Typical functions provided by the ascii library are:
+
+/* Function: read_3c_file                                                          */
+/* Description: Read an ASCII file with (at least) 3 columns.                      */
+/*              Only the first three columns are returned in arrays first, second, */
+/*              and third. n is the number of values returned.                     */
+/*              Memory allocation for first, second, and third is done             */
+/*              automatically; fields can be freed with a simple free().           */
+
+Example:
+status = read_3c_file ("fpda.atm", &tmp, &plev, &Tlev, &nlev);
+
+Three columns are read from fpda.atm and stored in tmp[], plev[] and Tlev[].
+Number of rows is nlev.
+
+
+/* Function: ASCII_file2xy2D                                                       */
+/* Description: Parse an ASCII file and store data in an x vector (first column)   */
+/*        plus a 2D y array y[row][column-1] (2nd to last column).                 */
+/*        Memory allocation for x and y is done automatically.                     */
+/*        nx is the number of (not empty) rows of the file, ny is the number of    */
+/*        columns of the file minus the first one; the dimension of the array      */
+/*        y is nx * ny; strings that cannot be interpreted as                      */
+/*        floating point number are converted to 0; the memory allocated for y     */
+/*        can be freed with ASCII_free_double (y, nx).                             */
+
+Example:
+status = ASCII_file2xy2D ("co2.dtau", &nwvl, &ny, &wvn, &tau);
+
+co2.dtau is read. First column is wavenumber and goes into wvn. 
+Second to last column is the vertical profile of the layer 
+optical thickness which goes into tau[iwvn][ilyr].
+
+

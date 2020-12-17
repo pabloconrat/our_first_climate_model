@@ -15,6 +15,7 @@ Description: 1D Radiation-Convection Model
 #include <iostream>
 #include <numeric>
 #include "cplkavg.h"
+#include ".\lbl.arts\ascii.h"
 using namespace std;
 
 /*
@@ -59,11 +60,11 @@ const int Consts::nlevel = Consts::nlayer + 1;
 const int Consts::nangle = 30; 
 
 const double Consts::dt = 360.0; 
-const int Consts::n_steps = 100000;
+const int Consts::n_steps = 1;
 const int Consts::output_steps = 50000;
 
-const vector<double> Consts::lamdas = {1000, 8000, 12000, 1e6}; // [nm]
-const vector<double> Consts::total_taus = {10, 0, 10};
+const vector<double> Consts::lamdas = {10, 1e6}; // [nm]
+const vector<double> Consts::total_taus = {100};
 const int Consts::nlamda = Consts::lamdas.size();
 
 /*
@@ -185,6 +186,9 @@ void monochromatic_radiative_transfer(vector<double> &E_down, vector<double> &E_
 void radiative_transfer(vector<double> &Tlayer, vector<double> &E_down, vector<double> &E_up, 
                         vector<double> &dE, vector<double> &mu, const double &dmu, const double &T_surface) {
   
+  fill(E_down.begin(), E_down.end(), 0.0);
+  fill(E_up.begin(), E_up.end(), 0.0);
+
   for (int i_rad=0; i_rad<Consts::nlamda-1; ++i_rad) {
     double dtau = Consts::total_taus[i_rad] / Consts::nlayer;
     vector<double> tau(Consts::nlayer, dtau);
@@ -196,11 +200,8 @@ void radiative_transfer(vector<double> &Tlayer, vector<double> &E_down, vector<d
     dE[i] = E_down[i] - E_down[i+1] + E_up[i+1] - E_up[i];
   }
 
-  // solar heating and thermal radiation budget at the ground
   dE[dE.size()-1] += Consts::E_abs + E_down[Consts::nlevel - 1] - E_up[Consts::nlevel - 1];
-    
-  fill(E_down.begin(), E_down.end(), 0.0);
-  fill(E_up.begin(), E_up.end(), 0.0);
+
 
   return;
 }
@@ -228,6 +229,28 @@ int main() {
   vector<double> E_up(Consts::nlevel); // vector of upgoing thermal irradiances for each layer
   vector<double> theta(Consts::nlayer); // vector of pot. temperatures for each layer
   vector<double> conversion_factors(Consts::nlayer); // vector for the conversion factors between t and theta
+
+  int nwvl=0, nlyr=0;
+  int status=0;
+
+  char tauCO2filename[FILENAME_MAX]="./lbl.arts/lbl.co2.asc";
+
+  double *wvl=NULL;        // 1D array
+  double **tauCO2=NULL;    // 2D array
+
+  /* read CO2 optical thickness profile */
+
+  status = ASCII_file2xy2D (tauCO2filename,   
+			    &nwvl, &nlyr, 
+			    &wvl, &tauCO2);
+  if (status!=0) {
+    fprintf (stderr, "Error %d reading %s\n", status, tauCO2filename);
+    return status;
+  }
+
+  fprintf(stderr, " ... read %d wavelengths and %d layers from %s\n",
+	   nwvl, nlyr, tauCO2filename);
+
 
   for (int i=0; i<Consts::nlevel; ++i) {
     plevel[i] = dp * (double) i; // the pressure levels are spaced equally between 0 and 1000 hPa 
@@ -279,6 +302,12 @@ int main() {
 
     thermodynamics(Tlayer, dp, dE, T_surface, conversion_factors);
   }
+
+  for (int i=0; i<nwvl; ++i){
+      delete[] tauCO2[i];
+  }
+  delete[] tauCO2;
+  delete[] wvl;
 
   return 0;
 }
