@@ -1,7 +1,7 @@
 /*
 =================================================================
 Authors: Tatsiana Bardachova, Samkeyat Shohan, Pablo Conrat
-Date: 07.12.2020
+Date: 17.12.2020
 Description: 1D Radiation-Convection Model
 =================================================================
 */
@@ -59,6 +59,7 @@ const double Consts::dt = 360.0;
 const int Consts::n_steps = 1000;
 const int Consts::output_steps = 500;
 
+
 /*
 =================================================================
 Output Functions
@@ -89,6 +90,7 @@ void output_rad(const vector<double> &zlevel, const vector<double> &plevel,
   return;
 }
 
+
 /*
 =================================================================
  Coordinate Change Functions
@@ -118,26 +120,27 @@ double p_to_z(const double &plevel,const double &T_surface) {
     return Consts::c_air * T_surface / Consts::g * (1 - pow(plevel / 1000.0, Consts::R0 / (Consts::c_air * Consts::M))) / 1000.0;
 }
 
+
 /*
 =================================================================
 Thermodynamics
 =================================================================
 */
 
-// heating function - so far only surface heating
 void thermodynamics(vector<double> &Tlayer, const double &dp, vector<double> &dE,
                     double &T_surface, const vector<double> conversion_factors) {
   
-  // temperature changes due to thermal radiative transfer
+  // heating rate
   for (int i=0; i<Consts::nlayer; ++i){
     Tlayer[i] += dE[i] * Consts::dt * Consts::g / (Consts::c_air * dp * 100.0);
   }
 
-  // Assume the surface temperature to be the potential temperature of the lowermost layer
+  // assume the surface temperature to be the potential temperature of the lowermost layer
   T_surface = t_to_theta(Tlayer[Tlayer.size()-1], conversion_factors[Tlayer.size()-1]);
 
   return;
 }
+
 
 /*
 =================================================================
@@ -151,7 +154,7 @@ double alpha (const double &tau, const double &mu){
 }
 
 void monochromatic_radiative_transfer(vector<double> &E_down, vector<double> &E_up,
-                                      const int &i_rad, const vector<double> &tau, double* wvl, int &nwvl,
+                                      const int &i_rad, const vector<double> &tau, int &nwvl, double* wvl,
                                       vector<double> &mu, const double &dmu,
                                       const vector<double> &Tlayer, const double &T_surface) {
 
@@ -163,13 +166,15 @@ void monochromatic_radiative_transfer(vector<double> &E_down, vector<double> &E_
     E_up[Consts::nlevel-1] += 2 * M_PI * L_up * mu[imu] * dmu;
     
     for (int ilev=1; ilev<Consts::nlevel; ++ilev) {
-      L_down = (1 - alpha(tau[ilev - 1], mu[imu])) * L_down + alpha(tau[ilev - 1], mu[imu]) * cplkavg(wvl[i_rad], wvl[i_rad+1], Tlayer[ilev - 1]);
+      L_down = (1 - alpha(tau[ilev-1], mu[imu])) * L_down + alpha(tau[ilev-1], mu[imu]) * cplkavg(wvl[i_rad], wvl[i_rad+1], Tlayer[ilev-1]);
       E_down[ilev] += 2 * M_PI * L_down * mu[imu] * dmu;
     }
+      
     for (int ilev=Consts::nlevel-2; ilev >= 0; --ilev) {
       L_up = (1 - alpha(tau[ilev], mu[imu]))*L_up + alpha(tau[ilev], mu[imu]) * cplkavg(wvl[i_rad], wvl[i_rad+1], Tlayer[ilev]);
       E_up[ilev] += 2 * M_PI * L_up * mu[imu] * dmu;
     }
+      
   }
 
   return;
@@ -177,25 +182,25 @@ void monochromatic_radiative_transfer(vector<double> &E_down, vector<double> &E_
 
 void radiative_transfer(vector<double> &Tlayer, vector<double> &E_down, vector<double> &E_up, vector<double> &dE,
                         vector<double> &mu, const double &dmu, const double &T_surface,
-                        vector<vector<double>> &tau, double* wvl, int &nwvl) {
+                        vector<vector<double>> &tau, int &nwvl, double* wvl) {
   
   fill(E_down.begin(), E_down.end(), 0.0);
   fill(E_up.begin(), E_up.end(), 0.0);
 
   for (int i_rad=0; i_rad<nwvl-1; ++i_rad) {
-    monochromatic_radiative_transfer(E_down, E_up, i_rad, tau[i_rad], wvl, nwvl, mu, dmu, Tlayer, T_surface);
+    monochromatic_radiative_transfer(E_down, E_up, i_rad, tau[i_rad], nwvl, wvl, mu, dmu, Tlayer, T_surface);
   }
 
   for (int i=0; i<Consts::nlayer; ++i){
     dE[i] = E_down[i] - E_down[i+1] + E_up[i+1] - E_up[i];
   }
 
-  dE[dE.size()-1] += Consts::E_abs + E_down[Consts::nlevel - 1] - E_up[Consts::nlevel - 1];
+  dE[dE.size()-1] += Consts::E_abs + E_down[Consts::nlevel-1] - E_up[Consts::nlevel-1];
 
   return;
 }
 
-// calculation of optical thickness for the chosen atmospheric composition
+// calculate optical thickness for the chosen atmospheric composition
 void optical_thickness(int nwvl, int nlyr, int ngases, double** gases[], double factors[], 
                        vector<vector<double>> &tau) {
     
@@ -230,34 +235,35 @@ int main() {
   vector<double> zlevel(Consts::nlevel); // vector of heights between the layers
   vector<double> Tlevel(Consts::nlevel); // vector of temperatures between the layers
   vector<double> Tlayer(Consts::nlayer); // vector of temperatures for each layer
-  vector<double> dE(Consts::nlayer); // vector of net radiative fluxes after radiative transfer
-  vector<double> mu(Consts::nangle); // vector of cosines of zenith angles, characterize direction of radiation
-  vector<double> E_down(Consts::nlevel); // vector of downgoing thermal irradiances for each layer
-  vector<double> E_up(Consts::nlevel); // vector of upgoing thermal irradiances for each layer
-  vector<double> theta(Consts::nlayer); // vector of pot. temperatures for each layer
+  vector<double> theta(Consts::nlayer);  // vector of pot. temperatures for each layer
   vector<double> conversion_factors(Consts::nlayer); // vector for the conversion factors between t and theta
+  vector<double> mu(Consts::nangle); // vector of cosines of zenith angles, characterize direction of radiation
+  vector<double> dE(Consts::nlayer); // vector of net radiative fluxes after radiative transfer
+  vector<double> E_down(Consts::nlevel); // vector of downgoing thermal irradiances for each layer
+  vector<double> E_up(Consts::nlevel);   // vector of upgoing thermal irradiances for each layer
   vector<vector<double>> tau; // 2D vector of optical thickness for every layer and every wavelength
 
     
   for (int i=0; i<Consts::nlevel; ++i) {
     plevel[i] = dp * (double) i; // the pressure levels are spaced equally between 0 and 1000 hPa 
-    zlevel[i] = p_to_z(plevel[i], T_surface); // compute height of pressure levels by barometric formula      
+    zlevel[i] = p_to_z(plevel[i], T_surface); // compute height of pressure levels by barometric formula
+      
     // initialize irradiance vectors to 0
     E_down[i] = 0.0; 
     E_up[i] = 0.0;
   }
 
 
-  for (int i=0; i<Consts::nlayer; i++) {
+  for (int i=0; i<Consts::nlayer; ++i) {
     Tlayer[i] = 180.0 + dT * (double) i; // just a first guess for the T-profile for each layer
-    player[i] = (plevel[i]+plevel[i+1])/2.0; // computation of pressure between the levels
+    player[i] = (plevel[i] + plevel[i+1]) / 2.0; // computation of pressure between the levels
     conversion_factors[i] = pow(1000.0 / player[i], Consts::kappa); // computation of conversion factors
     theta[i] = Tlayer[i] * conversion_factors[i]; // computation of theta for each layer
 
     dE[i] = 0.0; // initialize net radiances to 0
   }
 
-  for (int i=0; i<Consts::nangle; i++) {
+  for (int i=0; i<Consts::nangle; ++i) {
     mu[i] = dmu / 2.0 + dmu * (double) i; // angles are spaced equally between 0 and pi/2
                                           //mu[i] is the center of the i-interval
   }
@@ -265,12 +271,12 @@ int main() {
     
    /*
   =========================================================================================================
-   Atmospheric optical thickness initialization 
-       ... reading tau profiles of individual gases and creation of 2D tau vector for combination of gases
+   Initialization of optical thickness
+   Include: reading tau profiles of individual gases and creation of 2D tau vector for combination of gases
   =========================================================================================================
   */ 
 
-  int nwvl=0, nlyr=Consts::nlayer;  // number of wavelength and atmospheric layers
+  int nwvl=0, nlyr=Consts::nlayer;  // number of wavelength, number of atmospheric layers
     
   double *wvl = NULL;   // array of wavelengths 
   double **tauCO2 = NULL;  // 2D array of optical thickness for CO2
@@ -291,18 +297,18 @@ int main() {
   ASCII_file2xy2D (tauCH4filename, &nwvl, &nlyr, &wvl, &tauCH4);
   ASCII_file2xy2D (tauO3filename,  &nwvl, &nlyr, &wvl, &tauO3);
     
-  // creation of atmosphere composition (change manualy)
-  int ngases = 2;
+  // choose composition of atmosphere
+  int ngases = 2;  // number of gases 
   double*** gases = new double**[ngases];
-  gases[0] = tauH2O; gases[1] = tauCO2;
+  gases[0] = tauH2O; gases[1] = tauCO2;  // specify individual gases
       
   double* factors = new double[ngases];  // array contains ratio of individual gases
   factors[0] = 1.0; factors[1] = 280.0 / 400.0; 
     
   // initialization of tau as vector<vector<double>>  
-  for (int i=0; i<nwvl; ++i){
+  for (int i=0; i<nwvl; ++i) {
     tau.push_back(vector<double>());
-    for (int ilyr=0; ilyr<nlyr; ++ilyr){
+    for (int ilyr=0; ilyr<nlyr; ++ilyr) {
       tau[i].push_back(0);
     }
   }
@@ -334,7 +340,7 @@ int main() {
       output_conv(time, player, Tlayer, theta);
     }
 
-    radiative_transfer(Tlayer, E_down, E_up, dE, mu, dmu, T_surface, tau, wvl, nwvl);
+    radiative_transfer(Tlayer, E_down, E_up, dE, mu, dmu, T_surface, tau, nwvl, wvl);
 
     thermodynamics(Tlayer, dp, dE, T_surface, conversion_factors);
   }
@@ -342,8 +348,15 @@ int main() {
   for (int i=0; i<nwvl; ++i){
       delete[] tauCO2[i]; delete[] tauH2O[i]; delete[] tauN2O[i]; delete[] tauCH4[i]; delete[] tauO3[i];
   }
+    
+  for (int i=0; i<ngases; ++i){
+    for (int iwvl=0; iwvl<nwvl; ++iwvl){
+      delete[] gases[i];
+    }
+  }
+    
   delete[] tauCO2; delete[] tauH2O; delete[] tauN2O; delete[] tauCH4; delete[] tauO3;
-  delete[] wvl;
+  delete[] wvl; delete[] factors;
 
   return 0;
 }
