@@ -16,6 +16,8 @@ Description: 1D Radiation-Convection Model
 #include <numeric>
 #include "cplkavg.h"
 #include "ascii.h"
+#include <omp.h>
+#include <chrono>
 using namespace std;
 
 /*
@@ -56,7 +58,7 @@ const int Consts::nlevel = Consts::nlayer + 1;
 const int Consts::nangle = 30; 
 
 const double Consts::dt = 360.0; 
-const int Consts::n_steps = 1000;
+const int Consts::n_steps = 100000;
 const int Consts::output_steps = 500;
 
 
@@ -187,6 +189,7 @@ void radiative_transfer(vector<double> &Tlayer, vector<double> &E_down, vector<d
   fill(E_down.begin(), E_down.end(), 0.0);
   fill(E_up.begin(), E_up.end(), 0.0);
 
+  #pragma omp parallel for schedule(static)
   for (int i_rad=0; i_rad<nwvl-1; ++i_rad) {
     monochromatic_radiative_transfer(E_down, E_up, i_rad, tau[i_rad], nwvl, wvl, mu, dmu, Tlayer, T_surface);
   }
@@ -224,6 +227,8 @@ Initialization of model
 
 
 int main() {
+    
+  omp_set_num_threads(32);
     
   double dp = 1000.0 / (double) Consts::nlayer;
   double dT = 100.0 / (double) Consts::nlayer;
@@ -325,6 +330,9 @@ int main() {
 
   // loop over time steps
   for (int i=0; i<=Consts::n_steps; i++) {
+      
+    //chrono::high_resolution_clock::time_point start = chrono::high_resolution_clock::now();
+      
     // compute current time in hours from start
     float time = (float) i * Consts::dt / 360; // [hours]
     // calculate theta values from new T values
@@ -343,6 +351,10 @@ int main() {
     radiative_transfer(Tlayer, E_down, E_up, dE, mu, dmu, T_surface, tau, nwvl, wvl);
 
     thermodynamics(Tlayer, dp, dE, T_surface, conversion_factors);
+      
+    //chrono::high_resolution_clock::time_point end = chrono::high_resolution_clock::now();
+    //double runtime = chrono::duration<double>(end - start).count();
+    //cout << "Single iteration runtime: " << runtime << endl;
   }
 
   for (int i=0; i<nwvl; ++i){
