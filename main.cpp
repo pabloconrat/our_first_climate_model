@@ -71,13 +71,16 @@ Output Functions
 // first version of an output function, gets called for one timestep
 void output_conv(const float &time, const vector<double> &player,
                  const vector<double> &Tlayer, const vector<double> &theta) {
+    
+  freopen("output.txt","a",stdout);
   // print at what timestep the model is
   printf("output_conv at %2.1f hours \n", time);
   // print the pressure, temperature and potential temperature of each layer
   for (int i=0; i<Consts::nlayer; ++i) {
     printf("level: %3d p: %6.1f T: %5.1f theta: %5.1f\n",
-           i, player[i], Tlayer[i], theta[i]);
+            i, player[i], Tlayer[i], theta[i]);
   }
+  fclose(stdout);
   return;
 }
 
@@ -347,7 +350,6 @@ int main() {
       // call output function
       output_conv(time, player, Tlayer, theta);
     }
-
     radiative_transfer(Tlayer, E_down, E_up, dE, mu, dmu, T_surface, tau, nwvl, wvl);
 
     thermodynamics(Tlayer, dp, dE, T_surface, conversion_factors);
@@ -356,7 +358,7 @@ int main() {
     //double runtime = chrono::duration<double>(end - start).count();
     //cout << "Single iteration runtime: " << runtime << endl;
   }
-
+  
   for (int i=0; i<nwvl; ++i){
       delete[] tauCO2[i]; delete[] tauH2O[i]; delete[] tauN2O[i]; delete[] tauCH4[i]; delete[] tauO3[i];
   }
