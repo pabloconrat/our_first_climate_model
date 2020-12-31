@@ -14,8 +14,8 @@ Description: 1D Radiation-Convection Model
 #include <functional>
 #include <iostream>
 #include <numeric>
-#include "cplkavg.h"
-#include "ascii.h"
+// #include "cplkavg.h"
+#include ".\lbl.arts\ascii.h"
 #include <omp.h>
 #include <chrono>
 using namespace std;
@@ -40,7 +40,7 @@ public:
     static const int nlevel; // number of levels
     static const int nangle; // number of angles
 
-    static const double dt; // time step length [s]
+    static const float max_dT; // maximal temperature change per timestep for stability [K]
     static const int n_steps; // number of timesteps [/]
     static const int output_steps; // intervall in which the model produces output [/]
 };
@@ -57,9 +57,9 @@ const int Consts::nlayer = 20;
 const int Consts::nlevel = Consts::nlayer + 1; 
 const int Consts::nangle = 30; 
 
-const double Consts::dt = 360.0; 
-const int Consts::n_steps = 100000;
-const int Consts::output_steps = 500;
+const float Consts::max_dT = 5;
+const int Consts::n_steps = 100;
+const int Consts::output_steps = 50;
 
 
 /*
@@ -132,12 +132,22 @@ Thermodynamics
 =================================================================
 */
 
+void calculate_timestep(const double &dp, vector<double> &dE, double &timestep){
+
+  timestep = Consts::max_dT / *max_element(dE.begin(), dE.end()) * (Consts::c_air * dp * 100.0) / Consts::g;
+  if(timestep > 12.0*3600.0){
+    timestep = 12.0 * 3600.0;
+  }
+
+  return;
+}
+
 void thermodynamics(vector<double> &Tlayer, const double &dp, vector<double> &dE,
-                    double &T_surface, const vector<double> conversion_factors) {
+                    const double &timestep, double &T_surface, const vector<double> conversion_factors) {
   
   // heating rate
   for (int i=0; i<Consts::nlayer; ++i){
-    Tlayer[i] += dE[i] * Consts::dt * Consts::g / (Consts::c_air * dp * 100.0);
+    Tlayer[i] += dE[i] * timestep * Consts::g / (Consts::c_air * dp * 100.0);
   }
 
   // assume the surface temperature to be the potential temperature of the lowermost layer
@@ -152,6 +162,13 @@ void thermodynamics(vector<double> &Tlayer, const double &dp, vector<double> &dE
  Functions for radiative transfer
 =================================================================
 */
+
+// Planck Function Computation
+double cplkavg(const double &wvl_lo, const double &wvl_hi, const double &Tlayer) {
+
+  double radiance = Consts::sigma * pow(Tlayer, 4) * (wvl_hi + wvl_lo)/2.0 * ( wvl_hi - wvl_lo);
+  return(radiance);
+}
 
 // absorption coeficient 
 double alpha (const double &tau, const double &mu){
@@ -237,6 +254,8 @@ int main() {
   double dT = 100.0 / (double) Consts::nlayer;
   double dmu = 1.0 / (double) Consts::nangle;
   double T_surface = 288.0;   
+  double timestep = 0;
+  float time = 0;
 
   vector<double> player(Consts::nlayer); // vector of pressures for each layer
   vector<double> plevel(Consts::nlevel); // vector of pressures between the layers
@@ -335,9 +354,7 @@ int main() {
   for (int i=0; i<=Consts::n_steps; i++) {
       
     //chrono::high_resolution_clock::time_point start = chrono::high_resolution_clock::now();
-      
-    // compute current time in hours from start
-    float time = (float) i * Consts::dt / 360; // [hours]
+    
     // calculate theta values from new T values
     t_to_theta(Tlayer, theta, conversion_factors);
 
@@ -352,8 +369,14 @@ int main() {
     }
     radiative_transfer(Tlayer, E_down, E_up, dE, mu, dmu, T_surface, tau, nwvl, wvl);
 
-    thermodynamics(Tlayer, dp, dE, T_surface, conversion_factors);
-      
+    calculate_timestep(dp, dE, timestep);
+
+    thermodynamics(Tlayer, dp, dE, timestep, T_surface, conversion_factors);
+
+    // compute current time in hours from start
+    time = (float) i * timestep / 360; // [hours]
+    
+
     //chrono::high_resolution_clock::time_point end = chrono::high_resolution_clock::now();
     //double runtime = chrono::duration<double>(end - start).count();
     //cout << "Single iteration runtime: " << runtime << endl;
