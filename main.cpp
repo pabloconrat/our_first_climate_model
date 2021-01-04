@@ -140,7 +140,7 @@ Thermodynamics
 
 void calculate_timestep(const double &dp, vector<double> &dE, double &timestep){
 
-  timestep = Consts::max_dT / *max_element(dE.begin(), dE.end()) * (Consts::c_air * dp * 100.0) / Consts::g;
+  timestep = Consts::max_dT / *max_element(dE.begin(), dE.end()) * (Consts::c_air * dp * (1000.0 / (float)Consts::nlayer)) / Consts::g;
   if(timestep > 3600 * 12){
     timestep = 3600 * 12;
   }
