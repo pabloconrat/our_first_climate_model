@@ -34,3 +34,6 @@
 # Visual Studio Code Settings
 .vs
 .vscode
+
+# Output
+.txt
