@@ -6,7 +6,6 @@ Description: 1D Radiation-Convection Model
 =================================================================
 */
 
-
 #include <cstdio>
 #include <cmath>
 #include <vector>
@@ -16,7 +15,7 @@ Description: 1D Radiation-Convection Model
 #include <numeric>
 // #include "cplkavg.h"
 #include "./lbl.arts/ascii.h"
-#include <omp.h>
+// #include <omp.h>
 #include <chrono>
 using namespace std;
 
@@ -63,9 +62,9 @@ const int Consts::nlayer = 20;
 const int Consts::nlevel = Consts::nlayer + 1; 
 const int Consts::nangle = 30; 
 
-const float Consts::max_dT = 3;
-const int Consts::n_steps = 20;
-const int Consts::output_steps = 5;
+const float Consts::max_dT = 5;
+const int Consts::n_steps = 100000;
+const int Consts::output_steps = 50;
 
 
 /*
@@ -171,8 +170,8 @@ void thermodynamics(vector<double> &Tlayer, const double &dp, vector<double> &dE
 // Planck Function Computation
 double cplkavg(const double &wvl_lo, const double &wvl_hi, const double &Tlayer) {
 
-  double wvl_avg = 0.5 * (wvl_lo + wvl_hi);
-  double radiance = 2 * Consts::h * pow(Consts::c, 2) / (pow(wvl_avg, 5) * (exp(Consts::h * Consts::c / (wvl_avg * Consts::kB * Tlayer)) - 1)) * ( wvl_hi - wvl_lo);
+  double wvl_avg = 0.5 * (wvl_lo + wvl_hi) * 1e-9;
+  double radiance = 2 * Consts::h * pow(Consts::c, 2) / (pow(wvl_avg, 5) *  (exp(Consts::h * Consts::c / (wvl_avg * Consts::kB * Tlayer)) - 1)) * ( wvl_hi - wvl_lo) * 1e-9;
   return(radiance);
 }
 
@@ -202,7 +201,7 @@ void monochromatic_radiative_transfer(vector<double> &E_down, vector<double> &E_
       L_up = (1 - alpha(tau[ilev], mu[imu]))*L_up + alpha(tau[ilev], mu[imu]) * cplkavg(wvl[i_rad], wvl[i_rad+1], Tlayer[ilev]);
       E_up[ilev] += 2 * M_PI * L_up * mu[imu] * dmu;
     }
-      
+  
   }
 
   return;
@@ -215,7 +214,7 @@ void radiative_transfer(vector<double> &Tlayer, vector<double> &E_down, vector<d
   fill(E_down.begin(), E_down.end(), 0.0);
   fill(E_up.begin(), E_up.end(), 0.0);
 
-  #pragma omp parallel for schedule(static)
+  // #pragma omp parallel for schedule(static)
   for (int i_rad=0; i_rad<nwvl-1; ++i_rad) {
     monochromatic_radiative_transfer(E_down, E_up, i_rad, tau[i_rad], nwvl, wvl, mu, dmu, Tlayer, T_surface);
   }
@@ -254,7 +253,7 @@ Initialization of model
 
 int main() {
     
-  omp_set_num_threads(4);
+  // omp_set_num_threads(2);
     
   double dp = 1000.0 / (double) Consts::nlayer;
   double dT = 100.0 / (double) Consts::nlayer;
