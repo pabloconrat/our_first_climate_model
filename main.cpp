@@ -207,13 +207,13 @@ void radiative_transfer(vector<double> &Tlayer, vector<double> &E_down, vector<d
 }
 
 // calculate optical thickness for the chosen atmospheric composition
-void optical_thickness(int nwvl, int nlyr, int ngases, double** gases[], double factors[], 
+void optical_thickness(int nwvl, int nlyr, int ngasses, double** gasses[], double factors[], 
                        vector<vector<double>> &tau) {
     
-    for (int i=0; i<ngases; ++i) {
+    for (int i=0; i<ngasses; ++i) {
       for (int iwvl=0; iwvl<nwvl; ++iwvl) {
         for (int ilyr=0; ilyr<nlyr; ilyr++) {
-          tau[iwvl][ilyr] += gases[i][iwvl][ilyr] * factors[i];
+          tau[iwvl][ilyr] += gasses[i][iwvl][ilyr] * factors[i];
         }
       }
     }
@@ -280,7 +280,7 @@ int main() {
    /*
   =========================================================================================================
    Initialization of optical thickness
-   Include: reading tau profiles of individual gases and creation of 2D tau vector for combination of gases
+   Include: reading tau profiles of individual gasses and creation of 2D tau vector for combination of gasses
   =========================================================================================================
   */ 
 
@@ -306,11 +306,11 @@ int main() {
   ASCII_file2xy2D (tauO3filename,  &nwvl, &nlyr, &wvl, &tauO3);
     
   // choose composition of atmosphere
-  int ngases = 2;  // number of gases 
-  double*** gases = new double**[ngases];
-  gases[0] = tauH2O; gases[1] = tauCO2;  // specify individual gases
+  int ngasses = 2;  // number of gasses 
+  double*** gasses = new double**[ngasses];
+  gasses[0] = tauH2O; gasses[1] = tauCO2;  // specify individual gasses
       
-  double* factors = new double[ngases];  // array contains ratio of individual gases
+  double* factors = new double[ngasses];  // array contains ratio of individual gasses
   factors[0] = 1.0; factors[1] = 280.0 / 400.0; 
     
   // initialization of tau as vector<vector<double>>  
@@ -322,7 +322,7 @@ int main() {
   }
   
   // define optical thickness values for every wavelength and every layer
-  optical_thickness(nwvl, nlyr, ngases, gases, factors, tau);
+  optical_thickness(nwvl, nlyr, ngasses, gasses, factors, tau);
     
       
   /*
@@ -362,15 +362,9 @@ int main() {
   for (int i=0; i<nwvl; ++i){
       delete[] tauCO2[i]; delete[] tauH2O[i]; delete[] tauN2O[i]; delete[] tauCH4[i]; delete[] tauO3[i];
   }
-    
-  for (int i=0; i<ngases; ++i){
-    for (int iwvl=0; iwvl<nwvl; ++iwvl){
-      delete[] gases[i][iwvl];
-    }
-  }
-    
+     
   delete[] tauCO2; delete[] tauH2O; delete[] tauN2O; delete[] tauCH4; delete[] tauO3;
-  delete[] wvl; delete[] factors;
+  delete[] wvl; delete[] factors; delete[] gasses;
 
   return 0;
 }
