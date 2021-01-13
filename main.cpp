@@ -1,7 +1,7 @@
 /*
 =================================================================
 Authors: Tatsiana Bardachova, Samkeyat Shohan, Pablo Conrat
-Date: 17.12.2020
+Date: 11.01.2021
 Description: 1D Radiation-Convection Model
 =================================================================
 */
@@ -31,19 +31,19 @@ public:
     static const double c_air; // specific heat capacity [J/kg K]
     static const double g;     // gravity acceleration [m/s^2]
     static const double E_abs; // heating rate from surface [W/m^2]
-    static const double h;  // Planck constant [J/s]
-    static const double c;  // speed of light in vacuum [m/s]
-    static const double kB; // Boltzmann constant [J/K]
+    static const double h;     // Planck constant [J/s]
+    static const double c;     // speed of light in vacuum [m/s]
+    static const double kB;    // Boltzmann constant [J/K]
     static const double sigma; // Stefan–Boltzmann constant [W/m^2 K^4]
-    static const double M;  // molar mass of dry air [kg/mol]
-    static const double R0; // universal gas constant [J/mol K]
+    static const double M;     // molar mass of dry air [kg/mol]
+    static const double R0;    // universal gas constant [J/mol K]
   
     static const int nlayer; // number of layers
     static const int nlevel; // number of levels
     static const int nangle; // number of angles
 
     static const float max_dT; // maximal temperature change per timestep for stability [K]
-    static const int n_steps; // number of timesteps [/]
+    static const int n_steps;  // number of timesteps [/]
     static const int output_steps; // intervall in which the model produces output [/]
 };
 
@@ -63,8 +63,8 @@ const int Consts::nlevel = Consts::nlayer + 1;
 const int Consts::nangle = 30; 
 
 const float Consts::max_dT = 5;
-const int Consts::n_steps = 100000;
-const int Consts::output_steps = 50;
+const int Consts::n_steps = 10;
+const int Consts::output_steps = 1;
 
 
 /*
@@ -85,7 +85,7 @@ void output_conv(const float &time, const vector<double> &player,
     printf("level: %3d p: %6.1f T: %5.1f theta: %5.1f\n",
             i, player[i], Tlayer[i], theta[i]);
   }
-  fclose(stdout);
+    
   return;
 }
 
@@ -97,6 +97,17 @@ void output_rad(const vector<double> &zlevel, const vector<double> &plevel,
     printf("lvl: %3d z: %6.3f p: %5.1f T: %5.2f E_dn: %6.3f E_up: %6.3f\n",
            i, zlevel[i], plevel[i], Tlevel[i], E_down[i], E_up[i]);
   }
+  return;
+}
+
+void output_runtime(const float &runtime_init, const float &runtime_init_tau) {
+    
+  freopen("output.txt","a",stdout);
+
+  printf("Inizialization runtime at %2.3f sec \n", runtime_init);
+  printf("Optical thickness inizialization runtime at %2.3f sec \n", runtime_init_tau);
+    
+  fclose(stdout);
   return;
 }
 
@@ -141,7 +152,7 @@ void calculate_timestep(const double &dp, vector<double> &dE, double &timestep){
 
   timestep = Consts::max_dT / *max_element(dE.begin(), dE.end()) * (Consts::c_air * dp * 100.0) / Consts::g;
   if(timestep > 3600 * 12){
-    timestep = 3600 * 12;
+     timestep = 3600 * 12;
   }
   return;
 }
@@ -167,12 +178,12 @@ void thermodynamics(vector<double> &Tlayer, const double &dp, vector<double> &dE
 =================================================================
 */
 
-// Planck Function Computation
+// Planck function computation
 double cplkavg(const double &wvl_lo, const double &wvl_hi, const double &Tlayer) {
 
   double wvl_avg = 0.5 * (wvl_lo + wvl_hi) * 1e-9;
   double radiance = 2 * Consts::h * pow(Consts::c, 2) / (pow(wvl_avg, 5) *  (exp(Consts::h * Consts::c / (wvl_avg * Consts::kB * Tlayer)) - 1)) * ( wvl_hi - wvl_lo) * 1e-9;
-  return(radiance);
+  return radiance;
 }
 
 // absorption coeficient 
@@ -214,7 +225,7 @@ void radiative_transfer(vector<double> &Tlayer, vector<double> &E_down, vector<d
   fill(E_down.begin(), E_down.end(), 0.0);
   fill(E_up.begin(), E_up.end(), 0.0);
 
-  #pragma omp parallel for schedule(static)
+  // #pragma omp parallel for schedule(static)
   for (int i_rad=0; i_rad<nwvl-1; ++i_rad) {
     monochromatic_radiative_transfer(E_down, E_up, i_rad, tau[i_rad], nwvl, wvl, mu, dmu, Tlayer, T_surface);
   }
@@ -253,7 +264,9 @@ Initialization of model
 
 int main() {
     
-  omp_set_num_threads(32);
+  // omp_set_num_threads(32);
+  
+  chrono::high_resolution_clock::time_point start_init = chrono::high_resolution_clock::now();
     
   double dp = 1000.0 / (double) Consts::nlayer;
   double dT = 100.0 / (double) Consts::nlayer;
@@ -300,6 +313,9 @@ int main() {
                                           //mu[i] is the center of the i-interval
   }
     
+  chrono::high_resolution_clock::time_point end_init = chrono::high_resolution_clock::now();
+  double runtime_init = chrono::duration<double>(end_init - start_init).count();
+    
     
    /*
   =========================================================================================================
@@ -307,7 +323,9 @@ int main() {
    Include: reading tau profiles of individual gases and creation of 2D tau vector for combination of gases
   =========================================================================================================
   */ 
-
+    
+  chrono::high_resolution_clock::time_point start_init_tau = chrono::high_resolution_clock::now();
+    
   int nwvl=0, nlyr=Consts::nlayer;  // number of wavelength, number of atmospheric layers
     
   double *wvl = NULL;   // array of wavelengths 
@@ -348,7 +366,11 @@ int main() {
   // define optical thickness values for every wavelength and every layer
   optical_thickness(nwvl, nlyr, ngases, gases, factors, tau);
     
-      
+  chrono::high_resolution_clock::time_point end_init_tau = chrono::high_resolution_clock::now();
+  double runtime_init_tau = chrono::duration<double>(end_init_tau - start_init_tau).count();  
+   
+  output_runtime(runtime_init, runtime_init_tau);
+    
   /*
   =================================================================
   Model Run
@@ -358,7 +380,7 @@ int main() {
   // loop over time steps
   for (int i=0; i<=Consts::n_steps; i++) {
       
-    //chrono::high_resolution_clock::time_point start = chrono::high_resolution_clock::now();
+    chrono::high_resolution_clock::time_point start = chrono::high_resolution_clock::now();
     
     // calculate theta values from new T values
     t_to_theta(Tlayer, theta, conversion_factors);
@@ -381,12 +403,17 @@ int main() {
     // compute current time in hours from start
     time += (float) timestep / 3600; // [hours]
     
+    chrono::high_resolution_clock::time_point end = chrono::high_resolution_clock::now();
+    double runtime = chrono::duration<double>(end - start).count();
+    
+    freopen("output.txt","a",stdout);
+    printf("One model step runtime at %2.3f sec \n", runtime);  
+    fclose(stdout);
 
-    //chrono::high_resolution_clock::time_point end = chrono::high_resolution_clock::now();
-    //double runtime = chrono::duration<double>(end - start).count();
-    //cout << "Single iteration runtime: " << runtime << endl;
   }
   
+  chrono::high_resolution_clock::time_point start_delete = chrono::high_resolution_clock::now();
+    
   for (int i=0; i<nwvl; ++i){
       delete[] tauCO2[i]; delete[] tauH2O[i]; delete[] tauN2O[i]; delete[] tauCH4[i]; delete[] tauO3[i];
   }
@@ -399,6 +426,13 @@ int main() {
     
   delete[] tauCO2; delete[] tauH2O; delete[] tauN2O; delete[] tauCH4; delete[] tauO3;
   delete[] wvl; delete[] factors;
-
+  
+  chrono::high_resolution_clock::time_point end_delete = chrono::high_resolution_clock::now();
+  double runtime_delete = chrono::duration<double>(end_delete - start_delete).count();
+    
+  freopen("output.txt","a",stdout);
+  printf("Runtime of memory cleaning at %2.3f sec \n", runtime_delete); 
+  fclose(stdout);  
+  
   return 0;
 }
