@@ -343,29 +343,31 @@ int main() {
   double *wvl = NULL;   // array of wavelengths 
   double **tauCO2 = NULL;  // 2D array of optical thickness for CO2
   double **tauH2O = NULL;  // 2D array of optical thickness for H2O
-  //double **tauN2O = NULL;  // 2D array of optical thickness for N2O
-  //double **tauCH4 = NULL;  // 2D array of optical thickness for CH4
-  //double **tauO3  = NULL;  // 2D array of optical thickness for O3
+  double **tauN2O = NULL;  // 2D array of optical thickness for N2O
+  double **tauCH4 = NULL;  // 2D array of optical thickness for CH4
+  double **tauO3  = NULL;  // 2D array of optical thickness for O3
     
   char tauCO2filename[FILENAME_MAX] = "./lbl.arts/lbl.co2.asc";
   char tauH2Ofilename[FILENAME_MAX] = "./lbl.arts/lbl.h2o.asc";
-  //char tauN2Ofilename[FILENAME_MAX] = "./lbl.arts/lbl.n2o.asc";
-  //char tauCH4filename[FILENAME_MAX] = "./lbl.arts/lbl.ch4.asc";
-  //char tauO3filename[FILENAME_MAX]  = "./lbl.arts/lbl.o3.asc";
+  char tauN2Ofilename[FILENAME_MAX] = "./lbl.arts/lbl.n2o.asc";
+  char tauCH4filename[FILENAME_MAX] = "./lbl.arts/lbl.ch4.asc";
+  char tauO3filename[FILENAME_MAX]  = "./lbl.arts/lbl.o3.asc";
     
   ASCII_file2xy2D (tauCO2filename, &nwvl, &nlyr, &wvl, &tauCO2);
   ASCII_file2xy2D (tauH2Ofilename, &nwvl, &nlyr, &wvl, &tauH2O);
-  //ASCII_file2xy2D (tauN2Ofilename, &nwvl, &nlyr, &wvl, &tauN2O);
-  //ASCII_file2xy2D (tauCH4filename, &nwvl, &nlyr, &wvl, &tauCH4);
-  //ASCII_file2xy2D (tauO3filename,  &nwvl, &nlyr, &wvl, &tauO3);
+  ASCII_file2xy2D (tauN2Ofilename, &nwvl, &nlyr, &wvl, &tauN2O);
+  ASCII_file2xy2D (tauCH4filename, &nwvl, &nlyr, &wvl, &tauCH4);
+  ASCII_file2xy2D (tauO3filename,  &nwvl, &nlyr, &wvl, &tauO3);
     
   // choose composition of atmosphere
-  int ngases = 2;  // number of gases 
+  int ngases = 5;  // number of gases 
   double*** gases = new double**[ngases];
   gases[0] = tauH2O; gases[1] = tauCO2;  // specify individual gases
-      
+  gases[2] = tauN2O; gases[3] = tauCH4; gases[4] = tauO3;    
+  
   double* factors = new double[ngases];  // array contains ratio of individual gases
   factors[0] = 1.0; factors[1] = 280.0 / 400.0; 
+  factors[2] = 1.0; factors[3] = 1.0; factors[4] = 1.0;
     
   // initialization of tau as vector<vector<double>>  
   for (int i=0; i<nwvl; ++i) {
