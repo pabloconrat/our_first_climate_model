@@ -1,7 +1,7 @@
 /*
 =================================================================
 Authors: Tatsiana Bardachova, Samkeyat Shohan, Pablo Conrat
-Date: 11.01.2021
+Date: 18.01.2021
 Description: 1D Radiation-Convection Model
 =================================================================
 */
