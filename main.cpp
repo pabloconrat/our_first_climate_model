@@ -65,7 +65,7 @@ const int Consts::nlevel = Consts::nlayer + 1;
 const int Consts::nangle = 30; 
 
 const float Consts::max_dT = 5;
-const int Consts::n_steps = 3000;
+const int Consts::n_steps = 1000;
 const int Consts::output_steps = 5;
 
 
@@ -83,7 +83,7 @@ void output_conv(const float &time, const vector<double> &player,
 
   // print the pressure, temperature, and potential temperature of each layer and the time
   for (int i=0; i<Consts::nlayer; ++i) {
-    printf("%d, %f, %f, %f, %f \n",
+    printf("%d,%f,%f,%f,%f\n",
             i, player[i], Tlayer[i], theta[i], time);
   }
     
@@ -285,7 +285,7 @@ int main() {
 
   freopen("output.txt","a",stdout);
   // print at what timestep the model is
-  printf("layer, player, Tlayer, theta, time\n" );
+  printf("layer,player,Tlayer,theta,time\n" );
 
   vector<double> player(Consts::nlayer); // vector of pressures for each layer
   vector<double> plevel(Consts::nlevel); // vector of pressures between the layers
@@ -366,7 +366,7 @@ int main() {
   gases[2] = tauN2O; gases[3] = tauCH4; gases[4] = tauO3;    
   
   double* factors = new double[ngases];  // array contains ratio of individual gases
-  factors[0] = 1.0; factors[1] = 280.0 / 400.0; 
+  factors[0] = 1.0; factors[1] = 0.0 / 400.0; 
   factors[2] = 1.0; factors[3] = 1.0; factors[4] = 1.0;
     
   // initialization of tau as vector<vector<double>>  
