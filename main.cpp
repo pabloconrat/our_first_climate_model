@@ -250,13 +250,13 @@ void radiative_transfer(vector<double> &B, vector<double> &alpha, vector<double>
 }
 
 // calculate optical thickness for the chosen atmospheric composition
-void optical_thickness(int nwvl, int nlyr, int ngases, double** gases[], double factors[], 
+void optical_thickness(int nwvl, int nlyr, int ngasses, double** gasses[], double factors[], 
                        vector<vector<double>> &tau) {
     
-    for (int i=0; i<ngases; ++i) {
+    for (int i=0; i<ngasses; ++i) {
       for (int iwvl=0; iwvl<nwvl; ++iwvl) {
         for (int ilyr=0; ilyr<nlyr; ilyr++) {
-          tau[iwvl][ilyr] += gases[i][iwvl][ilyr] * factors[i];
+          tau[iwvl][ilyr] += gasses[i][iwvl][ilyr] * factors[i];
         }
       }
     }
@@ -333,7 +333,7 @@ int main() {
    /*
   =========================================================================================================
    Initialization of optical thickness
-   Include: reading tau profiles of individual gases and creation of 2D tau vector for combination of gases
+   Include: reading tau profiles of individual gasses and creation of 2D tau vector for combination of gasses
   =========================================================================================================
   */ 
     
@@ -366,6 +366,7 @@ int main() {
   gases[2] = tauN2O; gases[3] = tauCH4; gases[4] = tauO3;    
   
   double* factors = new double[ngases];  // array contains ratio of individual gases
+
   factors[0] = 1.0; factors[1] = 280.0 / 400.0; 
   factors[2] = 1.0; factors[3] = 1.0; factors[4] = 1.0;
     
@@ -379,6 +380,7 @@ int main() {
   
   // define optical thickness values for every wavelength and every layer
   optical_thickness(nwvl, nlyr, ngases, gases, factors, tau);
+
 
   /*
   =================================================================
@@ -428,14 +430,14 @@ int main() {
     //}
 
   } 
-  
-    
+      
   for (int i=0; i<nwvl; ++i){
       delete[] tauCO2[i]; delete[] tauH2O[i]; // delete[] tauN2O[i]; delete[] tauCH4[i]; delete[] tauO3[i];
   }
     
   delete[] tauCO2; delete[] tauH2O; // delete[] tauN2O; delete[] tauCH4; delete[] tauO3;
   delete[] wvl; delete[] factors; delete[] gases;
+
 
   return 0;
 }
