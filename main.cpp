@@ -85,7 +85,7 @@ void output_conv(const float &time, const vector<double> &player,
 
   // print the pressure, temperature, and potential temperature of each layer and the time
   for (int i=0; i<Consts::nlayer; ++i) {
-    printf("%d, %f, %f, %f, %f \n",
+    printf("%d,%f,%f,%f,%f\n",
             i, player[i], Tlayer[i], theta[i], time);
   }
     
@@ -179,6 +179,38 @@ void emissivity(vector<double> &alpha, double* tau, const double &mu){
   for (int i=0; i<Consts::nangle; ++i){
     alpha[i] = 1.0 - exp(- tau[i] / mu);
   }
+  return;
+}
+
+void solar_radiative_transfer(double &r_dir, double &s_dir, double &t_dir, const double tau_s, const double mu_s, const int doublings) {
+  // assume assymetry factor g = 0
+  double dtau = tau_s / pow(2, doublings);
+  double r;
+  double t;
+  // temporary variables for iterative loop
+  double r_new; double s_new; double t_new;
+
+  r = 0.5 * dtau;
+  t = r;
+  r_dir = dtau/mu_s * 0.5;
+  s_dir = r_dir;
+  t_dir = 1 - dtau/mu_s;
+
+  for(int i=0; i < doublings; ++i){
+    r = 0.5 * dtau;
+    t = r;
+
+    t_new = pow(t_dir, 2);
+    s_new = (t * s_dir + t_dir * r_dir + r * t)/(1 - pow(r, 2)) + t_dir * s_dir;
+    r_new = (t_dir * r + t * t_dir * r)/((1 - pow(r, 2))) + r_dir;
+
+    t_dir = t_new;
+    s_dir = s_new;
+    r_dir = r_new;
+
+    dtau = 2 * dtau;
+  }
+
   return;
 }
 
@@ -367,7 +399,6 @@ int main() {
    read_tau("./repwvl_V1.0_cpp/Reduced100Forcing.nc", Consts::nlevel, plevel, Tlevel,
             H2O_VMR, CO2_VMR, O3_VMR, N2O_VMR, CO_VMR, CH4_VMR, O2_VMR, HNO3_VMR, N2_VMR,
             &tau, &wvl, &weight, &nwvl);
-    
     
   /*
   =================================================================
