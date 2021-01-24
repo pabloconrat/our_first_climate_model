@@ -1,24 +1,27 @@
 /*
-=================================================================
+=================================================================================
 Authors: Tatsiana Bardachova, Samkeyat Shohan, Pablo Conrat
-Date: 17.12.2020
-Description: 1D Radiation-Convection Model
-=================================================================
+Date: 22.01.2021
+Description: 1D Radiation-Convection Model 
+             Representative wavelenght parametrization for Radiative Transfer
+=================================================================================
 */
 
-
 #include <cstdio>
-#include <cmath>
 #include <vector>
+#include <cmath>
+#include <numeric>
 #include <algorithm>
 #include <functional>
+#include <string>
 #include <iostream>
-#include <numeric>
-#include "cplkavg.h"
-#include "ascii.h"
-#include <omp.h>
-#include <chrono>
+#include <fstream>
+#include <sstream>
+#include <netcdf>
+#include "./repwvl_V1.0_cpp/repwvl_thermal.h"
+
 using namespace std;
+
 
 /*
 =================================================================
@@ -32,16 +35,19 @@ public:
     static const double c_air; // specific heat capacity [J/kg K]
     static const double g;     // gravity acceleration [m/s^2]
     static const double E_abs; // heating rate from surface [W/m^2]
+    static const double h;     // Planck constant [J/s]
+    static const double c;     // speed of light in vacuum [m/s]
+    static const double kB;    // Boltzmann constant [J/K]
     static const double sigma; // Stefan–Boltzmann constant [W/m^2 K^4]
-    static const double M;  // molar mass of dry air [kg/mol]
-    static const double R0; // universal gas constant [J/mol K]
+    static const double M;     // molar mass of dry air [kg/mol]
+    static const double R0;    // universal gas constant [J/mol K]
   
     static const int nlayer; // number of layers
     static const int nlevel; // number of levels
     static const int nangle; // number of angles
 
-    static const double dt; // time step length [s]
-    static const int n_steps; // number of timesteps [/]
+    static const float max_dT; // maximal temperature change per timestep for stability [K]
+    static const int n_steps;  // number of timesteps [/]
     static const int output_steps; // intervall in which the model produces output [/]
 };
 
@@ -49,6 +55,9 @@ const double Consts::kappa = 2.0 / 7.0;
 const double Consts::c_air = 1004;
 const double Consts::g = 9.80665; 
 const double Consts::E_abs = 235.0;
+const double Consts::h = 6.62607e-34;
+const double Consts::c = 299792458;
+const double Consts::kB = 1.380649e-23;
 const double Consts::sigma = 5.670373e-8;
 const double Consts::M = 0.02896;
 const double Consts::R0 = 8.3144;
@@ -57,9 +66,9 @@ const int Consts::nlayer = 20;
 const int Consts::nlevel = Consts::nlayer + 1; 
 const int Consts::nangle = 30; 
 
-const double Consts::dt = 360.0; 
-const int Consts::n_steps = 100000;
-const int Consts::output_steps = 500;
+const float Consts::max_dT = 5;
+const int Consts::n_steps = 3000;
+const int Consts::output_steps = 10;
 
 
 /*
@@ -68,30 +77,18 @@ Output Functions
 =================================================================
 */
 
-// first version of an output function, gets called for one timestep
+// simple version of an output function, gets called for one timestep
 void output_conv(const float &time, const vector<double> &player,
                  const vector<double> &Tlayer, const vector<double> &theta) {
     
   freopen("output.txt","a",stdout);
-  // print at what timestep the model is
-  printf("output_conv at %2.1f hours \n", time);
-  // print the pressure, temperature and potential temperature of each layer
-  for (int i=0; i<Consts::nlayer; ++i) {
-    printf("level: %3d p: %6.1f T: %5.1f theta: %5.1f\n",
-            i, player[i], Tlayer[i], theta[i]);
-  }
-  fclose(stdout);
-  return;
-}
 
-// first version of an output function, gets called for one timestep
-void output_rad(const vector<double> &zlevel, const vector<double> &plevel,
-                const vector<double> &Tlevel, const vector<double> &E_down, const vector<double> &E_up) {
-  // print the altitude, pressure and temperature of each level
-  for (int i=0; i<Consts::nlevel; ++i) {
-    printf("lvl: %3d z: %6.3f p: %5.1f T: %5.2f E_dn: %6.3f E_up: %6.3f\n",
-           i, zlevel[i], plevel[i], Tlevel[i], E_down[i], E_up[i]);
+  // print the pressure, temperature, and potential temperature of each layer and the time
+  for (int i=0; i<Consts::nlayer; ++i) {
+    printf("%d, %f, %f, %f, %f \n",
+            i, player[i], Tlayer[i], theta[i], time);
   }
+    
   return;
 }
 
@@ -103,28 +100,23 @@ void output_rad(const vector<double> &zlevel, const vector<double> &plevel,
 */
 
 void t_to_theta(const vector<double> &Tlayer, vector<double> &theta, const vector<double> &conversion_factors) {
-  transform(Tlayer.begin(), Tlayer.end(),
+  transform(Tlayer.begin(), Tlayer.end(), 
             conversion_factors.begin(), theta.begin(), multiplies<double>());
   return;
 }
 
-double t_to_theta(double Temperature, double conversion_factor) {
+double t_to_theta(double temperature, double conversion_factor) {
   double theta;
-  theta = Temperature * conversion_factor;
-  return(theta);
+  theta = temperature * conversion_factor;
+  return theta;
 }
 
 void theta_to_t(const vector<double> &theta, vector<double> &Tlayer, const vector<double> &conversion_factors) {
-  transform(theta.begin(), theta.end(),
+  transform(theta.begin(), theta.end(), 
             conversion_factors.begin(), Tlayer.begin(), divides<double>());
   return;
 }
-
-// barometric formula (includes conversion to km)
-double p_to_z(const double &plevel,const double &T_surface) {
-    return Consts::c_air * T_surface / Consts::g * (1 - pow(plevel / 1000.0, Consts::R0 / (Consts::c_air * Consts::M))) / 1000.0;
-}
-
+    
 
 /*
 =================================================================
@@ -132,12 +124,20 @@ Thermodynamics
 =================================================================
 */
 
+void calculate_timestep(const double &dp, vector<double> &dE, double &timestep) {
+  timestep = Consts::max_dT / *max_element(dE.begin(), dE.end()) * (Consts::c_air * dp * 100.0) / Consts::g;
+  if(timestep > 3600 * 12){
+     timestep = 3600 * 12;
+  }
+  return;
+}
+
 void thermodynamics(vector<double> &Tlayer, const double &dp, vector<double> &dE,
-                    double &T_surface, const vector<double> conversion_factors) {
+                    const double &timestep, double &T_surface, const vector<double> conversion_factors) {
   
   // heating rate
   for (int i=0; i<Consts::nlayer; ++i){
-    Tlayer[i] += dE[i] * Consts::dt * Consts::g / (Consts::c_air * dp * 100.0);
+    Tlayer[i] += dE[i] * timestep * Consts::g / (Consts::c_air * dp * 100.0);
   }
 
   // assume the surface temperature to be the potential temperature of the lowermost layer
@@ -153,71 +153,87 @@ void thermodynamics(vector<double> &Tlayer, const double &dp, vector<double> &dE
 =================================================================
 */
 
-// absorption coeficient 
-double alpha (const double &tau, const double &mu){
-  return 1.0 - exp(- tau / mu);
+// Planck function computation, includes wavelength weight implementation
+void cplkavg(vector<double> &B, double wvl, const double weight, const vector<double> &Tlayer) {
+
+  wvl *= 1e-9; // from [nm] to [m]
+  for (int i=0; i<Consts::nlayer; ++i){
+    B[i] = weight * 2 * Consts::h * pow(Consts::c, 2) / (pow(wvl, 5) *
+                   (exp(Consts::h * Consts::c / (wvl * Consts::kB * Tlayer[i])) - 1)) / 1e9; 
+    // [weight unit] * [W/(m2 nm sterad)]
+  }
+  return;
 }
 
-void monochromatic_radiative_transfer(vector<double> &E_down, vector<double> &E_up,
-                                      const int &i_rad, const vector<double> &tau, int &nwvl, double* wvl,
+double cplkavg(double wvl, const double weight, const double &Tlayer) {
+
+  wvl *= 1e-9; // from [nm] to [m]
+  double radiance = weight * 2 * Consts::h * pow(Consts::c, 2) / (pow(wvl, 5) * 
+                            (exp(Consts::h * Consts::c / (wvl * Consts::kB * Tlayer)) - 1)) / 1e9;
+  // [weight unit] * [W/(m2 nm sterad)]    
+  return radiance;
+}
+
+// absorption coeficient(=emissivity)
+void emissivity(vector<double> &alpha, double* tau, const double &mu){
+  for (int i=0; i<Consts::nangle; ++i){
+    alpha[i] = 1.0 - exp(- tau[i] / mu);
+  }
+  return;
+}
+
+void monochromatic_radiative_transfer(vector<double> &B, vector<double> &alpha, 
+                                      vector<double> &E_down, vector<double> &E_up,
+                                      const int &i_rad, double* tau, const double weight, int &nwvl, double* wvl,
                                       vector<double> &mu, const double &dmu,
                                       const vector<double> &Tlayer, const double &T_surface) {
 
   for (int imu=0; imu<Consts::nangle; ++imu) {
-
+    
     // boundary conditions
     double L_down = 0.0;
-    double L_up = cplkavg(wvl[i_rad], wvl[i_rad+1], T_surface);
+    double L_up = cplkavg(wvl[i_rad], weight, T_surface);
     E_up[Consts::nlevel-1] += 2 * M_PI * L_up * mu[imu] * dmu;
     
+    emissivity(alpha, tau, mu[imu]);
+      
     for (int ilev=1; ilev<Consts::nlevel; ++ilev) {
-      L_down = (1 - alpha(tau[ilev-1], mu[imu])) * L_down + alpha(tau[ilev-1], mu[imu]) * cplkavg(wvl[i_rad], wvl[i_rad+1], Tlayer[ilev-1]);
+      L_down = (1 - alpha[ilev-1]) * L_down + alpha[ilev-1] * B[ilev-1];
       E_down[ilev] += 2 * M_PI * L_down * mu[imu] * dmu;
     }
       
     for (int ilev=Consts::nlevel-2; ilev >= 0; --ilev) {
-      L_up = (1 - alpha(tau[ilev], mu[imu]))*L_up + alpha(tau[ilev], mu[imu]) * cplkavg(wvl[i_rad], wvl[i_rad+1], Tlayer[ilev]);
+      L_up = (1 - alpha[ilev])*L_up + alpha[ilev] * B[ilev];
       E_up[ilev] += 2 * M_PI * L_up * mu[imu] * dmu;
     }
-      
+  
   }
-
   return;
 }
 
-void radiative_transfer(vector<double> &Tlayer, vector<double> &E_down, vector<double> &E_up, vector<double> &dE,
-                        vector<double> &mu, const double &dmu, const double &T_surface,
-                        vector<vector<double>> &tau, int &nwvl, double* wvl) {
+void radiative_transfer(vector<double> &B, vector<double> &alpha,
+                        vector<double> &E_down, vector<double> &E_up, vector<double> &dE,
+                        vector<double> &mu, const double &dmu, 
+                        vector<double> &Tlayer, const double &T_surface,
+                        double** tau, double* weight, int &nwvl, double* wvl) {
   
   fill(E_down.begin(), E_down.end(), 0.0);
   fill(E_up.begin(), E_up.end(), 0.0);
-
-  #pragma omp parallel for schedule(static)
-  for (int i_rad=0; i_rad<nwvl-1; ++i_rad) {
-    monochromatic_radiative_transfer(E_down, E_up, i_rad, tau[i_rad], nwvl, wvl, mu, dmu, Tlayer, T_surface);
+    
+  for (int i_rad=0; i_rad<nwvl; ++i_rad) {
+    
+    cplkavg(B, wvl[i_rad], weight[i_rad], Tlayer);
+      
+    monochromatic_radiative_transfer(B, alpha, E_down, E_up, i_rad, 
+                                     tau[i_rad], weight[i_rad], nwvl, wvl, mu, dmu, Tlayer, T_surface);
   }
-
+    
   for (int i=0; i<Consts::nlayer; ++i){
     dE[i] = E_down[i] - E_down[i+1] + E_up[i+1] - E_up[i];
   }
 
   dE[dE.size()-1] += Consts::E_abs + E_down[Consts::nlevel-1] - E_up[Consts::nlevel-1];
 
-  return;
-}
-
-// calculate optical thickness for the chosen atmospheric composition
-void optical_thickness(int nwvl, int nlyr, int ngasses, double** gasses[], double factors[], 
-                       vector<vector<double>> &tau) {
-    
-    for (int i=0; i<ngasses; ++i) {
-      for (int iwvl=0; iwvl<nwvl; ++iwvl) {
-        for (int ilyr=0; ilyr<nlyr; ilyr++) {
-          tau[iwvl][ilyr] += gasses[i][iwvl][ilyr] * factors[i];
-        }
-      }
-    }
-    
   return;
 }
 
@@ -228,116 +244,142 @@ Initialization of model
 =================================================================
 */
 
-
 int main() {
-    
-  omp_set_num_threads(32);
-    
+      
   double dp = 1000.0 / (double) Consts::nlayer;
-  double dT = 100.0 / (double) Consts::nlayer;
   double dmu = 1.0 / (double) Consts::nangle;
-  double T_surface = 288.0;   
+  double T_surface = 288.2;   
+  double timestep = 0.0;
+  float time = 0.0;
+  int delete_check = 0;
 
-  vector<double> player(Consts::nlayer); // vector of pressures for each layer
+  freopen("output.txt","a",stdout);
+  // print at what timestep the model is
+  printf("layer,player,Tlayer,theta,time\n" );
+
   vector<double> plevel(Consts::nlevel); // vector of pressures between the layers
+  vector<double> player(Consts::nlayer); // vector of pressures for each layer
   vector<double> zlevel(Consts::nlevel); // vector of heights between the layers
   vector<double> Tlevel(Consts::nlevel); // vector of temperatures between the layers
   vector<double> Tlayer(Consts::nlayer); // vector of temperatures for each layer
   vector<double> theta(Consts::nlayer);  // vector of pot. temperatures for each layer
   vector<double> conversion_factors(Consts::nlayer); // vector for the conversion factors between t and theta
   vector<double> mu(Consts::nangle); // vector of cosines of zenith angles, characterize direction of radiation
+  vector<double> B(Consts::nlayer); // vector of weighted radiance for one wavelength according to Planck's law
+  vector<double> alpha(Consts::nangle); // vector of emissivity for one tau value for every angle
   vector<double> dE(Consts::nlayer); // vector of net radiative fluxes after radiative transfer
   vector<double> E_down(Consts::nlevel); // vector of downgoing thermal irradiances for each layer
   vector<double> E_up(Consts::nlevel);   // vector of upgoing thermal irradiances for each layer
-  vector<vector<double>> tau; // 2D vector of optical thickness for every layer and every wavelength
 
+  
+  /*
+  ====================================================================================
+  Reading profiles from file (z, p, T and profiles of all trace spacies)
+  ====================================================================================
+  */
+    
+  vector<vector<double>> data;   // 2D vector for reading column by column
+  ifstream input_file("./repwvl_V1.0_cpp/test.atm");
+  string line;
+  double value;
+
+  // remove the header (4 lines)
+  for (int i = 0; i < 4; i++) {
+    getline(input_file, line);
+  }
+  // allocate all columns (9 columns)
+  for (int i = 0; i < 9; i++) {
+    data.push_back(vector<double>());
+  }
+    
+  while (getline(input_file, line)) {
+    stringstream ss(line);
+    int col_index = 0;
+      while(ss >> value){
+        data[col_index].push_back(value);
+        col_index++;
+      }
+  }
+    
+  input_file.close();
+
+  zlevel = data[0];
+  plevel = data[1];
+  Tlevel = data[2];
+  
+  double* H2O_VMR = data[4].data(); // array of optical thickness profile for HO2
+  double* O3_VMR  = data[5].data(); // array of optical thickness profile for O3
+  double* CO2_VMR = data[6].data(); // array of optical thickness profile for CO2
+  double* CH4_VMR = data[7].data(); // array of optical thickness profile for CH4
+  double* N2O_VMR = data[8].data(); // array of optical thickness profile for N2O
+  
+  // define these species and initialize as zero, need them as arguments in read_tau function
+  double* CO_VMR = new double[Consts::nlevel]; // array of optical thickness profile for CO
+  double* O2_VMR = new double[Consts::nlevel]; // array of optical thickness profile for O2
+  double* HNO3_VMR = new double[Consts::nlevel]; // array of optical thickness profile for HNO3
+  double* N2_VMR = new double[Consts::nlevel]; // array of optical thickness profile for N2
+  
+  // CO2 concentation factor
+  double factor = 1;  
     
   for (int i=0; i<Consts::nlevel; ++i) {
-    plevel[i] = dp * (double) i; // the pressure levels are spaced equally between 0 and 1000 hPa 
-    zlevel[i] = p_to_z(plevel[i], T_surface); // compute height of pressure levels by barometric formula
-      
+    // convert from ppm to absolute concentrations
+    H2O_VMR[i] *= 1E-6; O3_VMR[i] *= 1E-6; CO2_VMR[i] *= factor * 1E-6; CH4_VMR[i] *= 1E-6; N2O_VMR[i] *= 1E-6;
+    
+    // initialize missing species  to 0 
+    CO_VMR[i] = 0.0; O2_VMR[i] = 0.0; HNO3_VMR[i] = 0.0; N2_VMR[i] = 0.0;
+  }
+
+  for (int i=0; i<Consts::nlevel; ++i) {
     // initialize irradiance vectors to 0
     E_down[i] = 0.0; 
     E_up[i] = 0.0;
   }
 
-
   for (int i=0; i<Consts::nlayer; ++i) {
-    Tlayer[i] = 180.0 + dT * (double) i; // just a first guess for the T-profile for each layer
     player[i] = (plevel[i] + plevel[i+1]) / 2.0; // computation of pressure between the levels
+    Tlayer[i] = (Tlevel[i] + Tlevel[i+1]) / 2.0; // computation of temperature between the levels
     conversion_factors[i] = pow(1000.0 / player[i], Consts::kappa); // computation of conversion factors
     theta[i] = Tlayer[i] * conversion_factors[i]; // computation of theta for each layer
-
+    
+    B[i]  = 0.0; // initialize radiance to 0
     dE[i] = 0.0; // initialize net radiances to 0
   }
 
   for (int i=0; i<Consts::nangle; ++i) {
     mu[i] = dmu / 2.0 + dmu * (double) i; // angles are spaced equally between 0 and pi/2
                                           //mu[i] is the center of the i-interval
+    alpha[i] = 0.0;  // initialize emissivity to 0
   }
-    
-    
-   /*
-  =========================================================================================================
-   Initialization of optical thickness
-   Include: reading tau profiles of individual gasses and creation of 2D tau vector for combination of gasses
-  =========================================================================================================
-  */ 
 
-  int nwvl=0, nlyr=Consts::nlayer;  // number of wavelength, number of atmospheric layers
     
-  double *wvl = NULL;   // array of wavelengths 
-  double **tauCO2 = NULL;  // 2D array of optical thickness for CO2
-  double **tauH2O = NULL;  // 2D array of optical thickness for H2O
-  double **tauN2O = NULL;  // 2D array of optical thickness for N2O
-  double **tauCH4 = NULL;  // 2D array of optical thickness for CH4
-  double **tauO3  = NULL;  // 2D array of optical thickness for O3
+  /*
+  ==============================================================================================
+   Initialization of optical thickness
+  ==============================================================================================
+  */ 
     
-  char tauCO2filename[FILENAME_MAX] = "./lbl.arts/lbl.co2.asc";
-  char tauH2Ofilename[FILENAME_MAX] = "./lbl.arts/lbl.h2o.asc";
-  char tauN2Ofilename[FILENAME_MAX] = "./lbl.arts/lbl.n2o.asc";
-  char tauCH4filename[FILENAME_MAX] = "./lbl.arts/lbl.ch4.asc";
-  char tauO3filename[FILENAME_MAX]  = "./lbl.arts/lbl.o3.asc";
-    
-  ASCII_file2xy2D (tauCO2filename, &nwvl, &nlyr, &wvl, &tauCO2);
-  ASCII_file2xy2D (tauH2Ofilename, &nwvl, &nlyr, &wvl, &tauH2O);
-  ASCII_file2xy2D (tauN2Ofilename, &nwvl, &nlyr, &wvl, &tauN2O);
-  ASCII_file2xy2D (tauCH4filename, &nwvl, &nlyr, &wvl, &tauCH4);
-  ASCII_file2xy2D (tauO3filename,  &nwvl, &nlyr, &wvl, &tauO3);
-    
-  // choose composition of atmosphere
-  int ngasses = 2;  // number of gasses 
-  double*** gasses = new double**[ngasses];
-  gasses[0] = tauH2O; gasses[1] = tauCO2;  // specify individual gasses
+   int nwvl=0;  // number of wavelengths
+   double *wvl = NULL;    // array of wavelengths 
+   double *weight = NULL; // array of wavelenght weightes
+   double **tau = NULL;   // 2D array of optical thicknesses
       
-  double* factors = new double[ngasses];  // array contains ratio of individual gasses
-  factors[0] = 1.0; factors[1] = 280.0 / 400.0; 
+   read_tau("./repwvl_V1.0_cpp/Reduced100Forcing.nc", Consts::nlevel, plevel, Tlevel,
+            H2O_VMR, CO2_VMR, O3_VMR, N2O_VMR, CO_VMR, CH4_VMR, O2_VMR, HNO3_VMR, N2_VMR,
+            &tau, &wvl, &weight, &nwvl);
     
-  // initialization of tau as vector<vector<double>>  
-  for (int i=0; i<nwvl; ++i) {
-    tau.push_back(vector<double>());
-    for (int ilyr=0; ilyr<nlyr; ++ilyr) {
-      tau[i].push_back(0);
-    }
-  }
-  
-  // define optical thickness values for every wavelength and every layer
-  optical_thickness(nwvl, nlyr, ngasses, gasses, factors, tau);
     
-      
   /*
   =================================================================
   Model Run
   =================================================================
   */
-
+    
   // loop over time steps
   for (int i=0; i<=Consts::n_steps; i++) {
       
-    //chrono::high_resolution_clock::time_point start = chrono::high_resolution_clock::now();
+    delete_check = 0; 
       
-    // compute current time in hours from start
-    float time = (float) i * Consts::dt / 360; // [hours]
     // calculate theta values from new T values
     t_to_theta(Tlayer, theta, conversion_factors);
 
@@ -350,21 +392,55 @@ int main() {
       // call output function
       output_conv(time, player, Tlayer, theta);
     }
-    radiative_transfer(Tlayer, E_down, E_up, dE, mu, dmu, T_surface, tau, nwvl, wvl);
-
-    thermodynamics(Tlayer, dp, dE, T_surface, conversion_factors);
+    
+    // recall of optical thickness computations for new temperature profile (every 50 steps)
+    if (i != 0 and i % 50 == 0) {
+        
+      for (int iwvl=0; iwvl<nwvl; ++iwvl){
+        delete[] tau[iwvl]; 
+      }
+      delete[] tau; delete[] weight; delete[] wvl;
+        
+      nwvl=0; 
+        
+      wvl = NULL;
+      weight = NULL; 
+      tau = NULL;   
       
-    //chrono::high_resolution_clock::time_point end = chrono::high_resolution_clock::now();
-    //double runtime = chrono::duration<double>(end - start).count();
-    //cout << "Single iteration runtime: " << runtime << endl;
+      // computation of Tlevel for new temperature profile  
+      Tlevel[0] = T_surface;
+      Tlevel[1] = (Tlayer[0] + T_surface) / 2.0;
+        for (int ilyr=0; ilyr<Consts::nlayer-1; ++ilyr) {
+          Tlevel[ilyr+2] = (Tlayer[ilyr] + Tlayer[ilyr+1]) / 2.0;
+        }
+      
+      read_tau("./repwvl_V1.0_cpp/Reduced100Forcing.nc", Consts::nlevel, plevel, Tlevel,
+               H2O_VMR, CO2_VMR, O3_VMR, N2O_VMR, CO_VMR, CH4_VMR, O2_VMR, HNO3_VMR, N2_VMR,
+               &tau, &wvl, &weight, &nwvl);
+        
+      delete_check = 1;
+    }
+      
+    radiative_transfer(B, alpha, E_down, E_up, dE, mu, dmu, Tlayer, T_surface, tau, weight, nwvl, wvl); 
+      
+    calculate_timestep(dp, dE, timestep);
+
+    thermodynamics(Tlayer, dp, dE, timestep, T_surface, conversion_factors);
+
+    // compute current time in hours from start
+    time += (float) timestep / 3600; // [hours]
+
+  } 
+
+  if (delete_check == 0) {
+        
+      for (int i=0; i<nwvl; ++i){
+        delete[] tau[i]; 
+      }
+      delete[] tau; delete[] weight; delete[] wvl; 
   }
-  
-  for (int i=0; i<nwvl; ++i){
-      delete[] tauCO2[i]; delete[] tauH2O[i]; delete[] tauN2O[i]; delete[] tauCH4[i]; delete[] tauO3[i];
-  }
-     
-  delete[] tauCO2; delete[] tauH2O; delete[] tauN2O; delete[] tauCH4; delete[] tauO3;
-  delete[] wvl; delete[] factors; delete[] gasses;
+      
+  delete[] CO_VMR; delete[] O2_VMR; delete[] HNO3_VMR; delete[] N2_VMR;
 
   return 0;
 }
