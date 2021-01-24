@@ -65,7 +65,7 @@ const int Consts::nlevel = Consts::nlayer + 1;
 const int Consts::nangle = 30; 
 
 const float Consts::max_dT = 5;
-const int Consts::n_steps = 1000;
+const int Consts::n_steps = 3000;
 const int Consts::output_steps = 5;
 
 
@@ -194,6 +194,38 @@ void emissivity (vector<double> &alpha, const vector<double> &tau, const double 
   return;
 }
 
+void solar_radiative_transfer(double &r_dir, double &s_dir, double &t_dir, const double tau_s, const double mu_s, const int doublings) {
+  // assume assymetry factor g = 0
+  double dtau = tau_s / pow(2, doublings);
+  double r;
+  double t;
+  // temporary variables for iterative loop
+  double r_new; double s_new; double t_new;
+
+  r = 0.5 * dtau;
+  t = r;
+  r_dir = dtau/mu_s * 0.5;
+  s_dir = r_dir;
+  t_dir = 1 - dtau/mu_s;
+
+  for(int i=0; i < doublings; ++i){
+    r = 0.5 * dtau;
+    t = r;
+
+    t_new = pow(t_dir, 2);
+    s_new = (t * s_dir + t_dir * r_dir + r * t)/(1 - pow(r, 2)) + t_dir * s_dir;
+    r_new = (t_dir * r + t * t_dir * r)/((1 - pow(r, 2))) + r_dir;
+
+    t_dir = t_new;
+    s_dir = s_new;
+    r_dir = r_new;
+
+    dtau = 2 * dtau;
+  }
+
+  return;
+}
+
 void monochromatic_radiative_transfer(vector<double> &B, vector<double> &alpha, vector<double> &E_down, vector<double> &E_up,
                                       const int &i_rad, const vector<double> &tau, int &nwvl, double* wvl,
                                       vector<double> &mu, const double &dmu,
@@ -250,13 +282,13 @@ void radiative_transfer(vector<double> &B, vector<double> &alpha, vector<double>
 }
 
 // calculate optical thickness for the chosen atmospheric composition
-void optical_thickness(int nwvl, int nlyr, int ngases, double** gases[], double factors[], 
+void optical_thickness(int nwvl, int nlyr, int ngasses, double** gasses[], double factors[], 
                        vector<vector<double>> &tau) {
     
-    for (int i=0; i<ngases; ++i) {
+    for (int i=0; i<ngasses; ++i) {
       for (int iwvl=0; iwvl<nwvl; ++iwvl) {
         for (int ilyr=0; ilyr<nlyr; ilyr++) {
-          tau[iwvl][ilyr] += gases[i][iwvl][ilyr] * factors[i];
+          tau[iwvl][ilyr] += gasses[i][iwvl][ilyr] * factors[i];
         }
       }
     }
@@ -333,7 +365,7 @@ int main() {
    /*
   =========================================================================================================
    Initialization of optical thickness
-   Include: reading tau profiles of individual gases and creation of 2D tau vector for combination of gases
+   Include: reading tau profiles of individual gasses and creation of 2D tau vector for combination of gasses
   =========================================================================================================
   */ 
     
@@ -366,7 +398,7 @@ int main() {
   gases[2] = tauN2O; gases[3] = tauCH4; gases[4] = tauO3;    
   
   double* factors = new double[ngases];  // array contains ratio of individual gases
-  factors[0] = 1.0; factors[1] = 0.0 / 400.0; 
+  factors[0] = 1.0; factors[1] = 12800.0 / 400.0; 
   factors[2] = 1.0; factors[3] = 1.0; factors[4] = 1.0;
     
   // initialization of tau as vector<vector<double>>  
@@ -379,6 +411,7 @@ int main() {
   
   // define optical thickness values for every wavelength and every layer
   optical_thickness(nwvl, nlyr, ngases, gases, factors, tau);
+
 
   /*
   =================================================================
@@ -428,14 +461,14 @@ int main() {
     //}
 
   } 
-  
-    
+      
   for (int i=0; i<nwvl; ++i){
       delete[] tauCO2[i]; delete[] tauH2O[i]; // delete[] tauN2O[i]; delete[] tauCH4[i]; delete[] tauO3[i];
   }
     
   delete[] tauCO2; delete[] tauH2O; // delete[] tauN2O; delete[] tauCH4; delete[] tauO3;
   delete[] wvl; delete[] factors; delete[] gases;
+
 
   return 0;
 }
