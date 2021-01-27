@@ -233,10 +233,10 @@ void read_tau (const char *reducedLkpPath, int nLev, vector<double> &plevel, vec
     }
 
     // convert Matrix to double **
-    if (tauMat.size() != nLev-1)
+    if (tauMat.size() !=  (unsigned int) nLev-1)
       cerr << "Error, number of levels inconsistent" << endl;
 
-    if (tauMat[0].size() != *nWvl)
+    if (tauMat[0].size() != (unsigned int) *nWvl)
       cerr << "Error, number of wavelengths inconsistent" << endl;
 
     for (int iwvl=0; iwvl<*nWvl; iwvl++)

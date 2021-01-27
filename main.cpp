@@ -34,7 +34,7 @@ public:
     static const double kappa; // adiabatic exponent [/]
     static const double c_air; // specific heat capacity [J/kg K]
     static const double g;     // gravity acceleration [m/s^2]
-    static const double E_abs; // heating rate from surface [W/m^2]
+    static const double E_0; // heating rate from surface [W/m^2]
     static const double h;     // Planck constant [J/s]
     static const double c;     // speed of light in vacuum [m/s]
     static const double kB;    // Boltzmann constant [J/K]
@@ -49,12 +49,17 @@ public:
     static const float max_dT; // maximal temperature change per timestep for stability [K]
     static const int n_steps;  // number of timesteps [/]
     static const int output_steps; // intervall in which the model produces output [/]
+    
+    static const double tau_s; // optical thickness in the solar spectral range [1/m] ?
+    static const double mu_s; // solar zenith angle [°]
+    static const int doublings; // number of doublings in the doubling-adding method [/]
+    static const double g_asym; // asymmetry factor [/]
 };
 
 const double Consts::kappa = 2.0 / 7.0;
 const double Consts::c_air = 1004;
 const double Consts::g = 9.80665; 
-const double Consts::E_abs = 235.0;
+const double Consts::E_0 = 1361.0;
 const double Consts::h = 6.62607e-34;
 const double Consts::c = 299792458;
 const double Consts::kB = 1.380649e-23;
@@ -67,9 +72,13 @@ const int Consts::nlevel = Consts::nlayer + 1;
 const int Consts::nangle = 30; 
 
 const float Consts::max_dT = 5;
-const int Consts::n_steps = 3000;
+const int Consts::n_steps = 2;
 const int Consts::output_steps = 10;
 
+const double tau_s = 1.0;
+const double mu_s = cos( 75.522 * M_PI / 180.0 );
+const int doublings = 20;
+const double g_asym = 0.85;
 
 /*
 =================================================================
@@ -182,35 +191,53 @@ void emissivity(vector<double> &alpha, double* tau, const double &mu){
   return;
 }
 
-void solar_radiative_transfer(double &r_dir, double &s_dir, double &t_dir, const double tau_s, const double mu_s, const int doublings) {
-  // assume assymetry factor g = 0
+void doubling_adding(double &r_dir, double &s_dir, double &t_dir, double &r, double &t, const double tau_s, const double mu_s, const int doublings) {
+  // assume asymmetry factor g = 0
   double dtau = tau_s / pow(2, doublings);
-  double r;
-  double t;
+  double r_new; double one_minus_rsq;
+  double t_new;
   // temporary variables for iterative loop
-  double r_new; double s_new; double t_new;
+  double r_dir_new; double s_dir_new; double t_dir_new;
 
-  r = 0.5 * dtau;
-  t = r;
-  r_dir = dtau/mu_s * 0.5;
+  r = 0.5 * dtau/mu_s;
+  t = 1.0 - r;
+  r_dir = dtau/mu_s * 0.5; // (1-exp(-dtau/mu))
   s_dir = r_dir;
   t_dir = 1 - dtau/mu_s;
+  
+  freopen("output.txt","a",stdout);
+  printf("dtau %f, r %f, t %f, s_dir %f, r_dir %f, t_dir %f \n", dtau, r, t, s_dir, r_dir, t_dir);
 
   for(int i=0; i < doublings; ++i){
-    r = 0.5 * dtau;
-    t = r;
+    one_minus_rsq = (1 - r * r);
+    r_new = r + (r * t * t)/one_minus_rsq;
+    t_new = (t * t)/one_minus_rsq;
 
-    t_new = pow(t_dir, 2);
-    s_new = (t * s_dir + t_dir * r_dir + r * t)/(1 - pow(r, 2)) + t_dir * s_dir;
-    r_new = (t_dir * r + t * t_dir * r)/((1 - pow(r, 2))) + r_dir;
+    t_dir_new = pow(t_dir, 2);
+    s_dir_new = (t * s_dir + t_dir * r_dir * r * t)/one_minus_rsq + t_dir * s_dir;
+    r_dir_new = (t * s_dir * r + t * t_dir * r)/one_minus_rsq + r_dir;
 
-    t_dir = t_new;
-    s_dir = s_new;
-    r_dir = r_new;
+    r = r_new;
+    t = t_new;
+
+    t_dir = t_dir_new;
+    s_dir = s_dir_new;
+    r_dir = r_dir_new;
 
     dtau = 2 * dtau;
+    printf("iteration: %d, dtau %f, r %f, t %f, r_dir %f, s_dir %f, t_dir %f \n", i, dtau, r, t, r_dir, s_dir, t_dir);
   }
 
+  return;
+}
+
+void solar_radiative_transfer(double &r_total, const double &albedo, const double &daytime, const double &r_dir, const double &s_dir, const double &t_dir) {
+  
+  // integrate surface albedo into reflectivity of earth
+  r_total = r_dir + (t_dir + s_dir)/(1 - albedo * r) * t * albedo;
+  
+  
+  
   return;
 }
 
@@ -264,7 +291,7 @@ void radiative_transfer(vector<double> &B, vector<double> &alpha,
     dE[i] = E_down[i] - E_down[i+1] + E_up[i+1] - E_up[i];
   }
 
-  dE[dE.size()-1] += Consts::E_abs + E_down[Consts::nlevel-1] - E_up[Consts::nlevel-1];
+  dE[dE.size()-1] += Consts::E_0/4.0 + E_down[Consts::nlevel-1] - E_up[Consts::nlevel-1];
 
   return;
 }
@@ -284,10 +311,11 @@ int main() {
   double timestep = 0.0;
   float time = 0.0;
   int delete_check = 0;
-
-  freopen("output.txt","a",stdout);
-  // print at what timestep the model is
-  printf("layer,player,Tlayer,theta,time\n" );
+  double r_dir;
+  double s_dir;
+  double t_dir;
+  double r;
+  double t;
 
   vector<double> plevel(Consts::nlevel); // vector of pressures between the layers
   vector<double> player(Consts::nlayer); // vector of pressures for each layer
@@ -399,12 +427,27 @@ int main() {
    read_tau("./repwvl_V1.0_cpp/Reduced100Forcing.nc", Consts::nlevel, plevel, Tlevel,
             H2O_VMR, CO2_VMR, O3_VMR, N2O_VMR, CO_VMR, CH4_VMR, O2_VMR, HNO3_VMR, N2_VMR,
             &tau, &wvl, &weight, &nwvl);
-    
+  
+  /*
+  ====================================================================================
+  Setup of solar radiative transfer
+  ====================================================================================
+  */
+  
+  freopen("output.txt","a",stdout);
+  doubling_adding(r_dir, s_dir, t_dir, r, t, tau_s, mu_s, doublings);
+  printf("Planetary albedo for an optical thickness of %2.3f and an SZA of %2.2f: %f \n", tau_s, mu_s, r_dir);
+  printf("rdir %f, sdir %f, and tdir %f \n", r_dir, s_dir, t_dir);
+  printf("sum: %f \n", r_dir + t_dir + s_dir);
+  
   /*
   =================================================================
   Model Run
   =================================================================
   */
+  
+  // print at what timestep the model is
+  printf("layer,player,Tlayer,theta,time\n" );
     
   // loop over time steps
   for (int i=0; i<=Consts::n_steps; i++) {

@@ -1,924 +1,985 @@
-output_conv at 0.0 hours 
-level:   0 p:   25.0 T: 180.0 theta: 516.4
-level:   1 p:   75.0 T: 185.0 theta: 387.8
-level:   2 p:  125.0 T: 190.0 theta: 344.2
-level:   3 p:  175.0 T: 195.0 theta: 320.9
-level:   4 p:  225.0 T: 200.0 theta: 306.3
-level:   5 p:  275.0 T: 205.0 theta: 296.4
-level:   6 p:  325.0 T: 210.0 theta: 289.5
-level:   7 p:  375.0 T: 215.0 theta: 284.5
-level:   8 p:  425.0 T: 220.0 theta: 280.9
-level:   9 p:  475.0 T: 225.0 theta: 278.3
-level:  10 p:  525.0 T: 230.4 theta: 277.0
-level:  11 p:  575.0 T: 236.1 theta: 276.5
-level:  12 p:  625.0 T: 241.4 theta: 276.1
-level:  13 p:  675.0 T: 246.1 theta: 275.3
-level:  14 p:  725.0 T: 251.1 theta: 275.3
-level:  15 p:  775.0 T: 255.4 theta: 274.7
-level:  16 p:  825.0 T: 259.8 theta: 274.5
-level:  17 p:  875.0 T: 264.0 theta: 274.3
-level:  18 p:  925.0 T: 268.1 theta: 274.1
-level:  19 p:  975.0 T: 272.1 theta: 274.1
-output_conv at 500.0 hours 
-level:   0 p:   25.0 T: 179.5 theta: 515.1
-level:   1 p:   75.0 T: 180.8 theta: 379.0
-level:   2 p:  125.0 T: 195.7 theta: 354.5
-level:   3 p:  175.0 T: 183.7 theta: 302.3
-level:   4 p:  225.0 T: 197.4 theta: 302.3
-level:   5 p:  275.0 T: 201.9 theta: 291.9
-level:   6 p:  325.0 T: 207.4 theta: 285.9
-level:   7 p:  375.0 T: 212.2 theta: 280.8
-level:   8 p:  425.0 T: 219.9 theta: 280.8
-level:   9 p:  475.0 T: 227.0 theta: 280.8
-level:  10 p:  525.0 T: 233.6 theta: 280.8
-level:  11 p:  575.0 T: 239.7 theta: 280.7
-level:  12 p:  625.0 T: 245.4 theta: 280.7
-level:  13 p:  675.0 T: 250.9 theta: 280.7
-level:  14 p:  725.0 T: 256.0 theta: 280.7
-level:  15 p:  775.0 T: 261.0 theta: 280.7
-level:  16 p:  825.0 T: 265.7 theta: 280.7
-level:  17 p:  875.0 T: 270.2 theta: 280.7
-level:  18 p:  925.0 T: 274.5 theta: 280.7
-level:  19 p:  975.0 T: 278.6 theta: 280.7
-output_conv at 1000.0 hours 
-level:   0 p:   25.0 T: 176.4 theta: 506.2
-level:   1 p:   75.0 T: 178.1 theta: 373.3
-level:   2 p:  125.0 T: 201.0 theta: 364.1
-level:   3 p:  175.0 T: 177.5 theta: 292.0
-level:   4 p:  225.0 T: 190.7 theta: 292.0
-level:   5 p:  275.0 T: 198.9 theta: 287.6
-level:   6 p:  325.0 T: 206.4 theta: 284.6
-level:   7 p:  375.0 T: 215.0 theta: 284.5
-level:   8 p:  425.0 T: 222.8 theta: 284.5
-level:   9 p:  475.0 T: 230.0 theta: 284.5
-level:  10 p:  525.0 T: 236.7 theta: 284.5
-level:  11 p:  575.0 T: 242.9 theta: 284.5
-level:  12 p:  625.0 T: 248.7 theta: 284.5
-level:  13 p:  675.0 T: 254.3 theta: 284.5
-level:  14 p:  725.0 T: 259.5 theta: 284.5
-level:  15 p:  775.0 T: 264.5 theta: 284.4
-level:  16 p:  825.0 T: 269.2 theta: 284.4
-level:  17 p:  875.0 T: 273.8 theta: 284.4
-level:  18 p:  925.0 T: 278.2 theta: 284.4
-level:  19 p:  975.0 T: 282.4 theta: 284.4
-output_conv at 1500.0 hours 
-level:   0 p:   25.0 T: 173.4 theta: 497.4
-level:   1 p:   75.0 T: 176.5 theta: 369.9
-level:   2 p:  125.0 T: 204.2 theta: 369.9
-level:   3 p:  175.0 T: 174.4 theta: 286.9
-level:   4 p:  225.0 T: 187.3 theta: 286.9
-level:   5 p:  275.0 T: 198.4 theta: 286.9
-level:   6 p:  325.0 T: 208.1 theta: 286.9
-level:   7 p:  375.0 T: 216.8 theta: 286.9
-level:   8 p:  425.0 T: 224.6 theta: 286.9
-level:   9 p:  475.0 T: 231.9 theta: 286.9
-level:  10 p:  525.0 T: 238.6 theta: 286.9
-level:  11 p:  575.0 T: 244.9 theta: 286.8
-level:  12 p:  625.0 T: 250.8 theta: 286.8
-level:  13 p:  675.0 T: 256.4 theta: 286.8
-level:  14 p:  725.0 T: 261.7 theta: 286.8
-level:  15 p:  775.0 T: 266.7 theta: 286.8
-level:  16 p:  825.0 T: 271.5 theta: 286.8
-level:  17 p:  875.0 T: 276.1 theta: 286.8
-level:  18 p:  925.0 T: 280.5 theta: 286.8
-level:  19 p:  975.0 T: 284.7 theta: 286.8
-output_conv at 2000.0 hours 
-level:   0 p:   25.0 T: 170.5 theta: 489.1
-level:   1 p:   75.0 T: 177.0 theta: 371.0
-level:   2 p:  125.0 T: 204.8 theta: 371.0
-level:   3 p:  175.0 T: 175.1 theta: 288.1
-level:   4 p:  225.0 T: 188.1 theta: 288.1
-level:   5 p:  275.0 T: 199.2 theta: 288.1
-level:   6 p:  325.0 T: 209.0 theta: 288.1
-level:   7 p:  375.0 T: 217.7 theta: 288.1
-level:   8 p:  425.0 T: 225.6 theta: 288.1
-level:   9 p:  475.0 T: 232.9 theta: 288.1
-level:  10 p:  525.0 T: 239.6 theta: 288.1
-level:  11 p:  575.0 T: 245.9 theta: 288.1
-level:  12 p:  625.0 T: 251.9 theta: 288.1
-level:  13 p:  675.0 T: 257.5 theta: 288.1
-level:  14 p:  725.0 T: 262.8 theta: 288.1
-level:  15 p:  775.0 T: 267.8 theta: 288.0
-level:  16 p:  825.0 T: 272.6 theta: 288.0
-level:  17 p:  875.0 T: 277.2 theta: 288.0
-level:  18 p:  925.0 T: 281.7 theta: 288.0
-level:  19 p:  975.0 T: 285.9 theta: 288.0
-output_conv at 2500.0 hours 
-level:   0 p:   25.0 T: 167.7 theta: 481.2
-level:   1 p:   75.0 T: 177.5 theta: 372.0
-level:   2 p:  125.0 T: 205.3 theta: 372.0
-level:   3 p:  175.0 T: 175.8 theta: 289.3
-level:   4 p:  225.0 T: 188.9 theta: 289.2
-level:   5 p:  275.0 T: 200.0 theta: 289.2
-level:   6 p:  325.0 T: 209.8 theta: 289.2
-level:   7 p:  375.0 T: 218.5 theta: 289.2
-level:   8 p:  425.0 T: 226.5 theta: 289.2
-level:   9 p:  475.0 T: 233.8 theta: 289.2
-level:  10 p:  525.0 T: 240.6 theta: 289.2
-level:  11 p:  575.0 T: 246.9 theta: 289.2
-level:  12 p:  625.0 T: 252.9 theta: 289.2
-level:  13 p:  675.0 T: 258.5 theta: 289.2
-level:  14 p:  725.0 T: 263.8 theta: 289.2
-level:  15 p:  775.0 T: 268.9 theta: 289.2
-level:  16 p:  825.0 T: 273.7 theta: 289.2
-level:  17 p:  875.0 T: 278.3 theta: 289.2
-level:  18 p:  925.0 T: 282.8 theta: 289.2
-level:  19 p:  975.0 T: 287.1 theta: 289.2
-output_conv at 3000.0 hours 
-level:   0 p:   25.0 T: 165.1 theta: 473.8
-level:   1 p:   75.0 T: 177.9 theta: 373.0
-level:   2 p:  125.0 T: 205.9 theta: 373.0
-level:   3 p:  175.0 T: 176.5 theta: 290.3
-level:   4 p:  225.0 T: 189.6 theta: 290.3
-level:   5 p:  275.0 T: 200.7 theta: 290.3
-level:   6 p:  325.0 T: 210.6 theta: 290.3
-level:   7 p:  375.0 T: 219.3 theta: 290.3
-level:   8 p:  425.0 T: 227.3 theta: 290.3
-level:   9 p:  475.0 T: 234.7 theta: 290.3
-level:  10 p:  525.0 T: 241.5 theta: 290.3
-level:  11 p:  575.0 T: 247.8 theta: 290.3
-level:  12 p:  625.0 T: 253.8 theta: 290.3
-level:  13 p:  675.0 T: 259.4 theta: 290.3
-level:  14 p:  725.0 T: 264.8 theta: 290.3
-level:  15 p:  775.0 T: 269.8 theta: 290.2
-level:  16 p:  825.0 T: 274.7 theta: 290.2
-level:  17 p:  875.0 T: 279.4 theta: 290.2
-level:  18 p:  925.0 T: 283.8 theta: 290.2
-level:  19 p:  975.0 T: 288.1 theta: 290.2
-output_conv at 3500.0 hours 
-level:   0 p:   25.0 T: 162.6 theta: 466.5
-level:   1 p:   75.0 T: 178.4 theta: 373.9
-level:   2 p:  125.0 T: 206.4 theta: 373.9
-level:   3 p:  175.0 T: 177.1 theta: 291.4
-level:   4 p:  225.0 T: 190.2 theta: 291.3
-level:   5 p:  275.0 T: 201.5 theta: 291.3
-level:   6 p:  325.0 T: 211.3 theta: 291.3
-level:   7 p:  375.0 T: 220.1 theta: 291.3
-level:   8 p:  425.0 T: 228.1 theta: 291.3
-level:   9 p:  475.0 T: 235.5 theta: 291.3
-level:  10 p:  525.0 T: 242.3 theta: 291.3
-level:  11 p:  575.0 T: 248.7 theta: 291.3
-level:  12 p:  625.0 T: 254.7 theta: 291.3
-level:  13 p:  675.0 T: 260.3 theta: 291.3
-level:  14 p:  725.0 T: 265.7 theta: 291.3
-level:  15 p:  775.0 T: 270.8 theta: 291.3
-level:  16 p:  825.0 T: 275.7 theta: 291.3
-level:  17 p:  875.0 T: 280.3 theta: 291.2
-level:  18 p:  925.0 T: 284.8 theta: 291.2
-level:  19 p:  975.0 T: 289.1 theta: 291.2
-output_conv at 4000.0 hours 
-level:   0 p:   25.0 T: 160.1 theta: 459.4
-level:   1 p:   75.0 T: 178.8 theta: 374.9
-level:   2 p:  125.0 T: 206.9 theta: 374.9
-level:   3 p:  175.0 T: 177.7 theta: 292.3
-level:   4 p:  225.0 T: 190.9 theta: 292.3
-level:   5 p:  275.0 T: 202.1 theta: 292.3
-level:   6 p:  325.0 T: 212.0 theta: 292.3
-level:   7 p:  375.0 T: 220.8 theta: 292.3
-level:   8 p:  425.0 T: 228.9 theta: 292.3
-level:   9 p:  475.0 T: 236.3 theta: 292.3
-level:  10 p:  525.0 T: 243.1 theta: 292.3
-level:  11 p:  575.0 T: 249.5 theta: 292.3
-level:  12 p:  625.0 T: 255.5 theta: 292.3
-level:  13 p:  675.0 T: 261.2 theta: 292.2
-level:  14 p:  725.0 T: 266.6 theta: 292.2
-level:  15 p:  775.0 T: 271.7 theta: 292.2
-level:  16 p:  825.0 T: 276.6 theta: 292.2
-level:  17 p:  875.0 T: 281.3 theta: 292.2
-level:  18 p:  925.0 T: 285.8 theta: 292.2
-level:  19 p:  975.0 T: 290.1 theta: 292.2
-output_conv at 4500.0 hours 
-level:   0 p:   25.0 T: 157.7 theta: 452.3
-level:   1 p:   75.0 T: 179.3 theta: 375.9
-level:   2 p:  125.0 T: 207.5 theta: 375.9
-level:   3 p:  175.0 T: 178.2 theta: 293.3
-level:   4 p:  225.0 T: 191.5 theta: 293.2
-level:   5 p:  275.0 T: 202.8 theta: 293.2
-level:   6 p:  325.0 T: 212.7 theta: 293.2
-level:   7 p:  375.0 T: 221.6 theta: 293.2
-level:   8 p:  425.0 T: 229.6 theta: 293.2
-level:   9 p:  475.0 T: 237.0 theta: 293.2
-level:  10 p:  525.0 T: 243.9 theta: 293.2
-level:  11 p:  575.0 T: 250.3 theta: 293.2
-level:  12 p:  625.0 T: 256.3 theta: 293.2
-level:  13 p:  675.0 T: 262.0 theta: 293.2
-level:  14 p:  725.0 T: 267.4 theta: 293.2
-level:  15 p:  775.0 T: 272.6 theta: 293.2
-level:  16 p:  825.0 T: 277.5 theta: 293.2
-level:  17 p:  875.0 T: 282.2 theta: 293.2
-level:  18 p:  925.0 T: 286.7 theta: 293.1
-level:  19 p:  975.0 T: 291.0 theta: 293.1
-output_conv at 5000.0 hours 
-level:   0 p:   25.0 T: 155.4 theta: 445.9
-level:   1 p:   75.0 T: 179.7 theta: 376.8
-level:   2 p:  125.0 T: 208.0 theta: 376.7
-level:   3 p:  175.0 T: 178.8 theta: 294.1
-level:   4 p:  225.0 T: 192.0 theta: 294.1
-level:   5 p:  275.0 T: 203.4 theta: 294.1
-level:   6 p:  325.0 T: 213.3 theta: 294.1
-level:   7 p:  375.0 T: 222.2 theta: 294.1
-level:   8 p:  425.0 T: 230.3 theta: 294.1
-level:   9 p:  475.0 T: 237.7 theta: 294.1
-level:  10 p:  525.0 T: 244.6 theta: 294.1
-level:  11 p:  575.0 T: 251.1 theta: 294.1
-level:  12 p:  625.0 T: 257.1 theta: 294.0
-level:  13 p:  675.0 T: 262.8 theta: 294.0
-level:  14 p:  725.0 T: 268.2 theta: 294.0
-level:  15 p:  775.0 T: 273.4 theta: 294.0
-level:  16 p:  825.0 T: 278.3 theta: 294.0
-level:  17 p:  875.0 T: 283.0 theta: 294.0
-level:  18 p:  925.0 T: 287.5 theta: 294.0
-level:  19 p:  975.0 T: 291.9 theta: 294.0
-output_conv at 5500.0 hours 
-level:   0 p:   25.0 T: 153.0 theta: 439.0
-level:   1 p:   75.0 T: 180.1 theta: 377.6
-level:   2 p:  125.0 T: 208.4 theta: 377.6
-level:   3 p:  175.0 T: 179.3 theta: 294.9
-level:   4 p:  225.0 T: 192.6 theta: 294.9
-level:   5 p:  275.0 T: 203.9 theta: 294.9
-level:   6 p:  325.0 T: 213.9 theta: 294.9
-level:   7 p:  375.0 T: 222.8 theta: 294.9
-level:   8 p:  425.0 T: 230.9 theta: 294.9
-level:   9 p:  475.0 T: 238.4 theta: 294.9
-level:  10 p:  525.0 T: 245.3 theta: 294.9
-level:  11 p:  575.0 T: 251.8 theta: 294.9
-level:  12 p:  625.0 T: 257.8 theta: 294.9
-level:  13 p:  675.0 T: 263.5 theta: 294.8
-level:  14 p:  725.0 T: 269.0 theta: 294.8
-level:  15 p:  775.0 T: 274.1 theta: 294.8
-level:  16 p:  825.0 T: 279.1 theta: 294.8
-level:  17 p:  875.0 T: 283.8 theta: 294.8
-level:  18 p:  925.0 T: 288.3 theta: 294.8
-level:  19 p:  975.0 T: 292.7 theta: 294.8
-output_conv at 6000.0 hours 
-level:   0 p:   25.0 T: 150.8 theta: 432.5
-level:   1 p:   75.0 T: 180.4 theta: 378.2
-level:   2 p:  125.0 T: 208.8 theta: 378.2
-level:   3 p:  175.0 T: 179.7 theta: 295.7
-level:   4 p:  225.0 T: 193.1 theta: 295.7
-level:   5 p:  275.0 T: 204.5 theta: 295.7
-level:   6 p:  325.0 T: 214.5 theta: 295.7
-level:   7 p:  375.0 T: 223.4 theta: 295.6
-level:   8 p:  425.0 T: 231.5 theta: 295.6
-level:   9 p:  475.0 T: 239.0 theta: 295.6
-level:  10 p:  525.0 T: 245.9 theta: 295.6
-level:  11 p:  575.0 T: 252.4 theta: 295.6
-level:  12 p:  625.0 T: 258.5 theta: 295.6
-level:  13 p:  675.0 T: 264.2 theta: 295.6
-level:  14 p:  725.0 T: 269.7 theta: 295.6
-level:  15 p:  775.0 T: 274.8 theta: 295.6
-level:  16 p:  825.0 T: 279.8 theta: 295.6
-level:  17 p:  875.0 T: 284.5 theta: 295.6
-level:  18 p:  925.0 T: 289.1 theta: 295.6
-level:  19 p:  975.0 T: 293.5 theta: 295.6
-output_conv at 6500.0 hours 
-level:   0 p:   25.0 T: 148.5 theta: 426.2
-level:   1 p:   75.0 T: 180.8 theta: 379.0
-level:   2 p:  125.0 T: 209.2 theta: 378.9
-level:   3 p:  175.0 T: 180.2 theta: 296.5
-level:   4 p:  225.0 T: 193.6 theta: 296.4
-level:   5 p:  275.0 T: 205.0 theta: 296.4
-level:   6 p:  325.0 T: 215.0 theta: 296.4
-level:   7 p:  375.0 T: 224.0 theta: 296.4
-level:   8 p:  425.0 T: 232.1 theta: 296.4
-level:   9 p:  475.0 T: 239.6 theta: 296.4
-level:  10 p:  525.0 T: 246.5 theta: 296.4
-level:  11 p:  575.0 T: 253.0 theta: 296.4
-level:  12 p:  625.0 T: 259.1 theta: 296.4
-level:  13 p:  675.0 T: 264.9 theta: 296.4
-level:  14 p:  725.0 T: 270.3 theta: 296.4
-level:  15 p:  775.0 T: 275.5 theta: 296.4
-level:  16 p:  825.0 T: 280.5 theta: 296.3
-level:  17 p:  875.0 T: 285.3 theta: 296.3
-level:  18 p:  925.0 T: 289.8 theta: 296.3
-level:  19 p:  975.0 T: 294.2 theta: 296.3
-output_conv at 7000.0 hours 
-level:   0 p:   25.0 T: 146.9 theta: 421.4
-level:   1 p:   75.0 T: 181.0 theta: 379.4
-level:   2 p:  125.0 T: 209.5 theta: 379.4
-level:   3 p:  175.0 T: 180.6 theta: 297.1
-level:   4 p:  225.0 T: 194.0 theta: 297.1
-level:   5 p:  275.0 T: 205.4 theta: 297.1
-level:   6 p:  325.0 T: 215.5 theta: 297.1
-level:   7 p:  375.0 T: 224.5 theta: 297.1
-level:   8 p:  425.0 T: 232.6 theta: 297.1
-level:   9 p:  475.0 T: 240.2 theta: 297.1
-level:  10 p:  525.0 T: 247.1 theta: 297.1
-level:  11 p:  575.0 T: 253.6 theta: 297.1
-level:  12 p:  625.0 T: 259.7 theta: 297.1
-level:  13 p:  675.0 T: 265.5 theta: 297.0
-level:  14 p:  725.0 T: 271.0 theta: 297.0
-level:  15 p:  775.0 T: 276.2 theta: 297.0
-level:  16 p:  825.0 T: 281.1 theta: 297.0
-level:  17 p:  875.0 T: 285.9 theta: 297.0
-level:  18 p:  925.0 T: 290.5 theta: 297.0
-level:  19 p:  975.0 T: 294.9 theta: 297.0
-output_conv at 7500.0 hours 
-level:   0 p:   25.0 T: 146.0 theta: 418.9
-level:   1 p:   75.0 T: 181.0 theta: 379.4
-level:   2 p:  125.0 T: 209.5 theta: 379.4
-level:   3 p:  175.0 T: 181.0 theta: 297.8
-level:   4 p:  225.0 T: 194.4 theta: 297.7
-level:   5 p:  275.0 T: 205.9 theta: 297.7
-level:   6 p:  325.0 T: 216.0 theta: 297.7
-level:   7 p:  375.0 T: 225.0 theta: 297.7
-level:   8 p:  425.0 T: 233.1 theta: 297.7
-level:   9 p:  475.0 T: 240.7 theta: 297.7
-level:  10 p:  525.0 T: 247.6 theta: 297.7
-level:  11 p:  575.0 T: 254.2 theta: 297.7
-level:  12 p:  625.0 T: 260.3 theta: 297.7
-level:  13 p:  675.0 T: 266.1 theta: 297.7
-level:  14 p:  725.0 T: 271.5 theta: 297.7
-level:  15 p:  775.0 T: 276.8 theta: 297.7
-level:  16 p:  825.0 T: 281.7 theta: 297.7
-level:  17 p:  875.0 T: 286.5 theta: 297.7
-level:  18 p:  925.0 T: 291.1 theta: 297.7
-level:  19 p:  975.0 T: 295.5 theta: 297.7
-output_conv at 8000.0 hours 
-level:   0 p:   25.0 T: 145.7 theta: 418.0
-level:   1 p:   75.0 T: 181.0 theta: 379.4
-level:   2 p:  125.0 T: 209.5 theta: 379.4
-level:   3 p:  175.0 T: 181.3 theta: 298.3
-level:   4 p:  225.0 T: 194.7 theta: 298.2
-level:   5 p:  275.0 T: 206.2 theta: 298.2
-level:   6 p:  325.0 T: 216.3 theta: 298.2
-level:   7 p:  375.0 T: 225.3 theta: 298.2
-level:   8 p:  425.0 T: 233.5 theta: 298.2
-level:   9 p:  475.0 T: 241.1 theta: 298.2
-level:  10 p:  525.0 T: 248.1 theta: 298.2
-level:  11 p:  575.0 T: 254.6 theta: 298.2
-level:  12 p:  625.0 T: 260.7 theta: 298.2
-level:  13 p:  675.0 T: 266.5 theta: 298.2
-level:  14 p:  725.0 T: 272.0 theta: 298.2
-level:  15 p:  775.0 T: 277.2 theta: 298.2
-level:  16 p:  825.0 T: 282.2 theta: 298.2
-level:  17 p:  875.0 T: 287.0 theta: 298.2
-level:  18 p:  925.0 T: 291.6 theta: 298.2
-level:  19 p:  975.0 T: 296.0 theta: 298.2
-output_conv at 8500.0 hours 
-level:   0 p:   25.0 T: 145.7 theta: 418.0
-level:   1 p:   75.0 T: 181.0 theta: 379.4
-level:   2 p:  125.0 T: 209.5 theta: 379.4
-level:   3 p:  175.0 T: 181.6 theta: 298.8
-level:   4 p:  225.0 T: 195.1 theta: 298.7
-level:   5 p:  275.0 T: 206.6 theta: 298.7
-level:   6 p:  325.0 T: 216.7 theta: 298.7
-level:   7 p:  375.0 T: 225.7 theta: 298.7
-level:   8 p:  425.0 T: 233.9 theta: 298.7
-level:   9 p:  475.0 T: 241.5 theta: 298.7
-level:  10 p:  525.0 T: 248.5 theta: 298.7
-level:  11 p:  575.0 T: 255.0 theta: 298.7
-level:  12 p:  625.0 T: 261.1 theta: 298.7
-level:  13 p:  675.0 T: 266.9 theta: 298.7
-level:  14 p:  725.0 T: 272.4 theta: 298.7
-level:  15 p:  775.0 T: 277.7 theta: 298.7
-level:  16 p:  825.0 T: 282.7 theta: 298.6
-level:  17 p:  875.0 T: 287.5 theta: 298.6
-level:  18 p:  925.0 T: 292.1 theta: 298.6
-level:  19 p:  975.0 T: 296.5 theta: 298.6
-output_conv at 9000.0 hours 
-level:   0 p:   25.0 T: 145.9 theta: 418.7
-level:   1 p:   75.0 T: 181.0 theta: 379.4
-level:   2 p:  125.0 T: 209.5 theta: 379.4
-level:   3 p:  175.0 T: 181.8 theta: 299.2
-level:   4 p:  225.0 T: 195.3 theta: 299.1
-level:   5 p:  275.0 T: 206.9 theta: 299.1
-level:   6 p:  325.0 T: 217.0 theta: 299.1
-level:   7 p:  375.0 T: 226.0 theta: 299.1
-level:   8 p:  425.0 T: 234.2 theta: 299.1
-level:   9 p:  475.0 T: 241.8 theta: 299.1
-level:  10 p:  525.0 T: 248.8 theta: 299.1
-level:  11 p:  575.0 T: 255.4 theta: 299.1
-level:  12 p:  625.0 T: 261.5 theta: 299.1
-level:  13 p:  675.0 T: 267.3 theta: 299.1
-level:  14 p:  725.0 T: 272.8 theta: 299.1
-level:  15 p:  775.0 T: 278.1 theta: 299.1
-level:  16 p:  825.0 T: 283.1 theta: 299.1
-level:  17 p:  875.0 T: 287.9 theta: 299.1
-level:  18 p:  925.0 T: 292.5 theta: 299.1
-level:  19 p:  975.0 T: 296.9 theta: 299.1
-output_conv at 9500.0 hours 
-level:   0 p:   25.0 T: 146.0 theta: 418.9
-level:   1 p:   75.0 T: 181.0 theta: 379.4
-level:   2 p:  125.0 T: 209.5 theta: 379.4
-level:   3 p:  175.0 T: 182.1 theta: 299.6
-level:   4 p:  225.0 T: 195.6 theta: 299.5
-level:   5 p:  275.0 T: 207.1 theta: 299.5
-level:   6 p:  325.0 T: 217.3 theta: 299.5
-level:   7 p:  375.0 T: 226.3 theta: 299.5
-level:   8 p:  425.0 T: 234.6 theta: 299.5
-level:   9 p:  475.0 T: 242.1 theta: 299.5
-level:  10 p:  525.0 T: 249.1 theta: 299.5
-level:  11 p:  575.0 T: 255.7 theta: 299.5
-level:  12 p:  625.0 T: 261.9 theta: 299.5
-level:  13 p:  675.0 T: 267.7 theta: 299.5
-level:  14 p:  725.0 T: 273.2 theta: 299.5
-level:  15 p:  775.0 T: 278.4 theta: 299.5
-level:  16 p:  825.0 T: 283.5 theta: 299.5
-level:  17 p:  875.0 T: 288.3 theta: 299.5
-level:  18 p:  925.0 T: 292.9 theta: 299.5
-level:  19 p:  975.0 T: 297.3 theta: 299.5
-output_conv at 10000.0 hours 
-level:   0 p:   25.0 T: 146.2 theta: 419.3
-level:   1 p:   75.0 T: 181.0 theta: 379.4
-level:   2 p:  125.0 T: 209.5 theta: 379.4
-level:   3 p:  175.0 T: 182.3 theta: 300.0
-level:   4 p:  225.0 T: 195.9 theta: 299.9
-level:   5 p:  275.0 T: 207.4 theta: 299.9
-level:   6 p:  325.0 T: 217.5 theta: 299.9
-level:   7 p:  375.0 T: 226.6 theta: 299.9
-level:   8 p:  425.0 T: 234.9 theta: 299.9
-level:   9 p:  475.0 T: 242.5 theta: 299.9
-level:  10 p:  525.0 T: 249.5 theta: 299.9
-level:  11 p:  575.0 T: 256.0 theta: 299.9
-level:  12 p:  625.0 T: 262.2 theta: 299.9
-level:  13 p:  675.0 T: 268.0 theta: 299.9
-level:  14 p:  725.0 T: 273.6 theta: 299.9
-level:  15 p:  775.0 T: 278.8 theta: 299.9
-level:  16 p:  825.0 T: 283.8 theta: 299.9
-level:  17 p:  875.0 T: 288.6 theta: 299.9
-level:  18 p:  925.0 T: 293.2 theta: 299.9
-level:  19 p:  975.0 T: 297.7 theta: 299.8
-output_conv at 10500.0 hours 
-level:   0 p:   25.0 T: 146.3 theta: 419.6
-level:   1 p:   75.0 T: 181.0 theta: 379.4
-level:   2 p:  125.0 T: 209.5 theta: 379.4
-level:   3 p:  175.0 T: 182.5 theta: 300.3
-level:   4 p:  225.0 T: 196.1 theta: 300.3
-level:   5 p:  275.0 T: 207.7 theta: 300.3
-level:   6 p:  325.0 T: 217.8 theta: 300.3
-level:   7 p:  375.0 T: 226.9 theta: 300.3
-level:   8 p:  425.0 T: 235.2 theta: 300.3
-level:   9 p:  475.0 T: 242.7 theta: 300.3
-level:  10 p:  525.0 T: 249.8 theta: 300.3
-level:  11 p:  575.0 T: 256.4 theta: 300.3
-level:  12 p:  625.0 T: 262.5 theta: 300.3
-level:  13 p:  675.0 T: 268.4 theta: 300.3
-level:  14 p:  725.0 T: 273.9 theta: 300.2
-level:  15 p:  775.0 T: 279.1 theta: 300.2
-level:  16 p:  825.0 T: 284.2 theta: 300.2
-level:  17 p:  875.0 T: 289.0 theta: 300.2
-level:  18 p:  925.0 T: 293.6 theta: 300.2
-level:  19 p:  975.0 T: 298.1 theta: 300.2
-output_conv at 11000.0 hours 
-level:   0 p:   25.0 T: 146.3 theta: 419.8
-level:   1 p:   75.0 T: 181.0 theta: 379.4
-level:   2 p:  125.0 T: 209.5 theta: 379.4
-level:   3 p:  175.0 T: 182.7 theta: 300.7
-level:   4 p:  225.0 T: 196.3 theta: 300.6
-level:   5 p:  275.0 T: 207.9 theta: 300.6
-level:   6 p:  325.0 T: 218.1 theta: 300.6
-level:   7 p:  375.0 T: 227.2 theta: 300.6
-level:   8 p:  425.0 T: 235.4 theta: 300.6
-level:   9 p:  475.0 T: 243.0 theta: 300.6
-level:  10 p:  525.0 T: 250.1 theta: 300.6
-level:  11 p:  575.0 T: 256.6 theta: 300.6
-level:  12 p:  625.0 T: 262.8 theta: 300.6
-level:  13 p:  675.0 T: 268.7 theta: 300.6
-level:  14 p:  725.0 T: 274.2 theta: 300.6
-level:  15 p:  775.0 T: 279.5 theta: 300.6
-level:  16 p:  825.0 T: 284.5 theta: 300.6
-level:  17 p:  875.0 T: 289.3 theta: 300.6
-level:  18 p:  925.0 T: 293.9 theta: 300.6
-level:  19 p:  975.0 T: 298.4 theta: 300.6
-output_conv at 11500.0 hours 
-level:   0 p:   25.0 T: 146.3 theta: 419.9
-level:   1 p:   75.0 T: 181.0 theta: 379.4
-level:   2 p:  125.0 T: 209.5 theta: 379.4
-level:   3 p:  175.0 T: 182.9 theta: 301.0
-level:   4 p:  225.0 T: 196.5 theta: 301.0
-level:   5 p:  275.0 T: 208.1 theta: 301.0
-level:   6 p:  325.0 T: 218.3 theta: 301.0
-level:   7 p:  375.0 T: 227.4 theta: 300.9
-level:   8 p:  425.0 T: 235.7 theta: 300.9
-level:   9 p:  475.0 T: 243.3 theta: 300.9
-level:  10 p:  525.0 T: 250.3 theta: 300.9
-level:  11 p:  575.0 T: 256.9 theta: 300.9
-level:  12 p:  625.0 T: 263.1 theta: 300.9
-level:  13 p:  675.0 T: 269.0 theta: 300.9
-level:  14 p:  725.0 T: 274.5 theta: 300.9
-level:  15 p:  775.0 T: 279.8 theta: 300.9
-level:  16 p:  825.0 T: 284.8 theta: 300.9
-level:  17 p:  875.0 T: 289.6 theta: 300.9
-level:  18 p:  925.0 T: 294.2 theta: 300.9
-level:  19 p:  975.0 T: 298.7 theta: 300.9
-output_conv at 12000.0 hours 
-level:   0 p:   25.0 T: 146.4 theta: 420.0
-level:   1 p:   75.0 T: 181.0 theta: 379.4
-level:   2 p:  125.0 T: 209.5 theta: 379.4
-level:   3 p:  175.0 T: 183.1 theta: 301.3
-level:   4 p:  225.0 T: 196.7 theta: 301.3
-level:   5 p:  275.0 T: 208.3 theta: 301.3
-level:   6 p:  325.0 T: 218.5 theta: 301.3
-level:   7 p:  375.0 T: 227.6 theta: 301.3
-level:   8 p:  425.0 T: 235.9 theta: 301.2
-level:   9 p:  475.0 T: 243.5 theta: 301.2
-level:  10 p:  525.0 T: 250.6 theta: 301.2
-level:  11 p:  575.0 T: 257.2 theta: 301.2
-level:  12 p:  625.0 T: 263.4 theta: 301.2
-level:  13 p:  675.0 T: 269.2 theta: 301.2
-level:  14 p:  725.0 T: 274.8 theta: 301.2
-level:  15 p:  775.0 T: 280.0 theta: 301.2
-level:  16 p:  825.0 T: 285.1 theta: 301.2
-level:  17 p:  875.0 T: 289.9 theta: 301.2
-level:  18 p:  925.0 T: 294.5 theta: 301.2
-level:  19 p:  975.0 T: 299.0 theta: 301.2
-output_conv at 12500.0 hours 
-level:   0 p:   25.0 T: 146.4 theta: 420.1
-level:   1 p:   75.0 T: 181.0 theta: 379.4
-level:   2 p:  125.0 T: 209.5 theta: 379.4
-level:   3 p:  175.0 T: 183.3 theta: 301.6
-level:   4 p:  225.0 T: 196.9 theta: 301.6
-level:   5 p:  275.0 T: 208.5 theta: 301.6
-level:   6 p:  325.0 T: 218.7 theta: 301.6
-level:   7 p:  375.0 T: 227.9 theta: 301.6
-level:   8 p:  425.0 T: 236.1 theta: 301.5
-level:   9 p:  475.0 T: 243.8 theta: 301.5
-level:  10 p:  525.0 T: 250.8 theta: 301.5
-level:  11 p:  575.0 T: 257.4 theta: 301.5
-level:  12 p:  625.0 T: 263.6 theta: 301.5
-level:  13 p:  675.0 T: 269.5 theta: 301.5
-level:  14 p:  725.0 T: 275.0 theta: 301.5
-level:  15 p:  775.0 T: 280.3 theta: 301.5
-level:  16 p:  825.0 T: 285.4 theta: 301.5
-level:  17 p:  875.0 T: 290.2 theta: 301.5
-level:  18 p:  925.0 T: 294.8 theta: 301.5
-level:  19 p:  975.0 T: 299.3 theta: 301.5
-output_conv at 13000.0 hours 
-level:   0 p:   25.0 T: 146.6 theta: 420.7
-level:   1 p:   75.0 T: 181.0 theta: 379.4
-level:   2 p:  125.0 T: 209.5 theta: 379.4
-level:   3 p:  175.0 T: 183.5 theta: 301.9
-level:   4 p:  225.0 T: 197.1 theta: 301.8
-level:   5 p:  275.0 T: 208.7 theta: 301.8
-level:   6 p:  325.0 T: 218.9 theta: 301.8
-level:   7 p:  375.0 T: 228.1 theta: 301.8
-level:   8 p:  425.0 T: 236.4 theta: 301.8
-level:   9 p:  475.0 T: 244.0 theta: 301.8
-level:  10 p:  525.0 T: 251.1 theta: 301.8
-level:  11 p:  575.0 T: 257.7 theta: 301.8
-level:  12 p:  625.0 T: 263.9 theta: 301.8
-level:  13 p:  675.0 T: 269.7 theta: 301.8
-level:  14 p:  725.0 T: 275.3 theta: 301.8
-level:  15 p:  775.0 T: 280.6 theta: 301.8
-level:  16 p:  825.0 T: 285.6 theta: 301.8
-level:  17 p:  875.0 T: 290.5 theta: 301.8
-level:  18 p:  925.0 T: 295.1 theta: 301.8
-level:  19 p:  975.0 T: 299.6 theta: 301.8
-output_conv at 13500.0 hours 
-level:   0 p:   25.0 T: 146.7 theta: 421.0
-level:   1 p:   75.0 T: 181.0 theta: 379.4
-level:   2 p:  125.0 T: 209.5 theta: 379.4
-level:   3 p:  175.0 T: 183.6 theta: 302.1
-level:   4 p:  225.0 T: 197.3 theta: 302.1
-level:   5 p:  275.0 T: 208.9 theta: 302.1
-level:   6 p:  325.0 T: 219.1 theta: 302.1
-level:   7 p:  375.0 T: 228.2 theta: 302.0
-level:   8 p:  425.0 T: 236.5 theta: 302.0
-level:   9 p:  475.0 T: 244.2 theta: 302.0
-level:  10 p:  525.0 T: 251.3 theta: 302.0
-level:  11 p:  575.0 T: 257.9 theta: 302.0
-level:  12 p:  625.0 T: 264.1 theta: 302.0
-level:  13 p:  675.0 T: 269.9 theta: 302.0
-level:  14 p:  725.0 T: 275.5 theta: 302.0
-level:  15 p:  775.0 T: 280.8 theta: 302.0
-level:  16 p:  825.0 T: 285.8 theta: 302.0
-level:  17 p:  875.0 T: 290.7 theta: 302.0
-level:  18 p:  925.0 T: 295.3 theta: 302.0
-level:  19 p:  975.0 T: 299.8 theta: 302.0
-output_conv at 14000.0 hours 
-level:   0 p:   25.0 T: 146.7 theta: 421.0
-level:   1 p:   75.0 T: 181.0 theta: 379.4
-level:   2 p:  125.0 T: 209.5 theta: 379.4
-level:   3 p:  175.0 T: 183.7 theta: 302.3
-level:   4 p:  225.0 T: 197.4 theta: 302.3
-level:   5 p:  275.0 T: 209.0 theta: 302.3
-level:   6 p:  325.0 T: 219.2 theta: 302.3
-level:   7 p:  375.0 T: 228.4 theta: 302.3
-level:   8 p:  425.0 T: 236.7 theta: 302.3
-level:   9 p:  475.0 T: 244.3 theta: 302.3
-level:  10 p:  525.0 T: 251.4 theta: 302.3
-level:  11 p:  575.0 T: 258.0 theta: 302.3
-level:  12 p:  625.0 T: 264.3 theta: 302.2
-level:  13 p:  675.0 T: 270.1 theta: 302.2
-level:  14 p:  725.0 T: 275.7 theta: 302.2
-level:  15 p:  775.0 T: 281.0 theta: 302.2
-level:  16 p:  825.0 T: 286.0 theta: 302.2
-level:  17 p:  875.0 T: 290.9 theta: 302.2
-level:  18 p:  925.0 T: 295.5 theta: 302.2
-level:  19 p:  975.0 T: 300.0 theta: 302.2
-output_conv at 14500.0 hours 
-level:   0 p:   25.0 T: 146.8 theta: 421.2
-level:   1 p:   75.0 T: 181.0 theta: 379.4
-level:   2 p:  125.0 T: 209.5 theta: 379.4
-level:   3 p:  175.0 T: 183.9 theta: 302.5
-level:   4 p:  225.0 T: 197.5 theta: 302.5
-level:   5 p:  275.0 T: 209.2 theta: 302.5
-level:   6 p:  325.0 T: 219.4 theta: 302.5
-level:   7 p:  375.0 T: 228.6 theta: 302.5
-level:   8 p:  425.0 T: 236.9 theta: 302.5
-level:   9 p:  475.0 T: 244.5 theta: 302.5
-level:  10 p:  525.0 T: 251.6 theta: 302.5
-level:  11 p:  575.0 T: 258.2 theta: 302.5
-level:  12 p:  625.0 T: 264.5 theta: 302.5
-level:  13 p:  675.0 T: 270.3 theta: 302.4
-level:  14 p:  725.0 T: 275.9 theta: 302.4
-level:  15 p:  775.0 T: 281.2 theta: 302.4
-level:  16 p:  825.0 T: 286.2 theta: 302.4
-level:  17 p:  875.0 T: 291.1 theta: 302.4
-level:  18 p:  925.0 T: 295.8 theta: 302.4
-level:  19 p:  975.0 T: 300.2 theta: 302.4
-output_conv at 15000.0 hours 
-level:   0 p:   25.0 T: 147.0 theta: 421.7
-level:   1 p:   75.0 T: 181.0 theta: 379.4
-level:   2 p:  125.0 T: 209.5 theta: 379.4
-level:   3 p:  175.0 T: 184.0 theta: 302.7
-level:   4 p:  225.0 T: 197.7 theta: 302.7
-level:   5 p:  275.0 T: 209.3 theta: 302.7
-level:   6 p:  325.0 T: 219.5 theta: 302.7
-level:   7 p:  375.0 T: 228.7 theta: 302.7
-level:   8 p:  425.0 T: 237.0 theta: 302.7
-level:   9 p:  475.0 T: 244.7 theta: 302.7
-level:  10 p:  525.0 T: 251.8 theta: 302.7
-level:  11 p:  575.0 T: 258.4 theta: 302.7
-level:  12 p:  625.0 T: 264.6 theta: 302.7
-level:  13 p:  675.0 T: 270.5 theta: 302.6
-level:  14 p:  725.0 T: 276.1 theta: 302.6
-level:  15 p:  775.0 T: 281.4 theta: 302.6
-level:  16 p:  825.0 T: 286.4 theta: 302.6
-level:  17 p:  875.0 T: 291.3 theta: 302.6
-level:  18 p:  925.0 T: 295.9 theta: 302.6
-level:  19 p:  975.0 T: 300.4 theta: 302.6
-output_conv at 15500.0 hours 
-level:   0 p:   25.0 T: 147.1 theta: 422.1
-level:   1 p:   75.0 T: 181.0 theta: 379.4
-level:   2 p:  125.0 T: 209.5 theta: 379.4
-level:   3 p:  175.0 T: 184.1 theta: 302.9
-level:   4 p:  225.0 T: 197.8 theta: 302.9
-level:   5 p:  275.0 T: 209.5 theta: 302.9
-level:   6 p:  325.0 T: 219.7 theta: 302.9
-level:   7 p:  375.0 T: 228.9 theta: 302.9
-level:   8 p:  425.0 T: 237.2 theta: 302.9
-level:   9 p:  475.0 T: 244.8 theta: 302.9
-level:  10 p:  525.0 T: 251.9 theta: 302.9
-level:  11 p:  575.0 T: 258.6 theta: 302.8
-level:  12 p:  625.0 T: 264.8 theta: 302.8
-level:  13 p:  675.0 T: 270.7 theta: 302.8
-level:  14 p:  725.0 T: 276.2 theta: 302.8
-level:  15 p:  775.0 T: 281.5 theta: 302.8
-level:  16 p:  825.0 T: 286.6 theta: 302.8
-level:  17 p:  875.0 T: 291.5 theta: 302.8
-level:  18 p:  925.0 T: 296.1 theta: 302.8
-level:  19 p:  975.0 T: 300.6 theta: 302.8
-output_conv at 16000.0 hours 
-level:   0 p:   25.0 T: 147.3 theta: 422.5
-level:   1 p:   75.0 T: 181.0 theta: 379.4
-level:   2 p:  125.0 T: 209.5 theta: 379.4
-level:   3 p:  175.0 T: 184.2 theta: 303.1
-level:   4 p:  225.0 T: 197.9 theta: 303.1
-level:   5 p:  275.0 T: 209.6 theta: 303.0
-level:   6 p:  325.0 T: 219.8 theta: 303.0
-level:   7 p:  375.0 T: 229.0 theta: 303.0
-level:   8 p:  425.0 T: 237.3 theta: 303.0
-level:   9 p:  475.0 T: 245.0 theta: 303.0
-level:  10 p:  525.0 T: 252.1 theta: 303.0
-level:  11 p:  575.0 T: 258.7 theta: 303.0
-level:  12 p:  625.0 T: 264.9 theta: 303.0
-level:  13 p:  675.0 T: 270.8 theta: 303.0
-level:  14 p:  725.0 T: 276.4 theta: 303.0
-level:  15 p:  775.0 T: 281.7 theta: 303.0
-level:  16 p:  825.0 T: 286.8 theta: 303.0
-level:  17 p:  875.0 T: 291.6 theta: 303.0
-level:  18 p:  925.0 T: 296.3 theta: 303.0
-level:  19 p:  975.0 T: 300.8 theta: 303.0
-output_conv at 16500.0 hours 
-level:   0 p:   25.0 T: 147.4 theta: 423.0
-level:   1 p:   75.0 T: 181.0 theta: 379.4
-level:   2 p:  125.0 T: 209.5 theta: 379.4
-level:   3 p:  175.0 T: 184.3 theta: 303.3
-level:   4 p:  225.0 T: 198.0 theta: 303.2
-level:   5 p:  275.0 T: 209.7 theta: 303.2
-level:   6 p:  325.0 T: 219.9 theta: 303.2
-level:   7 p:  375.0 T: 229.1 theta: 303.2
-level:   8 p:  425.0 T: 237.4 theta: 303.2
-level:   9 p:  475.0 T: 245.1 theta: 303.2
-level:  10 p:  525.0 T: 252.2 theta: 303.2
-level:  11 p:  575.0 T: 258.8 theta: 303.2
-level:  12 p:  625.0 T: 265.1 theta: 303.2
-level:  13 p:  675.0 T: 271.0 theta: 303.2
-level:  14 p:  725.0 T: 276.5 theta: 303.2
-level:  15 p:  775.0 T: 281.9 theta: 303.2
-level:  16 p:  825.0 T: 286.9 theta: 303.1
-level:  17 p:  875.0 T: 291.8 theta: 303.1
-level:  18 p:  925.0 T: 296.5 theta: 303.1
-level:  19 p:  975.0 T: 300.9 theta: 303.1
-output_conv at 17000.0 hours 
-level:   0 p:   25.0 T: 147.6 theta: 423.5
-level:   1 p:   75.0 T: 181.0 theta: 379.4
-level:   2 p:  125.0 T: 209.5 theta: 379.4
-level:   3 p:  175.0 T: 184.4 theta: 303.4
-level:   4 p:  225.0 T: 198.1 theta: 303.4
-level:   5 p:  275.0 T: 209.8 theta: 303.4
-level:   6 p:  325.0 T: 220.0 theta: 303.4
-level:   7 p:  375.0 T: 229.2 theta: 303.4
-level:   8 p:  425.0 T: 237.6 theta: 303.3
-level:   9 p:  475.0 T: 245.2 theta: 303.3
-level:  10 p:  525.0 T: 252.3 theta: 303.3
-level:  11 p:  575.0 T: 259.0 theta: 303.3
-level:  12 p:  625.0 T: 265.2 theta: 303.3
-level:  13 p:  675.0 T: 271.1 theta: 303.3
-level:  14 p:  725.0 T: 276.7 theta: 303.3
-level:  15 p:  775.0 T: 282.0 theta: 303.3
-level:  16 p:  825.0 T: 287.1 theta: 303.3
-level:  17 p:  875.0 T: 291.9 theta: 303.3
-level:  18 p:  925.0 T: 296.6 theta: 303.3
-level:  19 p:  975.0 T: 301.1 theta: 303.3
-output_conv at 17500.0 hours 
-level:   0 p:   25.0 T: 148.0 theta: 424.5
-level:   1 p:   75.0 T: 181.0 theta: 379.4
-level:   2 p:  125.0 T: 209.5 theta: 379.4
-level:   3 p:  175.0 T: 184.5 theta: 303.5
-level:   4 p:  225.0 T: 198.2 theta: 303.5
-level:   5 p:  275.0 T: 209.9 theta: 303.5
-level:   6 p:  325.0 T: 220.1 theta: 303.5
-level:   7 p:  375.0 T: 229.3 theta: 303.5
-level:   8 p:  425.0 T: 237.7 theta: 303.5
-level:   9 p:  475.0 T: 245.3 theta: 303.5
-level:  10 p:  525.0 T: 252.5 theta: 303.5
-level:  11 p:  575.0 T: 259.1 theta: 303.5
-level:  12 p:  625.0 T: 265.3 theta: 303.5
-level:  13 p:  675.0 T: 271.2 theta: 303.5
-level:  14 p:  725.0 T: 276.8 theta: 303.4
-level:  15 p:  775.0 T: 282.1 theta: 303.4
-level:  16 p:  825.0 T: 287.2 theta: 303.4
-level:  17 p:  875.0 T: 292.1 theta: 303.4
-level:  18 p:  925.0 T: 296.7 theta: 303.4
-level:  19 p:  975.0 T: 301.2 theta: 303.4
-output_conv at 18000.0 hours 
-level:   0 p:   25.0 T: 148.3 theta: 425.4
-level:   1 p:   75.0 T: 181.0 theta: 379.4
-level:   2 p:  125.0 T: 209.5 theta: 379.4
-level:   3 p:  175.0 T: 184.6 theta: 303.7
-level:   4 p:  225.0 T: 198.3 theta: 303.6
-level:   5 p:  275.0 T: 210.0 theta: 303.6
-level:   6 p:  325.0 T: 220.2 theta: 303.6
-level:   7 p:  375.0 T: 229.4 theta: 303.6
-level:   8 p:  425.0 T: 237.8 theta: 303.6
-level:   9 p:  475.0 T: 245.4 theta: 303.6
-level:  10 p:  525.0 T: 252.6 theta: 303.6
-level:  11 p:  575.0 T: 259.2 theta: 303.6
-level:  12 p:  625.0 T: 265.5 theta: 303.6
-level:  13 p:  675.0 T: 271.3 theta: 303.6
-level:  14 p:  725.0 T: 276.9 theta: 303.6
-level:  15 p:  775.0 T: 282.3 theta: 303.6
-level:  16 p:  825.0 T: 287.3 theta: 303.6
-level:  17 p:  875.0 T: 292.2 theta: 303.6
-level:  18 p:  925.0 T: 296.9 theta: 303.6
-level:  19 p:  975.0 T: 301.4 theta: 303.6
-output_conv at 18500.0 hours 
-level:   0 p:   25.0 T: 148.5 theta: 426.1
-level:   1 p:   75.0 T: 181.0 theta: 379.4
-level:   2 p:  125.0 T: 209.5 theta: 379.4
-level:   3 p:  175.0 T: 184.6 theta: 303.8
-level:   4 p:  225.0 T: 198.4 theta: 303.8
-level:   5 p:  275.0 T: 210.1 theta: 303.8
-level:   6 p:  325.0 T: 220.3 theta: 303.8
-level:   7 p:  375.0 T: 229.5 theta: 303.8
-level:   8 p:  425.0 T: 237.9 theta: 303.7
-level:   9 p:  475.0 T: 245.5 theta: 303.7
-level:  10 p:  525.0 T: 252.7 theta: 303.7
-level:  11 p:  575.0 T: 259.3 theta: 303.7
-level:  12 p:  625.0 T: 265.6 theta: 303.7
-level:  13 p:  675.0 T: 271.5 theta: 303.7
-level:  14 p:  725.0 T: 277.0 theta: 303.7
-level:  15 p:  775.0 T: 282.4 theta: 303.7
-level:  16 p:  825.0 T: 287.4 theta: 303.7
-level:  17 p:  875.0 T: 292.3 theta: 303.7
-level:  18 p:  925.0 T: 297.0 theta: 303.7
-level:  19 p:  975.0 T: 301.5 theta: 303.7
-output_conv at 19000.0 hours 
-level:   0 p:   25.0 T: 149.0 theta: 427.5
-level:   1 p:   75.0 T: 181.0 theta: 379.4
-level:   2 p:  125.0 T: 209.5 theta: 379.4
-level:   3 p:  175.0 T: 184.7 theta: 303.9
-level:   4 p:  225.0 T: 198.4 theta: 303.9
-level:   5 p:  275.0 T: 210.1 theta: 303.9
-level:   6 p:  325.0 T: 220.4 theta: 303.9
-level:   7 p:  375.0 T: 229.6 theta: 303.8
-level:   8 p:  425.0 T: 237.9 theta: 303.8
-level:   9 p:  475.0 T: 245.6 theta: 303.8
-level:  10 p:  525.0 T: 252.7 theta: 303.8
-level:  11 p:  575.0 T: 259.4 theta: 303.8
-level:  12 p:  625.0 T: 265.7 theta: 303.8
-level:  13 p:  675.0 T: 271.5 theta: 303.8
-level:  14 p:  725.0 T: 277.1 theta: 303.8
-level:  15 p:  775.0 T: 282.5 theta: 303.8
-level:  16 p:  825.0 T: 287.5 theta: 303.8
-level:  17 p:  875.0 T: 292.4 theta: 303.8
-level:  18 p:  925.0 T: 297.1 theta: 303.8
-level:  19 p:  975.0 T: 301.6 theta: 303.8
-output_conv at 19500.0 hours 
-level:   0 p:   25.0 T: 149.3 theta: 428.2
-level:   1 p:   75.0 T: 181.0 theta: 379.4
-level:   2 p:  125.0 T: 209.5 theta: 379.4
-level:   3 p:  175.0 T: 184.8 theta: 304.0
-level:   4 p:  225.0 T: 198.5 theta: 304.0
-level:   5 p:  275.0 T: 210.2 theta: 304.0
-level:   6 p:  325.0 T: 220.5 theta: 303.9
-level:   7 p:  375.0 T: 229.7 theta: 303.9
-level:   8 p:  425.0 T: 238.0 theta: 303.9
-level:   9 p:  475.0 T: 245.7 theta: 303.9
-level:  10 p:  525.0 T: 252.8 theta: 303.9
-level:  11 p:  575.0 T: 259.5 theta: 303.9
-level:  12 p:  625.0 T: 265.7 theta: 303.9
-level:  13 p:  675.0 T: 271.6 theta: 303.9
-level:  14 p:  725.0 T: 277.2 theta: 303.9
-level:  15 p:  775.0 T: 282.5 theta: 303.9
-level:  16 p:  825.0 T: 287.6 theta: 303.9
-level:  17 p:  875.0 T: 292.5 theta: 303.9
-level:  18 p:  925.0 T: 297.2 theta: 303.9
-level:  19 p:  975.0 T: 301.7 theta: 303.9
-output_conv at 0.0 hours 
-level:   0 p:   25.0 T: 180.0 theta: 516.4
-level:   1 p:   75.0 T: 185.0 theta: 387.8
-level:   2 p:  125.0 T: 190.0 theta: 344.2
-level:   3 p:  175.0 T: 195.0 theta: 320.9
-level:   4 p:  225.0 T: 200.0 theta: 306.3
-level:   5 p:  275.0 T: 205.0 theta: 296.4
-level:   6 p:  325.0 T: 210.0 theta: 289.5
-level:   7 p:  375.0 T: 215.0 theta: 284.5
-level:   8 p:  425.0 T: 220.0 theta: 280.9
-level:   9 p:  475.0 T: 225.0 theta: 278.3
-level:  10 p:  525.0 T: 230.4 theta: 277.0
-level:  11 p:  575.0 T: 236.1 theta: 276.5
-level:  12 p:  625.0 T: 241.4 theta: 276.1
-level:  13 p:  675.0 T: 246.1 theta: 275.3
-level:  14 p:  725.0 T: 251.1 theta: 275.3
-level:  15 p:  775.0 T: 255.4 theta: 274.7
-level:  16 p:  825.0 T: 259.8 theta: 274.5
-level:  17 p:  875.0 T: 264.0 theta: 274.3
-level:  18 p:  925.0 T: 268.1 theta: 274.1
-level:  19 p:  975.0 T: 272.1 theta: 274.1
-output_conv at 0.0 hours 
-level:   0 p:   25.0 T: 180.0 theta: 516.4
-level:   1 p:   75.0 T: 185.0 theta: 387.8
-level:   2 p:  125.0 T: 190.0 theta: 344.2
-level:   3 p:  175.0 T: 195.0 theta: 320.9
-level:   4 p:  225.0 T: 200.0 theta: 306.3
-level:   5 p:  275.0 T: 205.0 theta: 296.4
-level:   6 p:  325.0 T: 210.0 theta: 289.5
-level:   7 p:  375.0 T: 215.0 theta: 284.5
-level:   8 p:  425.0 T: 220.0 theta: 280.9
-level:   9 p:  475.0 T: 225.0 theta: 278.3
-level:  10 p:  525.0 T: 230.4 theta: 277.0
-level:  11 p:  575.0 T: 236.1 theta: 276.5
-level:  12 p:  625.0 T: 241.4 theta: 276.1
-level:  13 p:  675.0 T: 246.1 theta: 275.3
-level:  14 p:  725.0 T: 251.1 theta: 275.3
-level:  15 p:  775.0 T: 255.4 theta: 274.7
-level:  16 p:  825.0 T: 259.8 theta: 274.5
-level:  17 p:  875.0 T: 264.0 theta: 274.3
-level:  18 p:  925.0 T: 268.1 theta: 274.1
-level:  19 p:  975.0 T: 272.1 theta: 274.1
-output_conv at 0.0 hours 
-level:   0 p:   25.0 T: 180.0 theta: 516.4
-level:   1 p:   75.0 T: 185.0 theta: 387.8
-level:   2 p:  125.0 T: 190.0 theta: 344.2
-level:   3 p:  175.0 T: 195.0 theta: 320.9
-level:   4 p:  225.0 T: 200.0 theta: 306.3
-level:   5 p:  275.0 T: 205.0 theta: 296.4
-level:   6 p:  325.0 T: 210.0 theta: 289.5
-level:   7 p:  375.0 T: 215.0 theta: 284.5
-level:   8 p:  425.0 T: 220.0 theta: 280.9
-level:   9 p:  475.0 T: 225.0 theta: 278.3
-level:  10 p:  525.0 T: 230.4 theta: 277.0
-level:  11 p:  575.0 T: 236.1 theta: 276.5
-level:  12 p:  625.0 T: 241.4 theta: 276.1
-level:  13 p:  675.0 T: 246.1 theta: 275.3
-level:  14 p:  725.0 T: 251.1 theta: 275.3
-level:  15 p:  775.0 T: 255.4 theta: 274.7
-level:  16 p:  825.0 T: 259.8 theta: 274.5
-level:  17 p:  875.0 T: 264.0 theta: 274.3
-level:  18 p:  925.0 T: 268.1 theta: 274.1
-level:  19 p:  975.0 T: 272.1 theta: 274.1
-output_conv at 0.0 hours 
-level:   0 p:   25.0 T: 180.0 theta: 516.4
-level:   1 p:   75.0 T: 185.0 theta: 387.8
-level:   2 p:  125.0 T: 190.0 theta: 344.2
-level:   3 p:  175.0 T: 195.0 theta: 320.9
-level:   4 p:  225.0 T: 200.0 theta: 306.3
-level:   5 p:  275.0 T: 205.0 theta: 296.4
-level:   6 p:  325.0 T: 210.0 theta: 289.5
-level:   7 p:  375.0 T: 215.0 theta: 284.5
-level:   8 p:  425.0 T: 220.0 theta: 280.9
-level:   9 p:  475.0 T: 225.0 theta: 278.3
-level:  10 p:  525.0 T: 230.4 theta: 277.0
-level:  11 p:  575.0 T: 236.1 theta: 276.5
-level:  12 p:  625.0 T: 241.4 theta: 276.1
-level:  13 p:  675.0 T: 246.1 theta: 275.3
-level:  14 p:  725.0 T: 251.1 theta: 275.3
-level:  15 p:  775.0 T: 255.4 theta: 274.7
-level:  16 p:  825.0 T: 259.8 theta: 274.5
-level:  17 p:  875.0 T: 264.0 theta: 274.3
-level:  18 p:  925.0 T: 268.1 theta: 274.1
-level:  19 p:  975.0 T: 272.1 theta: 274.1
+dtau 0.000439, r 0.000220, t 0.999780, s_dir 0.000439, r_dir 0.000439, t_dir 0.999121 
+iteration: 0, dtau 0.000879, r 0.000439, t 0.999561, r_dir 0.000878, s_dir 0.000879, t_dir 0.998243 
+iteration: 1, dtau 0.001758, r 0.000878, t 0.999122, r_dir 0.001755, s_dir 0.001755, t_dir 0.996489 
+iteration: 2, dtau 0.003516, r 0.001755, t 0.998245, r_dir 0.003505, s_dir 0.003505, t_dir 0.992990 
+iteration: 3, dtau 0.007031, r 0.003504, t 0.996496, r_dir 0.006988, s_dir 0.006985, t_dir 0.986030 
+iteration: 4, dtau 0.014063, r 0.006984, t 0.993016, r_dir 0.013886, s_dir 0.013872, t_dir 0.972255 
+iteration: 5, dtau 0.028125, r 0.013870, t 0.986130, r_dir 0.027419, s_dir 0.027357, t_dir 0.945279 
+iteration: 6, dtau 0.056250, r 0.027361, t 0.972639, r_dir 0.053465, s_dir 0.053197, t_dir 0.893553 
+iteration: 7, dtau 0.112500, r 0.053266, t 0.946734, r_dir 0.101730, s_dir 0.100587, t_dir 0.798437 
+iteration: 8, dtau 0.225000, r 0.101144, t 0.898856, r_dir 0.184759, s_dir 0.179920, t_dir 0.637502 
+iteration: 9, dtau 0.450000, r 0.183706, t 0.816294, r_dir 0.308461, s_dir 0.288912, t_dir 0.406409 
+Planetary albedo for an optical thickness of 0.450 and an SZA of 0.50: 0.308461 
+rdir 0.308461, sdir 0.288912, and tdir 0.406409 
+sum: 1.003782 
+layer,player,Tlayer,theta,time
+0,25.000000,221.393000,635.177801,0.000000
+1,75.000000,221.393000,464.060873,0.000000
+2,125.000000,221.393000,401.041758,0.000000
+3,175.000000,221.393000,364.282852,0.000000
+4,225.000000,221.393000,339.042853,0.000000
+5,275.000000,225.299500,325.799855,0.000000
+6,325.000000,232.616500,320.702550,0.000000
+7,375.000000,239.063000,316.386335,0.000000
+8,425.000000,244.842000,312.651495,0.000000
+9,475.000000,250.091000,309.365099,0.000000
+10,525.000000,254.908000,306.434706,0.000000
+11,575.000000,259.365500,303.793542,0.000000
+12,625.000000,263.518000,301.391001,0.000000
+13,675.000000,267.409000,299.189516,0.000000
+14,725.000000,271.073000,297.159548,0.000000
+15,775.000000,274.537000,295.276557,0.000000
+16,825.000000,277.824000,293.521596,0.000000
+17,875.000000,280.953500,291.879487,0.000000
+18,925.000000,283.941500,290.337186,0.000000
+19,975.000000,286.801000,288.883142,0.000000
+dtau 0.000430, r 0.000215, t 0.999785, s_dir 0.000430, r_dir 0.000430, t_dir 0.999141 
+iteration: 0, dtau 0.000859, r 0.000430, t 0.999570, r_dir 0.000859, s_dir 0.000859, t_dir 0.998282 
+iteration: 1, dtau 0.001719, r 0.000859, t 0.999141, r_dir 0.001716, s_dir 0.001717, t_dir 0.996567 
+iteration: 2, dtau 0.003438, r 0.001716, t 0.998284, r_dir 0.003428, s_dir 0.003427, t_dir 0.993146 
+iteration: 3, dtau 0.006875, r 0.003426, t 0.996574, r_dir 0.006833, s_dir 0.006831, t_dir 0.986338 
+iteration: 4, dtau 0.013750, r 0.006830, t 0.993170, r_dir 0.013581, s_dir 0.013568, t_dir 0.972863 
+iteration: 5, dtau 0.027500, r 0.013566, t 0.986434, r_dir 0.026825, s_dir 0.026765, t_dir 0.946463 
+iteration: 6, dtau 0.055000, r 0.026770, t 0.973230, r_dir 0.052335, s_dir 0.052079, t_dir 0.895792 
+iteration: 7, dtau 0.110000, r 0.052143, t 0.947857, r_dir 0.099687, s_dir 0.098596, t_dir 0.802443 
+iteration: 8, dtau 0.220000, r 0.099118, t 0.900882, r_dir 0.181412, s_dir 0.176792, t_dir 0.643915 
+iteration: 9, dtau 0.440000, r 0.180360, t 0.819640, r_dir 0.303937, s_dir 0.285222, t_dir 0.414626 
+Planetary albedo for an optical thickness of 0.440 and an SZA of 0.50: 0.303937 
+rdir 0.303937, sdir 0.285222, and tdir 0.414626 
+sum: 1.003785 
+layer,player,Tlayer,theta,time
+0,25.000000,221.393000,635.177801,0.000000
+1,75.000000,221.393000,464.060873,0.000000
+2,125.000000,221.393000,401.041758,0.000000
+3,175.000000,221.393000,364.282852,0.000000
+4,225.000000,221.393000,339.042853,0.000000
+5,275.000000,225.299500,325.799855,0.000000
+6,325.000000,232.616500,320.702550,0.000000
+7,375.000000,239.063000,316.386335,0.000000
+8,425.000000,244.842000,312.651495,0.000000
+9,475.000000,250.091000,309.365099,0.000000
+10,525.000000,254.908000,306.434706,0.000000
+11,575.000000,259.365500,303.793542,0.000000
+12,625.000000,263.518000,301.391001,0.000000
+13,675.000000,267.409000,299.189516,0.000000
+14,725.000000,271.073000,297.159548,0.000000
+15,775.000000,274.537000,295.276557,0.000000
+16,825.000000,277.824000,293.521596,0.000000
+17,875.000000,280.953500,291.879487,0.000000
+18,925.000000,283.941500,290.337186,0.000000
+19,975.000000,286.801000,288.883142,0.000000
+dtau 0.000977, r 0.000488, t 0.999512, s_dir 0.000488, r_dir 0.000488, t_dir 0.999023 
+iteration: 0, dtau 0.001953, r 0.000976, t 0.999024, r_dir 0.001464, s_dir 0.000976, t_dir 0.998048 
+iteration: 1, dtau 0.003906, r 0.001950, t 0.998050, r_dir 0.003411, s_dir 0.001951, t_dir 0.996099 
+iteration: 2, dtau 0.007812, r 0.003893, t 0.996107, r_dir 0.007293, s_dir 0.003897, t_dir 0.992214 
+iteration: 3, dtau 0.015625, r 0.007756, t 0.992244, r_dir 0.015003, s_dir 0.007776, t_dir 0.984489 
+iteration: 4, dtau 0.031250, r 0.015392, t 0.984608, r_dir 0.030215, s_dir 0.015485, t_dir 0.969218 
+iteration: 5, dtau 0.062500, r 0.030317, t 0.969683, r_dir 0.059829, s_dir 0.030703, t_dir 0.939384 
+iteration: 6, dtau 0.125000, r 0.058851, t 0.941149, r_dir 0.115977, s_dir 0.060295, t_dir 0.882443 
+iteration: 7, dtau 0.250000, r 0.111159, t 0.888841, r_dir 0.217135, s_dir 0.115839, t_dir 0.778706 
+iteration: 8, dtau 0.500000, r 0.200078, t 0.799922, r_dir 0.382680, s_dir 0.211370, t_dir 0.606383 
+iteration: 9, dtau 1.000000, r 0.333442, t 0.666558, r_dir 0.610160, s_dir 0.342989, t_dir 0.367700 
+Planetary albedo for an optical thickness of 1.000 and an SZA of 1.00: 0.610160 
+rdir 0.610160, sdir 0.342989, and tdir 0.367700 
+sum: 1.320848 
+layer,player,Tlayer,theta,time
+0,25.000000,221.393000,635.177801,0.000000
+1,75.000000,221.393000,464.060873,0.000000
+2,125.000000,221.393000,401.041758,0.000000
+3,175.000000,221.393000,364.282852,0.000000
+4,225.000000,221.393000,339.042853,0.000000
+5,275.000000,225.299500,325.799855,0.000000
+6,325.000000,232.616500,320.702550,0.000000
+7,375.000000,239.063000,316.386335,0.000000
+8,425.000000,244.842000,312.651495,0.000000
+9,475.000000,250.091000,309.365099,0.000000
+10,525.000000,254.908000,306.434706,0.000000
+11,575.000000,259.365500,303.793542,0.000000
+12,625.000000,263.518000,301.391001,0.000000
+13,675.000000,267.409000,299.189516,0.000000
+14,725.000000,271.073000,297.159548,0.000000
+15,775.000000,274.537000,295.276557,0.000000
+16,825.000000,277.824000,293.521596,0.000000
+17,875.000000,280.953500,291.879487,0.000000
+18,925.000000,283.941500,290.337186,0.000000
+19,975.000000,286.801000,288.883142,0.000000
+dtau 0.000586, r 0.000293, t 0.999707, s_dir 0.000293, r_dir 0.000293, t_dir 0.999414 
+iteration: 0, dtau 0.001172, r 0.000586, t 0.999414, r_dir 0.000878, s_dir 0.000586, t_dir 0.998828 
+iteration: 1, dtau 0.002344, r 0.001171, t 0.998829, r_dir 0.002048, s_dir 0.001171, t_dir 0.997658 
+iteration: 2, dtau 0.004687, r 0.002339, t 0.997661, r_dir 0.004383, s_dir 0.002340, t_dir 0.995322 
+iteration: 3, dtau 0.009375, r 0.004667, t 0.995333, r_dir 0.009034, s_dir 0.004674, t_dir 0.990666 
+iteration: 4, dtau 0.018750, r 0.009291, t 0.990709, r_dir 0.018259, s_dir 0.009325, t_dir 0.981419 
+iteration: 5, dtau 0.037500, r 0.018410, t 0.981590, r_dir 0.036412, s_dir 0.018556, t_dir 0.963184 
+iteration: 6, dtau 0.075000, r 0.036155, t 0.963845, r_dir 0.071562, s_dir 0.036727, t_dir 0.927723 
+iteration: 7, dtau 0.150000, r 0.069786, t 0.930214, r_dir 0.137519, s_dir 0.071835, t_dir 0.860670 
+iteration: 8, dtau 0.300000, r 0.130468, t 0.869532, r_dir 0.254021, s_dir 0.136696, t_dir 0.740753 
+iteration: 9, dtau 0.600000, r 0.230821, t 0.769179, r_dir 0.437830, s_dir 0.243894, t_dir 0.548715 
+Planetary albedo for an optical thickness of 0.600 and an SZA of 1.00: 0.437830 
+rdir 0.437830, sdir 0.243894, and tdir 0.548715 
+sum: 1.230439 
+layer,player,Tlayer,theta,time
+0,25.000000,221.393000,635.177801,0.000000
+1,75.000000,221.393000,464.060873,0.000000
+2,125.000000,221.393000,401.041758,0.000000
+3,175.000000,221.393000,364.282852,0.000000
+4,225.000000,221.393000,339.042853,0.000000
+5,275.000000,225.299500,325.799855,0.000000
+6,325.000000,232.616500,320.702550,0.000000
+7,375.000000,239.063000,316.386335,0.000000
+8,425.000000,244.842000,312.651495,0.000000
+9,475.000000,250.091000,309.365099,0.000000
+10,525.000000,254.908000,306.434706,0.000000
+11,575.000000,259.365500,303.793542,0.000000
+12,625.000000,263.518000,301.391001,0.000000
+13,675.000000,267.409000,299.189516,0.000000
+14,725.000000,271.073000,297.159548,0.000000
+15,775.000000,274.537000,295.276557,0.000000
+16,825.000000,277.824000,293.521596,0.000000
+17,875.000000,280.953500,291.879487,0.000000
+18,925.000000,283.941500,290.337186,0.000000
+19,975.000000,286.801000,288.883142,0.000000
+dtau 0.000488, r 0.000244, t 0.999756, s_dir 0.000244, r_dir 0.000244, t_dir 0.999512 
+iteration: 0, dtau 0.000977, r 0.000488, t 0.999512, r_dir 0.000732, s_dir 0.000488, t_dir 0.999024 
+iteration: 1, dtau 0.001953, r 0.000976, t 0.999024, r_dir 0.001707, s_dir 0.000976, t_dir 0.998048 
+iteration: 2, dtau 0.003906, r 0.001950, t 0.998050, r_dir 0.003654, s_dir 0.001951, t_dir 0.996100 
+iteration: 3, dtau 0.007812, r 0.003892, t 0.996108, r_dir 0.007535, s_dir 0.003897, t_dir 0.992216 
+iteration: 4, dtau 0.015625, r 0.007754, t 0.992246, r_dir 0.015243, s_dir 0.007778, t_dir 0.984493 
+iteration: 5, dtau 0.031250, r 0.015388, t 0.984612, r_dir 0.030452, s_dir 0.015491, t_dir 0.969226 
+iteration: 6, dtau 0.062500, r 0.030310, t 0.969690, r_dir 0.060059, s_dir 0.030717, t_dir 0.939399 
+iteration: 7, dtau 0.125000, r 0.058837, t 0.941163, r_dir 0.116194, s_dir 0.060329, t_dir 0.882470 
+iteration: 8, dtau 0.250000, r 0.111135, t 0.888865, r_dir 0.217333, s_dir 0.115913, t_dir 0.778753 
+iteration: 9, dtau 0.500000, r 0.200039, t 0.799961, r_dir 0.382853, s_dir 0.211516, t_dir 0.606457 
+Planetary albedo for an optical thickness of 0.500 and an SZA of 1.00: 0.382853 
+rdir 0.382853, sdir 0.211516, and tdir 0.606457 
+sum: 1.200825 
+layer,player,Tlayer,theta,time
+0,25.000000,221.393000,635.177801,0.000000
+1,75.000000,221.393000,464.060873,0.000000
+2,125.000000,221.393000,401.041758,0.000000
+3,175.000000,221.393000,364.282852,0.000000
+4,225.000000,221.393000,339.042853,0.000000
+5,275.000000,225.299500,325.799855,0.000000
+6,325.000000,232.616500,320.702550,0.000000
+7,375.000000,239.063000,316.386335,0.000000
+8,425.000000,244.842000,312.651495,0.000000
+9,475.000000,250.091000,309.365099,0.000000
+10,525.000000,254.908000,306.434706,0.000000
+11,575.000000,259.365500,303.793542,0.000000
+12,625.000000,263.518000,301.391001,0.000000
+13,675.000000,267.409000,299.189516,0.000000
+14,725.000000,271.073000,297.159548,0.000000
+15,775.000000,274.537000,295.276557,0.000000
+16,825.000000,277.824000,293.521596,0.000000
+17,875.000000,280.953500,291.879487,0.000000
+18,925.000000,283.941500,290.337186,0.000000
+19,975.000000,286.801000,288.883142,0.000000
+dtau 0.000000, r 0.000000, t 1.000000, s_dir 0.000000, r_dir 0.000000, t_dir 1.000000 
+iteration: 0, dtau 0.000001, r 0.000000, t 1.000000, r_dir 0.000001, s_dir 0.000000, t_dir 0.999999 
+iteration: 1, dtau 0.000002, r 0.000001, t 0.999999, r_dir 0.000002, s_dir 0.000001, t_dir 0.999998 
+iteration: 2, dtau 0.000004, r 0.000002, t 0.999998, r_dir 0.000004, s_dir 0.000002, t_dir 0.999996 
+iteration: 3, dtau 0.000008, r 0.000004, t 0.999996, r_dir 0.000007, s_dir 0.000004, t_dir 0.999992 
+iteration: 4, dtau 0.000015, r 0.000008, t 0.999992, r_dir 0.000015, s_dir 0.000008, t_dir 0.999985 
+iteration: 5, dtau 0.000031, r 0.000015, t 0.999985, r_dir 0.000030, s_dir 0.000015, t_dir 0.999969 
+iteration: 6, dtau 0.000061, r 0.000031, t 0.999969, r_dir 0.000061, s_dir 0.000031, t_dir 0.999939 
+iteration: 7, dtau 0.000122, r 0.000061, t 0.999939, r_dir 0.000122, s_dir 0.000061, t_dir 0.999878 
+iteration: 8, dtau 0.000244, r 0.000122, t 0.999878, r_dir 0.000244, s_dir 0.000122, t_dir 0.999756 
+iteration: 9, dtau 0.000488, r 0.000244, t 0.999756, r_dir 0.000488, s_dir 0.000244, t_dir 0.999512 
+iteration: 10, dtau 0.000977, r 0.000488, t 0.999512, r_dir 0.000976, s_dir 0.000488, t_dir 0.999024 
+iteration: 11, dtau 0.001953, r 0.000976, t 0.999024, r_dir 0.001951, s_dir 0.000976, t_dir 0.998049 
+iteration: 12, dtau 0.003906, r 0.001949, t 0.998051, r_dir 0.003897, s_dir 0.001951, t_dir 0.996101 
+iteration: 13, dtau 0.007812, r 0.003891, t 0.996109, r_dir 0.007777, s_dir 0.003899, t_dir 0.992218 
+iteration: 14, dtau 0.015625, r 0.007752, t 0.992248, r_dir 0.015483, s_dir 0.007782, t_dir 0.984496 
+iteration: 15, dtau 0.031250, r 0.015385, t 0.984615, r_dir 0.030689, s_dir 0.015500, t_dir 0.969233 
+iteration: 16, dtau 0.062500, r 0.030303, t 0.969697, r_dir 0.060289, s_dir 0.030739, t_dir 0.939413 
+iteration: 17, dtau 0.125000, r 0.058824, t 0.941176, r_dir 0.116412, s_dir 0.060377, t_dir 0.882497 
+iteration: 18, dtau 0.250000, r 0.111111, t 0.888889, r_dir 0.217531, s_dir 0.116013, t_dir 0.778801 
+iteration: 19, dtau 0.500000, r 0.200000, t 0.800000, r_dir 0.383027, s_dir 0.211703, t_dir 0.606531 
+Planetary albedo for an optical thickness of 0.500 and an SZA of 1.00: 0.383027 
+rdir 0.383027, sdir 0.211703, and tdir 0.606531 
+sum: 1.201260 
+layer,player,Tlayer,theta,time
+0,25.000000,221.393000,635.177801,0.000000
+1,75.000000,221.393000,464.060873,0.000000
+2,125.000000,221.393000,401.041758,0.000000
+3,175.000000,221.393000,364.282852,0.000000
+4,225.000000,221.393000,339.042853,0.000000
+5,275.000000,225.299500,325.799855,0.000000
+6,325.000000,232.616500,320.702550,0.000000
+7,375.000000,239.063000,316.386335,0.000000
+8,425.000000,244.842000,312.651495,0.000000
+9,475.000000,250.091000,309.365099,0.000000
+10,525.000000,254.908000,306.434706,0.000000
+11,575.000000,259.365500,303.793542,0.000000
+12,625.000000,263.518000,301.391001,0.000000
+13,675.000000,267.409000,299.189516,0.000000
+14,725.000000,271.073000,297.159548,0.000000
+15,775.000000,274.537000,295.276557,0.000000
+16,825.000000,277.824000,293.521596,0.000000
+17,875.000000,280.953500,291.879487,0.000000
+18,925.000000,283.941500,290.337186,0.000000
+19,975.000000,286.801000,288.883142,0.000000
+dtau 0.000000, r 0.000000, t 1.000000, s_dir 0.000000, r_dir 0.000000, t_dir 1.000000 
+iteration: 0, dtau 0.000001, r 0.000000, t 1.000000, r_dir 0.000001, s_dir 0.000000, t_dir 0.999999 
+iteration: 1, dtau 0.000002, r 0.000001, t 0.999999, r_dir 0.000002, s_dir 0.000001, t_dir 0.999998 
+iteration: 2, dtau 0.000004, r 0.000002, t 0.999998, r_dir 0.000003, s_dir 0.000002, t_dir 0.999996 
+iteration: 3, dtau 0.000007, r 0.000004, t 0.999996, r_dir 0.000007, s_dir 0.000004, t_dir 0.999993 
+iteration: 4, dtau 0.000014, r 0.000007, t 0.999993, r_dir 0.000014, s_dir 0.000007, t_dir 0.999986 
+iteration: 5, dtau 0.000029, r 0.000014, t 0.999986, r_dir 0.000028, s_dir 0.000014, t_dir 0.999971 
+iteration: 6, dtau 0.000057, r 0.000029, t 0.999971, r_dir 0.000057, s_dir 0.000029, t_dir 0.999943 
+iteration: 7, dtau 0.000115, r 0.000057, t 0.999943, r_dir 0.000115, s_dir 0.000057, t_dir 0.999885 
+iteration: 8, dtau 0.000229, r 0.000115, t 0.999885, r_dir 0.000229, s_dir 0.000115, t_dir 0.999771 
+iteration: 9, dtau 0.000459, r 0.000229, t 0.999771, r_dir 0.000459, s_dir 0.000229, t_dir 0.999541 
+iteration: 10, dtau 0.000918, r 0.000459, t 0.999541, r_dir 0.000917, s_dir 0.000459, t_dir 0.999082 
+iteration: 11, dtau 0.001836, r 0.000917, t 0.999083, r_dir 0.001834, s_dir 0.000918, t_dir 0.998166 
+iteration: 12, dtau 0.003672, r 0.001833, t 0.998167, r_dir 0.003664, s_dir 0.001834, t_dir 0.996335 
+iteration: 13, dtau 0.007344, r 0.003658, t 0.996342, r_dir 0.007312, s_dir 0.003665, t_dir 0.992683 
+iteration: 14, dtau 0.014687, r 0.007290, t 0.992710, r_dir 0.014562, s_dir 0.007316, t_dir 0.985420 
+iteration: 15, dtau 0.029375, r 0.014475, t 0.985525, r_dir 0.028879, s_dir 0.014577, t_dir 0.971052 
+iteration: 16, dtau 0.058750, r 0.028537, t 0.971463, r_dir 0.056793, s_dir 0.028924, t_dir 0.942942 
+iteration: 17, dtau 0.117500, r 0.055490, t 0.944510, r_dir 0.109885, s_dir 0.056882, t_dir 0.889140 
+iteration: 18, dtau 0.235000, r 0.105145, t 0.894855, r_dir 0.206120, s_dir 0.109604, t_dir 0.790571 
+iteration: 19, dtau 0.470000, r 0.190283, t 0.809717, r_dir 0.365391, s_dir 0.201329, t_dir 0.625002 
+Planetary albedo for an optical thickness of 0.470 and an SZA of 1.00: 0.365391 
+rdir 0.365391, sdir 0.201329, and tdir 0.625002 
+sum: 1.191722 
+layer,player,Tlayer,theta,time
+0,25.000000,221.393000,635.177801,0.000000
+1,75.000000,221.393000,464.060873,0.000000
+2,125.000000,221.393000,401.041758,0.000000
+3,175.000000,221.393000,364.282852,0.000000
+4,225.000000,221.393000,339.042853,0.000000
+5,275.000000,225.299500,325.799855,0.000000
+6,325.000000,232.616500,320.702550,0.000000
+7,375.000000,239.063000,316.386335,0.000000
+8,425.000000,244.842000,312.651495,0.000000
+9,475.000000,250.091000,309.365099,0.000000
+10,525.000000,254.908000,306.434706,0.000000
+11,575.000000,259.365500,303.793542,0.000000
+12,625.000000,263.518000,301.391001,0.000000
+13,675.000000,267.409000,299.189516,0.000000
+14,725.000000,271.073000,297.159548,0.000000
+15,775.000000,274.537000,295.276557,0.000000
+16,825.000000,277.824000,293.521596,0.000000
+17,875.000000,280.953500,291.879487,0.000000
+18,925.000000,283.941500,290.337186,0.000000
+19,975.000000,286.801000,288.883142,0.000000
+dtau 0.000000, r 0.000000, t 1.000000, s_dir 0.000000, r_dir 0.000000, t_dir 1.000000 
+iteration: 0, dtau 0.000001, r 0.000000, t 1.000000, r_dir 0.000001, s_dir 0.000000, t_dir 0.999999 
+iteration: 1, dtau 0.000002, r 0.000001, t 0.999999, r_dir 0.000002, s_dir 0.000001, t_dir 0.999998 
+iteration: 2, dtau 0.000003, r 0.000002, t 0.999998, r_dir 0.000003, s_dir 0.000002, t_dir 0.999997 
+iteration: 3, dtau 0.000007, r 0.000003, t 0.999997, r_dir 0.000007, s_dir 0.000003, t_dir 0.999993 
+iteration: 4, dtau 0.000014, r 0.000007, t 0.999993, r_dir 0.000014, s_dir 0.000007, t_dir 0.999986 
+iteration: 5, dtau 0.000027, r 0.000014, t 0.999986, r_dir 0.000027, s_dir 0.000014, t_dir 0.999973 
+iteration: 6, dtau 0.000055, r 0.000027, t 0.999973, r_dir 0.000055, s_dir 0.000027, t_dir 0.999945 
+iteration: 7, dtau 0.000110, r 0.000055, t 0.999945, r_dir 0.000110, s_dir 0.000055, t_dir 0.999890 
+iteration: 8, dtau 0.000220, r 0.000110, t 0.999890, r_dir 0.000219, s_dir 0.000110, t_dir 0.999780 
+iteration: 9, dtau 0.000439, r 0.000220, t 0.999780, r_dir 0.000439, s_dir 0.000220, t_dir 0.999561 
+iteration: 10, dtau 0.000879, r 0.000439, t 0.999561, r_dir 0.000878, s_dir 0.000439, t_dir 0.999121 
+iteration: 11, dtau 0.001758, r 0.000878, t 0.999122, r_dir 0.001756, s_dir 0.000879, t_dir 0.998244 
+iteration: 12, dtau 0.003516, r 0.001755, t 0.998245, r_dir 0.003508, s_dir 0.001756, t_dir 0.996491 
+iteration: 13, dtau 0.007031, r 0.003503, t 0.996497, r_dir 0.007002, s_dir 0.003509, t_dir 0.992993 
+iteration: 14, dtau 0.014063, r 0.006982, t 0.993018, r_dir 0.013948, s_dir 0.007006, t_dir 0.986036 
+iteration: 15, dtau 0.028125, r 0.013867, t 0.986133, r_dir 0.027670, s_dir 0.013961, t_dir 0.972267 
+iteration: 16, dtau 0.056250, r 0.027356, t 0.972644, r_dir 0.054454, s_dir 0.027713, t_dir 0.945303 
+iteration: 17, dtau 0.112500, r 0.053254, t 0.946746, r_dir 0.105503, s_dir 0.054542, t_dir 0.893597 
+iteration: 18, dtau 0.225000, r 0.101124, t 0.898876, r_dir 0.198408, s_dir 0.105290, t_dir 0.798516 
+iteration: 19, dtau 0.450000, r 0.183674, t 0.816326, r_dir 0.353325, s_dir 0.194246, t_dir 0.637628 
+Planetary albedo for an optical thickness of 0.450 and an SZA of 1.00: 0.353325 
+rdir 0.353325, sdir 0.194246, and tdir 0.637628 
+sum: 1.185199 
+layer,player,Tlayer,theta,time
+0,25.000000,221.393000,635.177801,0.000000
+1,75.000000,221.393000,464.060873,0.000000
+2,125.000000,221.393000,401.041758,0.000000
+3,175.000000,221.393000,364.282852,0.000000
+4,225.000000,221.393000,339.042853,0.000000
+5,275.000000,225.299500,325.799855,0.000000
+6,325.000000,232.616500,320.702550,0.000000
+7,375.000000,239.063000,316.386335,0.000000
+8,425.000000,244.842000,312.651495,0.000000
+9,475.000000,250.091000,309.365099,0.000000
+10,525.000000,254.908000,306.434706,0.000000
+11,575.000000,259.365500,303.793542,0.000000
+12,625.000000,263.518000,301.391001,0.000000
+13,675.000000,267.409000,299.189516,0.000000
+14,725.000000,271.073000,297.159548,0.000000
+15,775.000000,274.537000,295.276557,0.000000
+16,825.000000,277.824000,293.521596,0.000000
+17,875.000000,280.953500,291.879487,0.000000
+18,925.000000,283.941500,290.337186,0.000000
+19,975.000000,286.801000,288.883142,0.000000
+dtau 0.000000, r 0.000000, t 1.000000, s_dir 0.000000, r_dir 0.000000, t_dir 1.000000 
+iteration: 0, dtau 0.000001, r 0.000000, t 1.000000, r_dir 0.000001, s_dir 0.000000, t_dir 0.999999 
+iteration: 1, dtau 0.000002, r 0.000001, t 0.999999, r_dir 0.000001, s_dir 0.000001, t_dir 0.999998 
+iteration: 2, dtau 0.000003, r 0.000002, t 0.999998, r_dir 0.000003, s_dir 0.000002, t_dir 0.999997 
+iteration: 3, dtau 0.000006, r 0.000003, t 0.999997, r_dir 0.000006, s_dir 0.000003, t_dir 0.999994 
+iteration: 4, dtau 0.000013, r 0.000006, t 0.999994, r_dir 0.000012, s_dir 0.000006, t_dir 0.999987 
+iteration: 5, dtau 0.000025, r 0.000013, t 0.999987, r_dir 0.000025, s_dir 0.000013, t_dir 0.999975 
+iteration: 6, dtau 0.000050, r 0.000025, t 0.999975, r_dir 0.000050, s_dir 0.000025, t_dir 0.999950 
+iteration: 7, dtau 0.000100, r 0.000050, t 0.999950, r_dir 0.000100, s_dir 0.000050, t_dir 0.999900 
+iteration: 8, dtau 0.000200, r 0.000100, t 0.999900, r_dir 0.000200, s_dir 0.000100, t_dir 0.999800 
+iteration: 9, dtau 0.000400, r 0.000200, t 0.999800, r_dir 0.000400, s_dir 0.000200, t_dir 0.999600 
+iteration: 10, dtau 0.000801, r 0.000400, t 0.999600, r_dir 0.000800, s_dir 0.000400, t_dir 0.999200 
+iteration: 11, dtau 0.001602, r 0.000800, t 0.999200, r_dir 0.001600, s_dir 0.000800, t_dir 0.998400 
+iteration: 12, dtau 0.003203, r 0.001599, t 0.998401, r_dir 0.003197, s_dir 0.001600, t_dir 0.996802 
+iteration: 13, dtau 0.006406, r 0.003193, t 0.996807, r_dir 0.006382, s_dir 0.003198, t_dir 0.993614 
+iteration: 14, dtau 0.012812, r 0.006365, t 0.993635, r_dir 0.012717, s_dir 0.006386, t_dir 0.987269 
+iteration: 15, dtau 0.025625, r 0.012650, t 0.987350, r_dir 0.025247, s_dir 0.012729, t_dir 0.974701 
+iteration: 16, dtau 0.051250, r 0.024985, t 0.975015, r_dir 0.049755, s_dir 0.025284, t_dir 0.950041 
+iteration: 17, dtau 0.102500, r 0.048751, t 0.951249, r_dir 0.096665, s_dir 0.049841, t_dir 0.902578 
+iteration: 18, dtau 0.205000, r 0.092971, t 0.907029, r_dir 0.182728, s_dir 0.096564, t_dir 0.814647 
+iteration: 19, dtau 0.410000, r 0.170125, t 0.829875, r_dir 0.328422, s_dir 0.179679, t_dir 0.663650 
+Planetary albedo for an optical thickness of 0.410 and an SZA of 1.00: 0.328422 
+rdir 0.328422, sdir 0.179679, and tdir 0.663650 
+sum: 1.171751 
+layer,player,Tlayer,theta,time
+0,25.000000,221.393000,635.177801,0.000000
+1,75.000000,221.393000,464.060873,0.000000
+2,125.000000,221.393000,401.041758,0.000000
+3,175.000000,221.393000,364.282852,0.000000
+4,225.000000,221.393000,339.042853,0.000000
+5,275.000000,225.299500,325.799855,0.000000
+6,325.000000,232.616500,320.702550,0.000000
+7,375.000000,239.063000,316.386335,0.000000
+8,425.000000,244.842000,312.651495,0.000000
+9,475.000000,250.091000,309.365099,0.000000
+10,525.000000,254.908000,306.434706,0.000000
+11,575.000000,259.365500,303.793542,0.000000
+12,625.000000,263.518000,301.391001,0.000000
+13,675.000000,267.409000,299.189516,0.000000
+14,725.000000,271.073000,297.159548,0.000000
+15,775.000000,274.537000,295.276557,0.000000
+16,825.000000,277.824000,293.521596,0.000000
+17,875.000000,280.953500,291.879487,0.000000
+18,925.000000,283.941500,290.337186,0.000000
+19,975.000000,286.801000,288.883142,0.000000
+dtau 0.000000, r 0.000000, t 1.000000, s_dir 0.000000, r_dir 0.000000, t_dir 1.000000 
+iteration: 0, dtau 0.000001, r 0.000000, t 1.000000, r_dir 0.000001, s_dir 0.000000, t_dir 0.999999 
+iteration: 1, dtau 0.000001, r 0.000001, t 0.999999, r_dir 0.000001, s_dir 0.000001, t_dir 0.999999 
+iteration: 2, dtau 0.000003, r 0.000001, t 0.999999, r_dir 0.000003, s_dir 0.000001, t_dir 0.999997 
+iteration: 3, dtau 0.000006, r 0.000003, t 0.999997, r_dir 0.000006, s_dir 0.000003, t_dir 0.999994 
+iteration: 4, dtau 0.000012, r 0.000006, t 0.999994, r_dir 0.000012, s_dir 0.000006, t_dir 0.999988 
+iteration: 5, dtau 0.000024, r 0.000012, t 0.999988, r_dir 0.000024, s_dir 0.000012, t_dir 0.999976 
+iteration: 6, dtau 0.000048, r 0.000024, t 0.999976, r_dir 0.000047, s_dir 0.000024, t_dir 0.999952 
+iteration: 7, dtau 0.000095, r 0.000048, t 0.999952, r_dir 0.000095, s_dir 0.000048, t_dir 0.999905 
+iteration: 8, dtau 0.000190, r 0.000095, t 0.999905, r_dir 0.000190, s_dir 0.000095, t_dir 0.999810 
+iteration: 9, dtau 0.000381, r 0.000190, t 0.999810, r_dir 0.000381, s_dir 0.000190, t_dir 0.999619 
+iteration: 10, dtau 0.000762, r 0.000381, t 0.999619, r_dir 0.000761, s_dir 0.000381, t_dir 0.999239 
+iteration: 11, dtau 0.001523, r 0.000761, t 0.999239, r_dir 0.001522, s_dir 0.000761, t_dir 0.998478 
+iteration: 12, dtau 0.003047, r 0.001521, t 0.998479, r_dir 0.003041, s_dir 0.001522, t_dir 0.996958 
+iteration: 13, dtau 0.006094, r 0.003038, t 0.996962, r_dir 0.006072, s_dir 0.003042, t_dir 0.993925 
+iteration: 14, dtau 0.012188, r 0.006057, t 0.993943, r_dir 0.012101, s_dir 0.006075, t_dir 0.987886 
+iteration: 15, dtau 0.024375, r 0.012041, t 0.987959, r_dir 0.024032, s_dir 0.012112, t_dir 0.975920 
+iteration: 16, dtau 0.048750, r 0.023795, t 0.976205, r_dir 0.047396, s_dir 0.024067, t_dir 0.952419 
+iteration: 17, dtau 0.097500, r 0.046484, t 0.953516, r_dir 0.092208, s_dir 0.047478, t_dir 0.907102 
+iteration: 18, dtau 0.195000, r 0.088838, t 0.911162, r_dir 0.174757, s_dir 0.092153, t_dir 0.822835 
+iteration: 19, dtau 0.390000, r 0.163180, t 0.836820, r_dir 0.315573, s_dir 0.172193, t_dir 0.677057 
+Planetary albedo for an optical thickness of 0.390 and an SZA of 1.00: 0.315573 
+rdir 0.315573, sdir 0.172193, and tdir 0.677057 
+sum: 1.164822 
+layer,player,Tlayer,theta,time
+0,25.000000,221.393000,635.177801,0.000000
+1,75.000000,221.393000,464.060873,0.000000
+2,125.000000,221.393000,401.041758,0.000000
+3,175.000000,221.393000,364.282852,0.000000
+4,225.000000,221.393000,339.042853,0.000000
+5,275.000000,225.299500,325.799855,0.000000
+6,325.000000,232.616500,320.702550,0.000000
+7,375.000000,239.063000,316.386335,0.000000
+8,425.000000,244.842000,312.651495,0.000000
+9,475.000000,250.091000,309.365099,0.000000
+10,525.000000,254.908000,306.434706,0.000000
+11,575.000000,259.365500,303.793542,0.000000
+12,625.000000,263.518000,301.391001,0.000000
+13,675.000000,267.409000,299.189516,0.000000
+14,725.000000,271.073000,297.159548,0.000000
+15,775.000000,274.537000,295.276557,0.000000
+16,825.000000,277.824000,293.521596,0.000000
+17,875.000000,280.953500,291.879487,0.000000
+18,925.000000,283.941500,290.337186,0.000000
+19,975.000000,286.801000,288.883142,0.000000
+dtau 0.000000, r 0.000000, t 1.000000, s_dir 0.000000, r_dir 0.000000, t_dir 1.000000 
+iteration: 0, dtau 0.000001, r 0.000000, t 1.000000, r_dir 0.000001, s_dir 0.000000, t_dir 0.999999 
+iteration: 1, dtau 0.000001, r 0.000001, t 0.999999, r_dir 0.000001, s_dir 0.000001, t_dir 0.999999 
+iteration: 2, dtau 0.000003, r 0.000001, t 0.999999, r_dir 0.000003, s_dir 0.000001, t_dir 0.999997 
+iteration: 3, dtau 0.000006, r 0.000003, t 0.999997, r_dir 0.000005, s_dir 0.000003, t_dir 0.999994 
+iteration: 4, dtau 0.000011, r 0.000006, t 0.999994, r_dir 0.000011, s_dir 0.000006, t_dir 0.999989 
+iteration: 5, dtau 0.000023, r 0.000011, t 0.999989, r_dir 0.000022, s_dir 0.000011, t_dir 0.999977 
+iteration: 6, dtau 0.000045, r 0.000023, t 0.999977, r_dir 0.000045, s_dir 0.000023, t_dir 0.999955 
+iteration: 7, dtau 0.000090, r 0.000045, t 0.999955, r_dir 0.000090, s_dir 0.000045, t_dir 0.999910 
+iteration: 8, dtau 0.000181, r 0.000090, t 0.999910, r_dir 0.000180, s_dir 0.000090, t_dir 0.999819 
+iteration: 9, dtau 0.000361, r 0.000181, t 0.999819, r_dir 0.000361, s_dir 0.000181, t_dir 0.999639 
+iteration: 10, dtau 0.000723, r 0.000361, t 0.999639, r_dir 0.000722, s_dir 0.000361, t_dir 0.999278 
+iteration: 11, dtau 0.001445, r 0.000722, t 0.999278, r_dir 0.001444, s_dir 0.000722, t_dir 0.998556 
+iteration: 12, dtau 0.002891, r 0.001443, t 0.998557, r_dir 0.002886, s_dir 0.001444, t_dir 0.997114 
+iteration: 13, dtau 0.005781, r 0.002882, t 0.997118, r_dir 0.005762, s_dir 0.002886, t_dir 0.994235 
+iteration: 14, dtau 0.011562, r 0.005748, t 0.994252, r_dir 0.011485, s_dir 0.005764, t_dir 0.988504 
+iteration: 15, dtau 0.023125, r 0.011430, t 0.988570, r_dir 0.022816, s_dir 0.011494, t_dir 0.977140 
+iteration: 16, dtau 0.046250, r 0.022602, t 0.977398, r_dir 0.045030, s_dir 0.022848, t_dir 0.954803 
+iteration: 17, dtau 0.092500, r 0.044206, t 0.955794, r_dir 0.087725, s_dir 0.045109, t_dir 0.911649 
+iteration: 18, dtau 0.185000, r 0.084668, t 0.915332, r_dir 0.166698, s_dir 0.087708, t_dir 0.831104 
+iteration: 19, dtau 0.370000, r 0.156118, t 0.843882, r_dir 0.302449, s_dir 0.164571, t_dir 0.690734 
+Planetary albedo for an optical thickness of 0.370 and an SZA of 1.00: 0.302449 
+rdir 0.302449, sdir 0.164571, and tdir 0.690734 
+sum: 1.157755 
+layer,player,Tlayer,theta,time
+0,25.000000,221.393000,635.177801,0.000000
+1,75.000000,221.393000,464.060873,0.000000
+2,125.000000,221.393000,401.041758,0.000000
+3,175.000000,221.393000,364.282852,0.000000
+4,225.000000,221.393000,339.042853,0.000000
+5,275.000000,225.299500,325.799855,0.000000
+6,325.000000,232.616500,320.702550,0.000000
+7,375.000000,239.063000,316.386335,0.000000
+8,425.000000,244.842000,312.651495,0.000000
+9,475.000000,250.091000,309.365099,0.000000
+10,525.000000,254.908000,306.434706,0.000000
+11,575.000000,259.365500,303.793542,0.000000
+12,625.000000,263.518000,301.391001,0.000000
+13,675.000000,267.409000,299.189516,0.000000
+14,725.000000,271.073000,297.159548,0.000000
+15,775.000000,274.537000,295.276557,0.000000
+16,825.000000,277.824000,293.521596,0.000000
+17,875.000000,280.953500,291.879487,0.000000
+18,925.000000,283.941500,290.337186,0.000000
+19,975.000000,286.801000,288.883142,0.000000
+dtau 0.000000, r 0.000000, t 1.000000, s_dir 0.000001, r_dir 0.000001, t_dir 0.999998 
+iteration: 0, dtau 0.000001, r 0.000000, t 1.000000, r_dir 0.000001, s_dir 0.000002, t_dir 0.999996 
+iteration: 1, dtau 0.000002, r 0.000001, t 0.999999, r_dir 0.000002, s_dir 0.000004, t_dir 0.999992 
+iteration: 2, dtau 0.000004, r 0.000002, t 0.999998, r_dir 0.000004, s_dir 0.000008, t_dir 0.999984 
+iteration: 3, dtau 0.000008, r 0.000004, t 0.999996, r_dir 0.000008, s_dir 0.000016, t_dir 0.999968 
+iteration: 4, dtau 0.000016, r 0.000008, t 0.999992, r_dir 0.000016, s_dir 0.000032, t_dir 0.999937 
+iteration: 5, dtau 0.000032, r 0.000016, t 0.999984, r_dir 0.000032, s_dir 0.000063, t_dir 0.999873 
+iteration: 6, dtau 0.000063, r 0.000032, t 0.999968, r_dir 0.000064, s_dir 0.000127, t_dir 0.999747 
+iteration: 7, dtau 0.000127, r 0.000063, t 0.999937, r_dir 0.000127, s_dir 0.000253, t_dir 0.999493 
+iteration: 8, dtau 0.000254, r 0.000127, t 0.999873, r_dir 0.000254, s_dir 0.000507, t_dir 0.998986 
+iteration: 9, dtau 0.000508, r 0.000254, t 0.999746, r_dir 0.000508, s_dir 0.001013, t_dir 0.997974 
+iteration: 10, dtau 0.001016, r 0.000508, t 0.999492, r_dir 0.001014, s_dir 0.002024, t_dir 0.995952 
+iteration: 11, dtau 0.002031, r 0.001015, t 0.998985, r_dir 0.002025, s_dir 0.004039, t_dir 0.991920 
+iteration: 12, dtau 0.004063, r 0.002027, t 0.997973, r_dir 0.004037, s_dir 0.008043, t_dir 0.983906 
+iteration: 13, dtau 0.008125, r 0.004046, t 0.995954, r_dir 0.008022, s_dir 0.015949, t_dir 0.968070 
+iteration: 14, dtau 0.016250, r 0.008060, t 0.991940, r_dir 0.015840, s_dir 0.031355, t_dir 0.937160 
+iteration: 15, dtau 0.032500, r 0.015990, t 0.984010, r_dir 0.030886, s_dir 0.060607, t_dir 0.878269 
+iteration: 16, dtau 0.065000, r 0.031477, t 0.968523, r_dir 0.058756, s_dir 0.113310, t_dir 0.771356 
+iteration: 17, dtau 0.130000, r 0.061033, t 0.938967, r_dir 0.106599, s_dir 0.198638, t_dir 0.594990 
+iteration: 18, dtau 0.260000, r 0.115044, t 0.884956, r_dir 0.177274, s_dir 0.309047, t_dir 0.354013 
+iteration: 19, dtau 0.520000, r 0.206349, t 0.793651, r_dir 0.255072, s_dir 0.393043, t_dir 0.125325 
+Planetary albedo for an optical thickness of 0.520 and an SZA of 0.25: 0.255072 
+rdir 0.255072, sdir 0.393043, and tdir 0.125325 
+sum: 0.773441 
+layer,player,Tlayer,theta,time
+0,25.000000,221.393000,635.177801,0.000000
+1,75.000000,221.393000,464.060873,0.000000
+2,125.000000,221.393000,401.041758,0.000000
+3,175.000000,221.393000,364.282852,0.000000
+4,225.000000,221.393000,339.042853,0.000000
+5,275.000000,225.299500,325.799855,0.000000
+6,325.000000,232.616500,320.702550,0.000000
+7,375.000000,239.063000,316.386335,0.000000
+8,425.000000,244.842000,312.651495,0.000000
+9,475.000000,250.091000,309.365099,0.000000
+10,525.000000,254.908000,306.434706,0.000000
+11,575.000000,259.365500,303.793542,0.000000
+12,625.000000,263.518000,301.391001,0.000000
+13,675.000000,267.409000,299.189516,0.000000
+14,725.000000,271.073000,297.159548,0.000000
+15,775.000000,274.537000,295.276557,0.000000
+16,825.000000,277.824000,293.521596,0.000000
+17,875.000000,280.953500,291.879487,0.000000
+18,925.000000,283.941500,290.337186,0.000000
+19,975.000000,286.801000,288.883142,0.000000
+dtau 0.000000, r 0.000000, t 1.000000, s_dir 0.000001, r_dir 0.000001, t_dir 0.999998 
+iteration: 0, dtau 0.000001, r 0.000000, t 1.000000, r_dir 0.000001, s_dir 0.000002, t_dir 0.999996 
+iteration: 1, dtau 0.000002, r 0.000001, t 0.999999, r_dir 0.000002, s_dir 0.000004, t_dir 0.999993 
+iteration: 2, dtau 0.000004, r 0.000002, t 0.999998, r_dir 0.000004, s_dir 0.000007, t_dir 0.999985 
+iteration: 3, dtau 0.000007, r 0.000004, t 0.999996, r_dir 0.000008, s_dir 0.000015, t_dir 0.999971 
+iteration: 4, dtau 0.000015, r 0.000007, t 0.999993, r_dir 0.000015, s_dir 0.000029, t_dir 0.999941 
+iteration: 5, dtau 0.000029, r 0.000015, t 0.999985, r_dir 0.000030, s_dir 0.000059, t_dir 0.999883 
+iteration: 6, dtau 0.000059, r 0.000029, t 0.999971, r_dir 0.000059, s_dir 0.000117, t_dir 0.999766 
+iteration: 7, dtau 0.000117, r 0.000059, t 0.999941, r_dir 0.000118, s_dir 0.000234, t_dir 0.999532 
+iteration: 8, dtau 0.000234, r 0.000117, t 0.999883, r_dir 0.000235, s_dir 0.000468, t_dir 0.999064 
+iteration: 9, dtau 0.000469, r 0.000234, t 0.999766, r_dir 0.000469, s_dir 0.000935, t_dir 0.998130 
+iteration: 10, dtau 0.000937, r 0.000469, t 0.999531, r_dir 0.000937, s_dir 0.001868, t_dir 0.996263 
+iteration: 11, dtau 0.001875, r 0.000937, t 0.999063, r_dir 0.001870, s_dir 0.003729, t_dir 0.992539 
+iteration: 12, dtau 0.003750, r 0.001871, t 0.998129, r_dir 0.003728, s_dir 0.007429, t_dir 0.985134 
+iteration: 13, dtau 0.007500, r 0.003736, t 0.996264, r_dir 0.007412, s_dir 0.014741, t_dir 0.970490 
+iteration: 14, dtau 0.015000, r 0.007444, t 0.992556, r_dir 0.014650, s_dir 0.029019, t_dir 0.941850 
+iteration: 15, dtau 0.030000, r 0.014778, t 0.985222, r_dir 0.028621, s_dir 0.056239, t_dir 0.887082 
+iteration: 16, dtau 0.060000, r 0.029126, t 0.970874, r_dir 0.054653, s_dir 0.105678, t_dir 0.786914 
+iteration: 17, dtau 0.120000, r 0.056604, t 0.943396, r_dir 0.099863, s_dir 0.187063, t_dir 0.619234 
+iteration: 18, dtau 0.240000, r 0.107143, t 0.892857, r_dir 0.168200, s_dir 0.296191, t_dir 0.383451 
+iteration: 19, dtau 0.480000, r 0.193548, t 0.806452, r_dir 0.246869, s_dir 0.387343, t_dir 0.147035 
+Planetary albedo for an optical thickness of 0.480 and an SZA of 0.25: 0.246869 
+rdir 0.246869, sdir 0.387343, and tdir 0.147035 
+sum: 0.781247 
+layer,player,Tlayer,theta,time
+0,25.000000,221.393000,635.177801,0.000000
+1,75.000000,221.393000,464.060873,0.000000
+2,125.000000,221.393000,401.041758,0.000000
+3,175.000000,221.393000,364.282852,0.000000
+4,225.000000,221.393000,339.042853,0.000000
+5,275.000000,225.299500,325.799855,0.000000
+6,325.000000,232.616500,320.702550,0.000000
+7,375.000000,239.063000,316.386335,0.000000
+8,425.000000,244.842000,312.651495,0.000000
+9,475.000000,250.091000,309.365099,0.000000
+10,525.000000,254.908000,306.434706,0.000000
+11,575.000000,259.365500,303.793542,0.000000
+12,625.000000,263.518000,301.391001,0.000000
+13,675.000000,267.409000,299.189516,0.000000
+14,725.000000,271.073000,297.159548,0.000000
+15,775.000000,274.537000,295.276557,0.000000
+16,825.000000,277.824000,293.521596,0.000000
+17,875.000000,280.953500,291.879487,0.000000
+18,925.000000,283.941500,290.337186,0.000000
+19,975.000000,286.801000,288.883142,0.000000
+dtau 0.000001, r 0.000000, t 1.000000, s_dir 0.000001, r_dir 0.000001, t_dir 0.999998 
+iteration: 0, dtau 0.000001, r 0.000001, t 0.999999, r_dir 0.000002, s_dir 0.000002, t_dir 0.999995 
+iteration: 1, dtau 0.000002, r 0.000001, t 0.999999, r_dir 0.000003, s_dir 0.000005, t_dir 0.999991 
+iteration: 2, dtau 0.000005, r 0.000002, t 0.999998, r_dir 0.000005, s_dir 0.000009, t_dir 0.999982 
+iteration: 3, dtau 0.000009, r 0.000005, t 0.999995, r_dir 0.000010, s_dir 0.000018, t_dir 0.999963 
+iteration: 4, dtau 0.000018, r 0.000009, t 0.999991, r_dir 0.000019, s_dir 0.000037, t_dir 0.999927 
+iteration: 5, dtau 0.000037, r 0.000018, t 0.999982, r_dir 0.000037, s_dir 0.000073, t_dir 0.999854 
+iteration: 6, dtau 0.000073, r 0.000037, t 0.999963, r_dir 0.000074, s_dir 0.000146, t_dir 0.999708 
+iteration: 7, dtau 0.000146, r 0.000073, t 0.999927, r_dir 0.000147, s_dir 0.000292, t_dir 0.999415 
+iteration: 8, dtau 0.000293, r 0.000146, t 0.999854, r_dir 0.000293, s_dir 0.000585, t_dir 0.998831 
+iteration: 9, dtau 0.000586, r 0.000293, t 0.999707, r_dir 0.000586, s_dir 0.001169, t_dir 0.997663 
+iteration: 10, dtau 0.001172, r 0.000586, t 0.999414, r_dir 0.001170, s_dir 0.002334, t_dir 0.995331 
+iteration: 11, dtau 0.002344, r 0.001171, t 0.998829, r_dir 0.002336, s_dir 0.004657, t_dir 0.990683 
+iteration: 12, dtau 0.004687, r 0.002338, t 0.997662, r_dir 0.004653, s_dir 0.009268, t_dir 0.981453 
+iteration: 13, dtau 0.009375, r 0.004666, t 0.995334, r_dir 0.009238, s_dir 0.018354, t_dir 0.963249 
+iteration: 14, dtau 0.018750, r 0.009288, t 0.990712, r_dir 0.018206, s_dir 0.035989, t_dir 0.927849 
+iteration: 15, dtau 0.037500, r 0.018405, t 0.981595, r_dir 0.035363, s_dir 0.069205, t_dir 0.860904 
+iteration: 16, dtau 0.075000, r 0.036145, t 0.963855, r_dir 0.066771, s_dir 0.128084, t_dir 0.741155 
+iteration: 17, dtau 0.150000, r 0.069767, t 0.930233, r_dir 0.119449, s_dir 0.220272, t_dir 0.549311 
+iteration: 18, dtau 0.300000, r 0.130435, t 0.869565, r_dir 0.193786, s_dir 0.331184, t_dir 0.301743 
+iteration: 19, dtau 0.600000, r 0.230769, t 0.769231, r_dir 0.268641, s_dir 0.399650, t_dir 0.091049 
+Planetary albedo for an optical thickness of 0.600 and an SZA of 0.25: 0.268641 
+rdir 0.268641, sdir 0.399650, and tdir 0.091049 
+sum: 0.759339 
+layer,player,Tlayer,theta,time
+0,25.000000,221.393000,635.177801,0.000000
+1,75.000000,221.393000,464.060873,0.000000
+2,125.000000,221.393000,401.041758,0.000000
+3,175.000000,221.393000,364.282852,0.000000
+4,225.000000,221.393000,339.042853,0.000000
+5,275.000000,225.299500,325.799855,0.000000
+6,325.000000,232.616500,320.702550,0.000000
+7,375.000000,239.063000,316.386335,0.000000
+8,425.000000,244.842000,312.651495,0.000000
+9,475.000000,250.091000,309.365099,0.000000
+10,525.000000,254.908000,306.434706,0.000000
+11,575.000000,259.365500,303.793542,0.000000
+12,625.000000,263.518000,301.391001,0.000000
+13,675.000000,267.409000,299.189516,0.000000
+14,725.000000,271.073000,297.159548,0.000000
+15,775.000000,274.537000,295.276557,0.000000
+16,825.000000,277.824000,293.521596,0.000000
+17,875.000000,280.953500,291.879487,0.000000
+18,925.000000,283.941500,290.337186,0.000000
+19,975.000000,286.801000,288.883142,0.000000
+dtau 0.000002, r 0.000001, t 0.999999, s_dir 0.000004, r_dir 0.000004, t_dir 0.999992 
+iteration: 0, dtau 0.000004, r 0.000002, t 0.999998, r_dir 0.000006, s_dir 0.000008, t_dir 0.999985 
+iteration: 1, dtau 0.000008, r 0.000004, t 0.999996, r_dir 0.000010, s_dir 0.000015, t_dir 0.999970 
+iteration: 2, dtau 0.000015, r 0.000008, t 0.999992, r_dir 0.000017, s_dir 0.000030, t_dir 0.999939 
+iteration: 3, dtau 0.000031, r 0.000015, t 0.999985, r_dir 0.000032, s_dir 0.000061, t_dir 0.999878 
+iteration: 4, dtau 0.000061, r 0.000031, t 0.999969, r_dir 0.000063, s_dir 0.000122, t_dir 0.999756 
+iteration: 5, dtau 0.000122, r 0.000061, t 0.999939, r_dir 0.000124, s_dir 0.000244, t_dir 0.999513 
+iteration: 6, dtau 0.000244, r 0.000122, t 0.999878, r_dir 0.000246, s_dir 0.000487, t_dir 0.999025 
+iteration: 7, dtau 0.000488, r 0.000244, t 0.999756, r_dir 0.000490, s_dir 0.000974, t_dir 0.998052 
+iteration: 8, dtau 0.000977, r 0.000488, t 0.999512, r_dir 0.000977, s_dir 0.001946, t_dir 0.996107 
+iteration: 9, dtau 0.001953, r 0.000976, t 0.999024, r_dir 0.001949, s_dir 0.003884, t_dir 0.992230 
+iteration: 10, dtau 0.003906, r 0.001949, t 0.998051, r_dir 0.003884, s_dir 0.007736, t_dir 0.984520 
+iteration: 11, dtau 0.007812, r 0.003891, t 0.996109, r_dir 0.007719, s_dir 0.015345, t_dir 0.969279 
+iteration: 12, dtau 0.015625, r 0.007752, t 0.992248, r_dir 0.015247, s_dir 0.030189, t_dir 0.939502 
+iteration: 13, dtau 0.031250, r 0.015385, t 0.984615, r_dir 0.029758, s_dir 0.058429, t_dir 0.882664 
+iteration: 14, dtau 0.062500, r 0.030303, t 0.969697, r_dir 0.056714, s_dir 0.109515, t_dir 0.779096 
+iteration: 15, dtau 0.125000, r 0.058824, t 0.941176, r_dir 0.103259, s_dir 0.192917, t_dir 0.606990 
+iteration: 16, dtau 0.250000, r 0.111111, t 0.888889, r_dir 0.172810, s_dir 0.302780, t_dir 0.368437 
+iteration: 17, dtau 0.500000, r 0.200000, t 0.800000, r_dir 0.251103, s_dir 0.390424, t_dir 0.135746 
+iteration: 18, dtau 1.000000, r 0.333334, t 0.666666, r_dir 0.302008, s_dir 0.384032, t_dir 0.018427 
+iteration: 19, dtau 2.000000, r 0.500000, t 0.500000, r_dir 0.313525, s_dir 0.296492, t_dir 0.000340 
+Planetary albedo for an optical thickness of 2.000 and an SZA of 0.25: 0.313525 
+rdir 0.313525, sdir 0.296492, and tdir 0.000340 
+sum: 0.610356 
+layer,player,Tlayer,theta,time
+0,25.000000,221.393000,635.177801,0.000000
+1,75.000000,221.393000,464.060873,0.000000
+2,125.000000,221.393000,401.041758,0.000000
+3,175.000000,221.393000,364.282852,0.000000
+4,225.000000,221.393000,339.042853,0.000000
+5,275.000000,225.299500,325.799855,0.000000
+6,325.000000,232.616500,320.702550,0.000000
+7,375.000000,239.063000,316.386335,0.000000
+8,425.000000,244.842000,312.651495,0.000000
+9,475.000000,250.091000,309.365099,0.000000
+10,525.000000,254.908000,306.434706,0.000000
+11,575.000000,259.365500,303.793542,0.000000
+12,625.000000,263.518000,301.391001,0.000000
+13,675.000000,267.409000,299.189516,0.000000
+14,725.000000,271.073000,297.159548,0.000000
+15,775.000000,274.537000,295.276557,0.000000
+16,825.000000,277.824000,293.521596,0.000000
+17,875.000000,280.953500,291.879487,0.000000
+18,925.000000,283.941500,290.337186,0.000000
+19,975.000000,286.801000,288.883142,0.000000
+dtau 0.000002, r 0.000001, t 0.999999, s_dir 0.000004, r_dir 0.000004, t_dir 0.999993 
+iteration: 0, dtau 0.000004, r 0.000002, t 0.999998, r_dir 0.000006, s_dir 0.000007, t_dir 0.999985 
+iteration: 1, dtau 0.000007, r 0.000004, t 0.999996, r_dir 0.000009, s_dir 0.000015, t_dir 0.999970 
+iteration: 2, dtau 0.000015, r 0.000007, t 0.999993, r_dir 0.000017, s_dir 0.000030, t_dir 0.999941 
+iteration: 3, dtau 0.000030, r 0.000015, t 0.999985, r_dir 0.000032, s_dir 0.000059, t_dir 0.999881 
+iteration: 4, dtau 0.000060, r 0.000030, t 0.999970, r_dir 0.000061, s_dir 0.000119, t_dir 0.999762 
+iteration: 5, dtau 0.000119, r 0.000060, t 0.999940, r_dir 0.000121, s_dir 0.000238, t_dir 0.999525 
+iteration: 6, dtau 0.000238, r 0.000119, t 0.999881, r_dir 0.000240, s_dir 0.000475, t_dir 0.999050 
+iteration: 7, dtau 0.000476, r 0.000238, t 0.999762, r_dir 0.000478, s_dir 0.000950, t_dir 0.998100 
+iteration: 8, dtau 0.000952, r 0.000476, t 0.999524, r_dir 0.000953, s_dir 0.001898, t_dir 0.996204 
+iteration: 9, dtau 0.001904, r 0.000951, t 0.999049, r_dir 0.001900, s_dir 0.003788, t_dir 0.992423 
+iteration: 10, dtau 0.003809, r 0.001901, t 0.998099, r_dir 0.003788, s_dir 0.007545, t_dir 0.984904 
+iteration: 11, dtau 0.007617, r 0.003794, t 0.996206, r_dir 0.007528, s_dir 0.014968, t_dir 0.970035 
+iteration: 12, dtau 0.015234, r 0.007560, t 0.992440, r_dir 0.014875, s_dir 0.029458, t_dir 0.940969 
+iteration: 13, dtau 0.030469, r 0.015006, t 0.984994, r_dir 0.029049, s_dir 0.057062, t_dir 0.885422 
+iteration: 14, dtau 0.060937, r 0.029568, t 0.970432, r_dir 0.055428, s_dir 0.107122, t_dir 0.783973 
+iteration: 15, dtau 0.121875, r 0.057437, t 0.942563, r_dir 0.101144, s_dir 0.189274, t_dir 0.614613 
+iteration: 16, dtau 0.243750, r 0.108635, t 0.891365, r_dir 0.169947, s_dir 0.298701, t_dir 0.377750 
+iteration: 17, dtau 0.487500, r 0.195980, t 0.804020, r_dir 0.248489, s_dir 0.388556, t_dir 0.142695 
+iteration: 18, dtau 0.975000, r 0.327731, t 0.672269, r_dir 0.300954, s_dir 0.386140, t_dir 0.020362 
+iteration: 19, dtau 1.950000, r 0.493671, t 0.506329, r_dir 0.313457, s_dir 0.300202, t_dir 0.000415 
+Planetary albedo for an optical thickness of 1.950 and an SZA of 0.25: 0.313457 
+rdir 0.313457, sdir 0.300202, and tdir 0.000415 
+sum: 0.614073 
+layer,player,Tlayer,theta,time
+0,25.000000,221.393000,635.177801,0.000000
+1,75.000000,221.393000,464.060873,0.000000
+2,125.000000,221.393000,401.041758,0.000000
+3,175.000000,221.393000,364.282852,0.000000
+4,225.000000,221.393000,339.042853,0.000000
+5,275.000000,225.299500,325.799855,0.000000
+6,325.000000,232.616500,320.702550,0.000000
+7,375.000000,239.063000,316.386335,0.000000
+8,425.000000,244.842000,312.651495,0.000000
+9,475.000000,250.091000,309.365099,0.000000
+10,525.000000,254.908000,306.434706,0.000000
+11,575.000000,259.365500,303.793542,0.000000
+12,625.000000,263.518000,301.391001,0.000000
+13,675.000000,267.409000,299.189516,0.000000
+14,725.000000,271.073000,297.159548,0.000000
+15,775.000000,274.537000,295.276557,0.000000
+16,825.000000,277.824000,293.521596,0.000000
+17,875.000000,280.953500,291.879487,0.000000
+18,925.000000,283.941500,290.337186,0.000000
+19,975.000000,286.801000,288.883142,0.000000
+dtau 0.000002, r 0.000001, t 0.999999, s_dir 0.000004, r_dir 0.000004, t_dir 0.999993 
+iteration: 0, dtau 0.000004, r 0.000002, t 0.999998, r_dir 0.000005, s_dir 0.000007, t_dir 0.999986 
+iteration: 1, dtau 0.000007, r 0.000004, t 0.999996, r_dir 0.000009, s_dir 0.000014, t_dir 0.999972 
+iteration: 2, dtau 0.000014, r 0.000007, t 0.999993, r_dir 0.000016, s_dir 0.000028, t_dir 0.999944 
+iteration: 3, dtau 0.000028, r 0.000014, t 0.999986, r_dir 0.000030, s_dir 0.000056, t_dir 0.999887 
+iteration: 4, dtau 0.000056, r 0.000028, t 0.999972, r_dir 0.000058, s_dir 0.000113, t_dir 0.999775 
+iteration: 5, dtau 0.000113, r 0.000056, t 0.999944, r_dir 0.000115, s_dir 0.000225, t_dir 0.999549 
+iteration: 6, dtau 0.000226, r 0.000113, t 0.999887, r_dir 0.000228, s_dir 0.000451, t_dir 0.999098 
+iteration: 7, dtau 0.000452, r 0.000226, t 0.999774, r_dir 0.000453, s_dir 0.000901, t_dir 0.998198 
+iteration: 8, dtau 0.000903, r 0.000451, t 0.999549, r_dir 0.000904, s_dir 0.001800, t_dir 0.996399 
+iteration: 9, dtau 0.001807, r 0.000903, t 0.999097, r_dir 0.001803, s_dir 0.003594, t_dir 0.992810 
+iteration: 10, dtau 0.003613, r 0.001803, t 0.998197, r_dir 0.003594, s_dir 0.007161, t_dir 0.985672 
+iteration: 11, dtau 0.007227, r 0.003600, t 0.996400, r_dir 0.007146, s_dir 0.014212, t_dir 0.971550 
+iteration: 12, dtau 0.014453, r 0.007175, t 0.992825, r_dir 0.014130, s_dir 0.027994, t_dir 0.943910 
+iteration: 13, dtau 0.028906, r 0.014247, t 0.985753, r_dir 0.027626, s_dir 0.054313, t_dir 0.890965 
+iteration: 14, dtau 0.057813, r 0.028094, t 0.971906, r_dir 0.052838, s_dir 0.102286, t_dir 0.793819 
+iteration: 15, dtau 0.115625, r 0.054653, t 0.945347, r_dir 0.096850, s_dir 0.181834, t_dir 0.630149 
+iteration: 16, dtau 0.231250, r 0.103642, t 0.896358, r_dir 0.164047, s_dir 0.290157, t_dir 0.397087 
+iteration: 17, dtau 0.462500, r 0.187817, t 0.812183, r_dir 0.242939, s_dir 0.384243, t_dir 0.157678 
+iteration: 18, dtau 0.925000, r 0.316240, t 0.683760, r_dir 0.298568, s_dir 0.390131, t_dir 0.024862 
+iteration: 19, dtau 1.850000, r 0.480520, t 0.519480, r_dir 0.313278, s_dir 0.307881, t_dir 0.000618 
+Planetary albedo for an optical thickness of 1.850 and an SZA of 0.25: 0.313278 
+rdir 0.313278, sdir 0.307881, and tdir 0.000618 
+sum: 0.621777 
+layer,player,Tlayer,theta,time
+0,25.000000,221.393000,635.177801,0.000000
+1,75.000000,221.393000,464.060873,0.000000
+2,125.000000,221.393000,401.041758,0.000000
+3,175.000000,221.393000,364.282852,0.000000
+4,225.000000,221.393000,339.042853,0.000000
+5,275.000000,225.299500,325.799855,0.000000
+6,325.000000,232.616500,320.702550,0.000000
+7,375.000000,239.063000,316.386335,0.000000
+8,425.000000,244.842000,312.651495,0.000000
+9,475.000000,250.091000,309.365099,0.000000
+10,525.000000,254.908000,306.434706,0.000000
+11,575.000000,259.365500,303.793542,0.000000
+12,625.000000,263.518000,301.391001,0.000000
+13,675.000000,267.409000,299.189516,0.000000
+14,725.000000,271.073000,297.159548,0.000000
+15,775.000000,274.537000,295.276557,0.000000
+16,825.000000,277.824000,293.521596,0.000000
+17,875.000000,280.953500,291.879487,0.000000
+18,925.000000,283.941500,290.337186,0.000000
+19,975.000000,286.801000,288.883142,0.000000
+dtau 0.000002, r 0.000001, t 0.999999, s_dir 0.000003, r_dir 0.000003, t_dir 0.999994 
+iteration: 0, dtau 0.000003, r 0.000002, t 0.999998, r_dir 0.000005, s_dir 0.000006, t_dir 0.999988 
+iteration: 1, dtau 0.000006, r 0.000003, t 0.999997, r_dir 0.000008, s_dir 0.000012, t_dir 0.999976 
+iteration: 2, dtau 0.000012, r 0.000006, t 0.999994, r_dir 0.000014, s_dir 0.000024, t_dir 0.999951 
+iteration: 3, dtau 0.000024, r 0.000012, t 0.999988, r_dir 0.000026, s_dir 0.000049, t_dir 0.999902 
+iteration: 4, dtau 0.000049, r 0.000024, t 0.999976, r_dir 0.000050, s_dir 0.000097, t_dir 0.999805 
+iteration: 5, dtau 0.000098, r 0.000049, t 0.999951, r_dir 0.000099, s_dir 0.000195, t_dir 0.999610 
+iteration: 6, dtau 0.000195, r 0.000098, t 0.999902, r_dir 0.000197, s_dir 0.000390, t_dir 0.999220 
+iteration: 7, dtau 0.000391, r 0.000195, t 0.999805, r_dir 0.000392, s_dir 0.000779, t_dir 0.998441 
+iteration: 8, dtau 0.000781, r 0.000390, t 0.999610, r_dir 0.000782, s_dir 0.001558, t_dir 0.996885 
+iteration: 9, dtau 0.001563, r 0.000781, t 0.999219, r_dir 0.001560, s_dir 0.003110, t_dir 0.993779 
+iteration: 10, dtau 0.003125, r 0.001560, t 0.998440, r_dir 0.003111, s_dir 0.006199, t_dir 0.987596 
+iteration: 11, dtau 0.006250, r 0.003115, t 0.996885, r_dir 0.006190, s_dir 0.012317, t_dir 0.975347 
+iteration: 12, dtau 0.012500, r 0.006211, t 0.993789, r_dir 0.012258, s_dir 0.024311, t_dir 0.951301 
+iteration: 13, dtau 0.025000, r 0.012346, t 0.987654, r_dir 0.024039, s_dir 0.047359, t_dir 0.904974 
+iteration: 14, dtau 0.050000, r 0.024390, t 0.975610, r_dir 0.046249, s_dir 0.089906, t_dir 0.818979 
+iteration: 15, dtau 0.100000, r 0.047619, t 0.952381, r_dir 0.085736, s_dir 0.162298, t_dir 0.670726 
+iteration: 16, dtau 0.200000, r 0.090909, t 0.909091, r_dir 0.148235, s_dir 0.266393, t_dir 0.449874 
+iteration: 17, dtau 0.400000, r 0.166667, t 0.833333, r_dir 0.226963, s_dir 0.369594, t_dir 0.202386 
+iteration: 18, dtau 0.800000, r 0.285714, t 0.714286, r_dir 0.290571, s_dir 0.398158, t_dir 0.040960 
+iteration: 19, dtau 1.600000, r 0.444445, t 0.555555, r_dir 0.312416, s_dir 0.328632, t_dir 0.001678 
+Planetary albedo for an optical thickness of 1.600 and an SZA of 0.25: 0.312416 
+rdir 0.312416, sdir 0.328632, and tdir 0.001678 
+sum: 0.642726 
+layer,player,Tlayer,theta,time
+0,25.000000,221.393000,635.177801,0.000000
+1,75.000000,221.393000,464.060873,0.000000
+2,125.000000,221.393000,401.041758,0.000000
+3,175.000000,221.393000,364.282852,0.000000
+4,225.000000,221.393000,339.042853,0.000000
+5,275.000000,225.299500,325.799855,0.000000
+6,325.000000,232.616500,320.702550,0.000000
+7,375.000000,239.063000,316.386335,0.000000
+8,425.000000,244.842000,312.651495,0.000000
+9,475.000000,250.091000,309.365099,0.000000
+10,525.000000,254.908000,306.434706,0.000000
+11,575.000000,259.365500,303.793542,0.000000
+12,625.000000,263.518000,301.391001,0.000000
+13,675.000000,267.409000,299.189516,0.000000
+14,725.000000,271.073000,297.159548,0.000000
+15,775.000000,274.537000,295.276557,0.000000
+16,825.000000,277.824000,293.521596,0.000000
+17,875.000000,280.953500,291.879487,0.000000
+18,925.000000,283.941500,290.337186,0.000000
+19,975.000000,286.801000,288.883142,0.000000
+dtau 0.000001, r 0.000001, t 0.999999, s_dir 0.000002, r_dir 0.000002, t_dir 0.999995 
+iteration: 0, dtau 0.000002, r 0.000001, t 0.999999, r_dir 0.000003, s_dir 0.000005, t_dir 0.999991 
+iteration: 1, dtau 0.000005, r 0.000002, t 0.999998, r_dir 0.000006, s_dir 0.000009, t_dir 0.999982 
+iteration: 2, dtau 0.000009, r 0.000005, t 0.999995, r_dir 0.000010, s_dir 0.000018, t_dir 0.999963 
+iteration: 3, dtau 0.000018, r 0.000009, t 0.999991, r_dir 0.000019, s_dir 0.000037, t_dir 0.999927 
+iteration: 4, dtau 0.000037, r 0.000018, t 0.999982, r_dir 0.000038, s_dir 0.000073, t_dir 0.999854 
+iteration: 5, dtau 0.000073, r 0.000037, t 0.999963, r_dir 0.000074, s_dir 0.000146, t_dir 0.999708 
+iteration: 6, dtau 0.000146, r 0.000073, t 0.999927, r_dir 0.000148, s_dir 0.000292, t_dir 0.999415 
+iteration: 7, dtau 0.000293, r 0.000146, t 0.999854, r_dir 0.000294, s_dir 0.000585, t_dir 0.998831 
+iteration: 8, dtau 0.000586, r 0.000293, t 0.999707, r_dir 0.000587, s_dir 0.001169, t_dir 0.997663 
+iteration: 9, dtau 0.001172, r 0.000586, t 0.999414, r_dir 0.001171, s_dir 0.002334, t_dir 0.995331 
+iteration: 10, dtau 0.002344, r 0.001171, t 0.998829, r_dir 0.002336, s_dir 0.004657, t_dir 0.990683 
+iteration: 11, dtau 0.004687, r 0.002338, t 0.997662, r_dir 0.004654, s_dir 0.009268, t_dir 0.981453 
+iteration: 12, dtau 0.009375, r 0.004666, t 0.995334, r_dir 0.009239, s_dir 0.018354, t_dir 0.963249 
+iteration: 13, dtau 0.018750, r 0.009288, t 0.990712, r_dir 0.018206, s_dir 0.035989, t_dir 0.927849 
+iteration: 14, dtau 0.037500, r 0.018405, t 0.981595, r_dir 0.035363, s_dir 0.069205, t_dir 0.860904 
+iteration: 15, dtau 0.075000, r 0.036145, t 0.963855, r_dir 0.066772, s_dir 0.128084, t_dir 0.741155 
+iteration: 16, dtau 0.150000, r 0.069767, t 0.930233, r_dir 0.119450, s_dir 0.220273, t_dir 0.549311 
+iteration: 17, dtau 0.300000, r 0.130435, t 0.869565, r_dir 0.193786, s_dir 0.331185, t_dir 0.301742 
+iteration: 18, dtau 0.600000, r 0.230769, t 0.769231, r_dir 0.268641, s_dir 0.399650, t_dir 0.091048 
+iteration: 19, dtau 1.200000, r 0.375000, t 0.625000, r_dir 0.307906, s_dir 0.365690, t_dir 0.008290 
+Planetary albedo for an optical thickness of 1.200 and an SZA of 0.25: 0.307906 
+rdir 0.307906, sdir 0.365690, and tdir 0.008290 
+sum: 0.681885 
+layer,player,Tlayer,theta,time
+0,25.000000,221.393000,635.177801,0.000000
+1,75.000000,221.393000,464.060873,0.000000
+2,125.000000,221.393000,401.041758,0.000000
+3,175.000000,221.393000,364.282852,0.000000
+4,225.000000,221.393000,339.042853,0.000000
+5,275.000000,225.299500,325.799855,0.000000
+6,325.000000,232.616500,320.702550,0.000000
+7,375.000000,239.063000,316.386335,0.000000
+8,425.000000,244.842000,312.651495,0.000000
+9,475.000000,250.091000,309.365099,0.000000
+10,525.000000,254.908000,306.434706,0.000000
+11,575.000000,259.365500,303.793542,0.000000
+12,625.000000,263.518000,301.391001,0.000000
+13,675.000000,267.409000,299.189516,0.000000
+14,725.000000,271.073000,297.159548,0.000000
+15,775.000000,274.537000,295.276557,0.000000
+16,825.000000,277.824000,293.521596,0.000000
+17,875.000000,280.953500,291.879487,0.000000
+18,925.000000,283.941500,290.337186,0.000000
+19,975.000000,286.801000,288.883142,0.000000
+dtau 0.000001, r 0.000001, t 0.999999, s_dir 0.000002, r_dir 0.000002, t_dir 0.999996 
+iteration: 0, dtau 0.000002, r 0.000001, t 0.999999, r_dir 0.000003, s_dir 0.000004, t_dir 0.999992 
+iteration: 1, dtau 0.000004, r 0.000002, t 0.999998, r_dir 0.000005, s_dir 0.000008, t_dir 0.999983 
+iteration: 2, dtau 0.000008, r 0.000004, t 0.999996, r_dir 0.000009, s_dir 0.000017, t_dir 0.999966 
+iteration: 3, dtau 0.000017, r 0.000008, t 0.999992, r_dir 0.000018, s_dir 0.000034, t_dir 0.999933 
+iteration: 4, dtau 0.000034, r 0.000017, t 0.999983, r_dir 0.000035, s_dir 0.000067, t_dir 0.999866 
+iteration: 5, dtau 0.000067, r 0.000034, t 0.999966, r_dir 0.000068, s_dir 0.000134, t_dir 0.999732 
+iteration: 6, dtau 0.000134, r 0.000067, t 0.999933, r_dir 0.000135, s_dir 0.000268, t_dir 0.999464 
+iteration: 7, dtau 0.000269, r 0.000134, t 0.999866, r_dir 0.000269, s_dir 0.000536, t_dir 0.998928 
+iteration: 8, dtau 0.000537, r 0.000268, t 0.999732, r_dir 0.000538, s_dir 0.001071, t_dir 0.997857 
+iteration: 9, dtau 0.001074, r 0.000537, t 0.999463, r_dir 0.001073, s_dir 0.002140, t_dir 0.995719 
+iteration: 10, dtau 0.002148, r 0.001073, t 0.998927, r_dir 0.002142, s_dir 0.004271, t_dir 0.991456 
+iteration: 11, dtau 0.004297, r 0.002144, t 0.997856, r_dir 0.004269, s_dir 0.008503, t_dir 0.982985 
+iteration: 12, dtau 0.008594, r 0.004278, t 0.995722, r_dir 0.008479, s_dir 0.016852, t_dir 0.966259 
+iteration: 13, dtau 0.017188, r 0.008521, t 0.991479, r_dir 0.016730, s_dir 0.033098, t_dir 0.933657 
+iteration: 14, dtau 0.034375, r 0.016897, t 0.983103, r_dir 0.032574, s_dir 0.063853, t_dir 0.871716 
+iteration: 15, dtau 0.068750, r 0.033233, t 0.966767, r_dir 0.061792, s_dir 0.118926, t_dir 0.759889 
+iteration: 16, dtau 0.137500, r 0.064328, t 0.935672, r_dir 0.111514, s_dir 0.206982, t_dir 0.577431 
+iteration: 17, dtau 0.275000, r 0.120879, t 0.879121, r_dir 0.183713, s_dir 0.317882, t_dir 0.333427 
+iteration: 18, dtau 0.550000, r 0.215686, t 0.784314, r_dir 0.260572, s_dir 0.396197, t_dir 0.111173 
+iteration: 19, dtau 1.100000, r 0.354839, t 0.645161, r_dir 0.305445, s_dir 0.375090, t_dir 0.012359 
+Planetary albedo for an optical thickness of 1.100 and an SZA of 0.25: 0.305445 
+rdir 0.305445, sdir 0.375090, and tdir 0.012359 
+sum: 0.692895 
+layer,player,Tlayer,theta,time
+0,25.000000,221.393000,635.177801,0.000000
+1,75.000000,221.393000,464.060873,0.000000
+2,125.000000,221.393000,401.041758,0.000000
+3,175.000000,221.393000,364.282852,0.000000
+4,225.000000,221.393000,339.042853,0.000000
+5,275.000000,225.299500,325.799855,0.000000
+6,325.000000,232.616500,320.702550,0.000000
+7,375.000000,239.063000,316.386335,0.000000
+8,425.000000,244.842000,312.651495,0.000000
+9,475.000000,250.091000,309.365099,0.000000
+10,525.000000,254.908000,306.434706,0.000000
+11,575.000000,259.365500,303.793542,0.000000
+12,625.000000,263.518000,301.391001,0.000000
+13,675.000000,267.409000,299.189516,0.000000
+14,725.000000,271.073000,297.159548,0.000000
+15,775.000000,274.537000,295.276557,0.000000
+16,825.000000,277.824000,293.521596,0.000000
+17,875.000000,280.953500,291.879487,0.000000
+18,925.000000,283.941500,290.337186,0.000000
+19,975.000000,286.801000,288.883142,0.000000
+dtau 0.000001, r 0.000000, t 1.000000, s_dir 0.000002, r_dir 0.000002, t_dir 0.999996 
+iteration: 0, dtau 0.000002, r 0.000001, t 0.999999, r_dir 0.000003, s_dir 0.000004, t_dir 0.999992 
+iteration: 1, dtau 0.000004, r 0.000002, t 0.999998, r_dir 0.000005, s_dir 0.000008, t_dir 0.999985 
+iteration: 2, dtau 0.000008, r 0.000004, t 0.999996, r_dir 0.000009, s_dir 0.000015, t_dir 0.999970 
+iteration: 3, dtau 0.000015, r 0.000008, t 0.999992, r_dir 0.000016, s_dir 0.000030, t_dir 0.999939 
+iteration: 4, dtau 0.000031, r 0.000015, t 0.999985, r_dir 0.000031, s_dir 0.000061, t_dir 0.999878 
+iteration: 5, dtau 0.000061, r 0.000031, t 0.999969, r_dir 0.000062, s_dir 0.000122, t_dir 0.999756 
+iteration: 6, dtau 0.000122, r 0.000061, t 0.999939, r_dir 0.000123, s_dir 0.000244, t_dir 0.999513 
+iteration: 7, dtau 0.000244, r 0.000122, t 0.999878, r_dir 0.000245, s_dir 0.000487, t_dir 0.999025 
+iteration: 8, dtau 0.000488, r 0.000244, t 0.999756, r_dir 0.000489, s_dir 0.000974, t_dir 0.998052 
+iteration: 9, dtau 0.000977, r 0.000488, t 0.999512, r_dir 0.000976, s_dir 0.001946, t_dir 0.996107 
+iteration: 10, dtau 0.001953, r 0.000976, t 0.999024, r_dir 0.001948, s_dir 0.003884, t_dir 0.992230 
+iteration: 11, dtau 0.003906, r 0.001949, t 0.998051, r_dir 0.003883, s_dir 0.007736, t_dir 0.984520 
+iteration: 12, dtau 0.007812, r 0.003891, t 0.996109, r_dir 0.007718, s_dir 0.015345, t_dir 0.969279 
+iteration: 13, dtau 0.015625, r 0.007752, t 0.992248, r_dir 0.015246, s_dir 0.030189, t_dir 0.939502 
+iteration: 14, dtau 0.031250, r 0.015385, t 0.984615, r_dir 0.029757, s_dir 0.058429, t_dir 0.882664 
+iteration: 15, dtau 0.062500, r 0.030303, t 0.969697, r_dir 0.056713, s_dir 0.109515, t_dir 0.779096 
+iteration: 16, dtau 0.125000, r 0.058824, t 0.941176, r_dir 0.103258, s_dir 0.192916, t_dir 0.606991 
+iteration: 17, dtau 0.250000, r 0.111111, t 0.888889, r_dir 0.172809, s_dir 0.302779, t_dir 0.368437 
+iteration: 18, dtau 0.500000, r 0.200000, t 0.800000, r_dir 0.251102, s_dir 0.390423, t_dir 0.135746 
+iteration: 19, dtau 1.000000, r 0.333333, t 0.666667, r_dir 0.302007, s_dir 0.384032, t_dir 0.018427 
+Planetary albedo for an optical thickness of 1.000 and an SZA of 0.25: 0.302007 
+rdir 0.302007, sdir 0.384032, and tdir 0.018427 
+sum: 0.704466 
+layer,player,Tlayer,theta,time
+0,25.000000,221.393000,635.177801,0.000000
+1,75.000000,221.393000,464.060873,0.000000
+2,125.000000,221.393000,401.041758,0.000000
+3,175.000000,221.393000,364.282852,0.000000
+4,225.000000,221.393000,339.042853,0.000000
+5,275.000000,225.299500,325.799855,0.000000
+6,325.000000,232.616500,320.702550,0.000000
+7,375.000000,239.063000,316.386335,0.000000
+8,425.000000,244.842000,312.651495,0.000000
+9,475.000000,250.091000,309.365099,0.000000
+10,525.000000,254.908000,306.434706,0.000000
+11,575.000000,259.365500,303.793542,0.000000
+12,625.000000,263.518000,301.391001,0.000000
+13,675.000000,267.409000,299.189516,0.000000
+14,725.000000,271.073000,297.159548,0.000000
+15,775.000000,274.537000,295.276557,0.000000
+16,825.000000,277.824000,293.521596,0.000000
+17,875.000000,280.953500,291.879487,0.000000
+18,925.000000,283.941500,290.337186,0.000000
+19,975.000000,286.801000,288.883142,0.000000
+dtau 0.000001, r 0.000002, t 0.999998, s_dir 0.000002, r_dir 0.000002, t_dir 0.999996 
+iteration: 0, dtau 0.000002, r 0.000004, t 0.999996, r_dir 0.000006, s_dir 0.000004, t_dir 0.999992 
+iteration: 1, dtau 0.000004, r 0.000008, t 0.999992, r_dir 0.000013, s_dir 0.000008, t_dir 0.999985 
+iteration: 2, dtau 0.000008, r 0.000015, t 0.999985, r_dir 0.000029, s_dir 0.000015, t_dir 0.999970 
+iteration: 3, dtau 0.000015, r 0.000030, t 0.999970, r_dir 0.000059, s_dir 0.000030, t_dir 0.999939 
+iteration: 4, dtau 0.000031, r 0.000061, t 0.999939, r_dir 0.000120, s_dir 0.000061, t_dir 0.999878 
+iteration: 5, dtau 0.000061, r 0.000122, t 0.999878, r_dir 0.000242, s_dir 0.000122, t_dir 0.999756 
+iteration: 6, dtau 0.000122, r 0.000244, t 0.999756, r_dir 0.000485, s_dir 0.000244, t_dir 0.999513 
+iteration: 7, dtau 0.000244, r 0.000487, t 0.999513, r_dir 0.000973, s_dir 0.000487, t_dir 0.999025 
+iteration: 8, dtau 0.000488, r 0.000974, t 0.999026, r_dir 0.001946, s_dir 0.000975, t_dir 0.998052 
+iteration: 9, dtau 0.000977, r 0.001946, t 0.998054, r_dir 0.003890, s_dir 0.001948, t_dir 0.996107 
+iteration: 10, dtau 0.001953, r 0.003885, t 0.996115, r_dir 0.007763, s_dir 0.003893, t_dir 0.992230 
+iteration: 11, dtau 0.003906, r 0.007740, t 0.992260, r_dir 0.015459, s_dir 0.007770, t_dir 0.984520 
+iteration: 12, dtau 0.007812, r 0.015362, t 0.984638, r_dir 0.030641, s_dir 0.015476, t_dir 0.969279 
+iteration: 13, dtau 0.015625, r 0.030258, t 0.969742, r_dir 0.060199, s_dir 0.030693, t_dir 0.939502 
+iteration: 14, dtau 0.031250, r 0.058740, t 0.941260, r_dir 0.116246, s_dir 0.060288, t_dir 0.882664 
+iteration: 15, dtau 0.062500, r 0.110961, t 0.889039, r_dir 0.217244, s_dir 0.115850, t_dir 0.779096 
+iteration: 16, dtau 0.125000, r 0.199757, t 0.800243, r_dir 0.382586, s_dir 0.211442, t_dir 0.606991 
+iteration: 17, dtau 0.250000, r 0.332996, t 0.667004, r_dir 0.609939, s_dir 0.343246, t_dir 0.368437 
+iteration: 18, dtau 0.500000, r 0.499621, t 0.500379, r_dir 0.839968, s_dir 0.440103, t_dir 0.135746 
+iteration: 19, dtau 1.000000, r 0.666329, t 0.333671, r_dir 0.975577, s_dir 0.391207, t_dir 0.018427 
+Planetary albedo for an optical thickness of 1.000 and an SZA of 0.25: 0.975577 
+rdir 0.975577, sdir 0.391207, and tdir 0.018427 
+sum: 1.385211 
+layer,player,Tlayer,theta,time
+0,25.000000,221.393000,635.177801,0.000000
+1,75.000000,221.393000,464.060873,0.000000
+2,125.000000,221.393000,401.041758,0.000000
+3,175.000000,221.393000,364.282852,0.000000
+4,225.000000,221.393000,339.042853,0.000000
+5,275.000000,225.299500,325.799855,0.000000
+6,325.000000,232.616500,320.702550,0.000000
+7,375.000000,239.063000,316.386335,0.000000
+8,425.000000,244.842000,312.651495,0.000000
+9,475.000000,250.091000,309.365099,0.000000
+10,525.000000,254.908000,306.434706,0.000000
+11,575.000000,259.365500,303.793542,0.000000
+12,625.000000,263.518000,301.391001,0.000000
+13,675.000000,267.409000,299.189516,0.000000
+14,725.000000,271.073000,297.159548,0.000000
+15,775.000000,274.537000,295.276557,0.000000
+16,825.000000,277.824000,293.521596,0.000000
+17,875.000000,280.953500,291.879487,0.000000
+18,925.000000,283.941500,290.337186,0.000000
+19,975.000000,286.801000,288.883142,0.000000
+dtau 0.000001, r 0.000002, t 0.999998, s_dir 0.000002, r_dir 0.000002, t_dir 0.999996 
+iteration: 0, dtau 0.000002, r 0.000004, t 0.999996, r_dir 0.000004, s_dir 0.000004, t_dir 0.999992 
+iteration: 1, dtau 0.000004, r 0.000008, t 0.999992, r_dir 0.000008, s_dir 0.000008, t_dir 0.999985 
+iteration: 2, dtau 0.000008, r 0.000015, t 0.999985, r_dir 0.000015, s_dir 0.000015, t_dir 0.999970 
+iteration: 3, dtau 0.000015, r 0.000030, t 0.999970, r_dir 0.000030, s_dir 0.000030, t_dir 0.999939 
+iteration: 4, dtau 0.000031, r 0.000061, t 0.999939, r_dir 0.000061, s_dir 0.000061, t_dir 0.999878 
+iteration: 5, dtau 0.000061, r 0.000122, t 0.999878, r_dir 0.000122, s_dir 0.000122, t_dir 0.999756 
+iteration: 6, dtau 0.000122, r 0.000244, t 0.999756, r_dir 0.000244, s_dir 0.000244, t_dir 0.999513 
+iteration: 7, dtau 0.000244, r 0.000487, t 0.999513, r_dir 0.000487, s_dir 0.000487, t_dir 0.999025 
+iteration: 8, dtau 0.000488, r 0.000974, t 0.999026, r_dir 0.000974, s_dir 0.000974, t_dir 0.998052 
+iteration: 9, dtau 0.000977, r 0.001946, t 0.998054, r_dir 0.001946, s_dir 0.001946, t_dir 0.996107 
+iteration: 10, dtau 0.001953, r 0.003885, t 0.996115, r_dir 0.003885, s_dir 0.003885, t_dir 0.992230 
+iteration: 11, dtau 0.003906, r 0.007740, t 0.992260, r_dir 0.007740, s_dir 0.007740, t_dir 0.984520 
+iteration: 12, dtau 0.007812, r 0.015362, t 0.984638, r_dir 0.015362, s_dir 0.015359, t_dir 0.969279 
+iteration: 13, dtau 0.015625, r 0.030258, t 0.969742, r_dir 0.030258, s_dir 0.030239, t_dir 0.939502 
+iteration: 14, dtau 0.031250, r 0.058740, t 0.941260, r_dir 0.058740, s_dir 0.058596, t_dir 0.882664 
+iteration: 15, dtau 0.062500, r 0.110961, t 0.889039, r_dir 0.110961, s_dir 0.109943, t_dir 0.779096 
+iteration: 16, dtau 0.125000, r 0.199757, t 0.800243, r_dir 0.199757, s_dir 0.193252, t_dir 0.606991 
+iteration: 17, dtau 0.250000, r 0.332996, t 0.667004, r_dir 0.332996, s_dir 0.298566, t_dir 0.368437 
+iteration: 18, dtau 0.500000, r 0.499621, t 0.500379, r_dir 0.499621, s_dir 0.364633, t_dir 0.135746 
+iteration: 19, dtau 1.000000, r 0.666329, t 0.333671, r_dir 0.666329, s_dir 0.315243, t_dir 0.018427 
+Planetary albedo for an optical thickness of 1.000 and an SZA of 0.25: 0.666329 
+rdir 0.666329, sdir 0.315243, and tdir 0.018427 
+sum: 1.000000 
+layer,player,Tlayer,theta,time
+0,25.000000,221.393000,635.177801,0.000000
+1,75.000000,221.393000,464.060873,0.000000
+2,125.000000,221.393000,401.041758,0.000000
+3,175.000000,221.393000,364.282852,0.000000
+4,225.000000,221.393000,339.042853,0.000000
+5,275.000000,225.299500,325.799855,0.000000
+6,325.000000,232.616500,320.702550,0.000000
+7,375.000000,239.063000,316.386335,0.000000
+8,425.000000,244.842000,312.651495,0.000000
+9,475.000000,250.091000,309.365099,0.000000
+10,525.000000,254.908000,306.434706,0.000000
+11,575.000000,259.365500,303.793542,0.000000
+12,625.000000,263.518000,301.391001,0.000000
+13,675.000000,267.409000,299.189516,0.000000
+14,725.000000,271.073000,297.159548,0.000000
+15,775.000000,274.537000,295.276557,0.000000
+16,825.000000,277.824000,293.521596,0.000000
+17,875.000000,280.953500,291.879487,0.000000
+18,925.000000,283.941500,290.337186,0.000000
+19,975.000000,286.801000,288.883142,0.000000
