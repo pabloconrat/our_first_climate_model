@@ -77,7 +77,7 @@ const float Consts::max_dT = 5;
 const int Consts::n_steps = 2000;
 const int Consts::output_steps = 10;
 
-const double Consts::tau_s = 0.31;
+const double Consts::tau_s = 2.1;
 const double Consts::mu_s = cos( 60 * M_PI / 180.0 );
 const int Consts::doublings = 20;
 const double Consts::g_asym = 0.85;
@@ -197,7 +197,8 @@ void emissivity(vector<double> &alpha, double* tau, const double &mu){
 
 void doubling_adding(double &r_dir, double &s_dir, double &t_dir, double &r, double &t) {
   // assume asymmetry factor g = 0
-  double dtau = Consts::tau_s / pow(2, Consts::doublings);
+  double tau = (1 - Consts::g_asym) * Consts::tau_s;
+  double dtau = tau / pow(2, Consts::doublings);
   double r_new; double one_minus_rsq;
   double t_new;
   // temporary variables for iterative loop
@@ -240,7 +241,9 @@ double solar_radiative_transfer_setup(double &r_total, const double &r_dir, cons
   // integrate surface albedo into reflectivity of earth
   r_total = r_dir + (t_dir + s_dir)/(1 - Consts::albedo * r) * t * Consts::albedo;
   
-  double solar_irr = Consts::daytime * Consts::E_0 * Consts::mu_s;  
+  double solar_irr = Consts::daytime * Consts::E_0 * Consts::mu_s * (1 - r_total);  
+  //freopen("output.txt","a",stdout);
+  //printf("solar irradiance: %f \n", solar_irr);
   return(solar_irr);
 }
 
@@ -439,12 +442,13 @@ int main() {
   */
   
   freopen("output.txt","a",stdout);
+  printf("\n ===================new run===================== \n");
   doubling_adding(r_dir, s_dir, t_dir, r, t);
   double solar_irr = solar_radiative_transfer_setup(r_total, r_dir, s_dir, t_dir, r, t);
-  //printf("Planetary albedo for an optical thickness of %2.3f and an cos(SZA) of %2.2f: %f \n", Consts::tau_s, Consts::mu_s, r_total);
-  //printf("rdir %f, sdir %f, and tdir %f \n", r_dir, s_dir, t_dir);
-  //printf("sum: %f \n", r_dir + t_dir + s_dir);
-  //printf("solar irradiance: %f \n", solar_irr);
+  printf("Planetary albedo for an optical thickness of %2.3f and an cos(SZA) of %2.2f: %f \n", Consts::tau_s, Consts::mu_s, r_total);
+  printf("rdir %f, sdir %f, and tdir %f \n", r_dir, s_dir, t_dir);
+  printf("sum: %f \n", r_dir + t_dir + s_dir);
+  printf("solar irradiance: %f \n", solar_irr);
   
   /*
   =================================================================
