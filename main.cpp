@@ -1,7 +1,7 @@
 /*
 =================================================================================
 Authors: Tatsiana Bardachova, Samkeyat Shohan, Pablo Conrat
-Date: 22.01.2021
+Date: 29.01.2021
 Description: 1D Radiation-Convection Model 
              Representative wavelenght parametrization for Radiative Transfer
 =================================================================================
@@ -54,6 +54,8 @@ public:
     static const double mu_s; // solar zenith angle [°]
     static const int doublings; // number of doublings in the doubling-adding method [/]
     static const double g_asym; // asymmetry factor [/]
+    static const double albedo; // surface albedo [/]
+    static const float daytime; // proportion of day with sun [/]
 };
 
 const double Consts::kappa = 2.0 / 7.0;
@@ -72,13 +74,15 @@ const int Consts::nlevel = Consts::nlayer + 1;
 const int Consts::nangle = 30; 
 
 const float Consts::max_dT = 5;
-const int Consts::n_steps = 2;
+const int Consts::n_steps = 2000;
 const int Consts::output_steps = 10;
 
-const double tau_s = 1.0;
-const double mu_s = cos( 75.522 * M_PI / 180.0 );
-const int doublings = 20;
-const double g_asym = 0.85;
+const double Consts::tau_s = 0.31;
+const double Consts::mu_s = cos( 60 * M_PI / 180.0 );
+const int Consts::doublings = 20;
+const double Consts::g_asym = 0.85;
+const double Consts::albedo = 0.12;
+const float Consts::daytime = 0.5;
 
 /*
 =================================================================
@@ -191,24 +195,24 @@ void emissivity(vector<double> &alpha, double* tau, const double &mu){
   return;
 }
 
-void doubling_adding(double &r_dir, double &s_dir, double &t_dir, double &r, double &t, const double tau_s, const double mu_s, const int doublings) {
+void doubling_adding(double &r_dir, double &s_dir, double &t_dir, double &r, double &t) {
   // assume asymmetry factor g = 0
-  double dtau = tau_s / pow(2, doublings);
+  double dtau = Consts::tau_s / pow(2, Consts::doublings);
   double r_new; double one_minus_rsq;
   double t_new;
   // temporary variables for iterative loop
   double r_dir_new; double s_dir_new; double t_dir_new;
 
-  r = 0.5 * dtau/mu_s;
+  r = 0.5 * dtau/Consts::mu_s;
   t = 1.0 - r;
-  r_dir = dtau/mu_s * 0.5; // (1-exp(-dtau/mu))
+  r_dir = dtau/Consts::mu_s * 0.5; // (1-exp(-dtau/mu))
   s_dir = r_dir;
-  t_dir = 1 - dtau/mu_s;
+  t_dir = 1 - dtau/Consts::mu_s;
   
-  freopen("output.txt","a",stdout);
-  printf("dtau %f, r %f, t %f, s_dir %f, r_dir %f, t_dir %f \n", dtau, r, t, s_dir, r_dir, t_dir);
+  //freopen("output.txt","a",stdout);
+  //printf("dtau %f, r %f, t %f, s_dir %f, r_dir %f, t_dir %f \n", dtau, r, t, s_dir, r_dir, t_dir);
 
-  for(int i=0; i < doublings; ++i){
+  for(int i=0; i < Consts::doublings; ++i){
     one_minus_rsq = (1 - r * r);
     r_new = r + (r * t * t)/one_minus_rsq;
     t_new = (t * t)/one_minus_rsq;
@@ -225,20 +229,19 @@ void doubling_adding(double &r_dir, double &s_dir, double &t_dir, double &r, dou
     r_dir = r_dir_new;
 
     dtau = 2 * dtau;
-    printf("iteration: %d, dtau %f, r %f, t %f, r_dir %f, s_dir %f, t_dir %f \n", i, dtau, r, t, r_dir, s_dir, t_dir);
+    //printf("iteration: %d, dtau %f, r %f, t %f, r_dir %f, s_dir %f, t_dir %f \n", i, dtau, r, t, r_dir, s_dir, t_dir);
   }
 
   return;
 }
 
-void solar_radiative_transfer(double &r_total, const double &albedo, const double &daytime, const double &r_dir, const double &s_dir, const double &t_dir) {
+double solar_radiative_transfer_setup(double &r_total, const double &r_dir, const double &s_dir, const double &t_dir, const double &r, const double &t) {
   
   // integrate surface albedo into reflectivity of earth
-  r_total = r_dir + (t_dir + s_dir)/(1 - albedo * r) * t * albedo;
+  r_total = r_dir + (t_dir + s_dir)/(1 - Consts::albedo * r) * t * Consts::albedo;
   
-  
-  
-  return;
+  double solar_irr = Consts::daytime * Consts::E_0 * Consts::mu_s;  
+  return(solar_irr);
 }
 
 void monochromatic_radiative_transfer(vector<double> &B, vector<double> &alpha, 
@@ -271,7 +274,7 @@ void monochromatic_radiative_transfer(vector<double> &B, vector<double> &alpha,
 }
 
 void radiative_transfer(vector<double> &B, vector<double> &alpha,
-                        vector<double> &E_down, vector<double> &E_up, vector<double> &dE,
+                        vector<double> &E_down, vector<double> &E_up, vector<double> &dE, const double solar_irr,
                         vector<double> &mu, const double &dmu, 
                         vector<double> &Tlayer, const double &T_surface,
                         double** tau, double* weight, int &nwvl, double* wvl) {
@@ -291,7 +294,7 @@ void radiative_transfer(vector<double> &B, vector<double> &alpha,
     dE[i] = E_down[i] - E_down[i+1] + E_up[i+1] - E_up[i];
   }
 
-  dE[dE.size()-1] += Consts::E_0/4.0 + E_down[Consts::nlevel-1] - E_up[Consts::nlevel-1];
+  dE[dE.size()-1] += solar_irr + E_down[Consts::nlevel-1] - E_up[Consts::nlevel-1];
 
   return;
 }
@@ -316,6 +319,7 @@ int main() {
   double t_dir;
   double r;
   double t;
+  double r_total;
 
   vector<double> plevel(Consts::nlevel); // vector of pressures between the layers
   vector<double> player(Consts::nlayer); // vector of pressures for each layer
@@ -435,10 +439,12 @@ int main() {
   */
   
   freopen("output.txt","a",stdout);
-  doubling_adding(r_dir, s_dir, t_dir, r, t, tau_s, mu_s, doublings);
-  printf("Planetary albedo for an optical thickness of %2.3f and an SZA of %2.2f: %f \n", tau_s, mu_s, r_dir);
-  printf("rdir %f, sdir %f, and tdir %f \n", r_dir, s_dir, t_dir);
-  printf("sum: %f \n", r_dir + t_dir + s_dir);
+  doubling_adding(r_dir, s_dir, t_dir, r, t);
+  double solar_irr = solar_radiative_transfer_setup(r_total, r_dir, s_dir, t_dir, r, t);
+  //printf("Planetary albedo for an optical thickness of %2.3f and an cos(SZA) of %2.2f: %f \n", Consts::tau_s, Consts::mu_s, r_total);
+  //printf("rdir %f, sdir %f, and tdir %f \n", r_dir, s_dir, t_dir);
+  //printf("sum: %f \n", r_dir + t_dir + s_dir);
+  //printf("solar irradiance: %f \n", solar_irr);
   
   /*
   =================================================================
@@ -495,7 +501,7 @@ int main() {
       delete_check = 1;
     }
       
-    radiative_transfer(B, alpha, E_down, E_up, dE, mu, dmu, Tlayer, T_surface, tau, weight, nwvl, wvl); 
+    radiative_transfer(B, alpha, E_down, E_up, dE, solar_irr, mu, dmu, Tlayer, T_surface, tau, weight, nwvl, wvl); 
       
     calculate_timestep(dp, dE, timestep);
 
