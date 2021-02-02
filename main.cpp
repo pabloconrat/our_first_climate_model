@@ -20,7 +20,7 @@ Description: 1D Radiation-Convection Model
 #include <fstream>
 #include <sstream>
 #include <netcdf>
-#include "./repwvl_V1.0_cpp/repwvl_thermal.h"
+#include "./repwvl_V2.0_cpp/repwvl_thermal.h"
 
 using namespace std;
 
@@ -256,12 +256,12 @@ double magnus(const double &Tlevel) {
     return 6.1094 * exp (17.625 * (Tlevel - Consts::Tkelvin) / (Tlevel - Consts::Tkelvin + 243.04)); // [hPa];
 }
 
-void water_vapor_feedback(vector<double> &e_sat, vector<double> &Tlevel, 
-                          const vector<double> &rel_hum, vector<double> &plevel, double* H2O_VMR){
+void water_vapor_feedback(vector<double> &e_sat, vector<double> &Tlayer, 
+                          const vector<double> &rel_hum, vector<double> &player, double* H2O_VMR){
     
-     for (int i=0; i<Consts::nlevel; ++i){
-         e_sat[i] = magnus(Tlevel[i]);
-         H2O_VMR[i] = rel_hum[i] * e_sat[i] / plevel[i];
+     for (int i=0; i<Consts::nlayer; ++i){
+         e_sat[i] = magnus(Tlayer[i]);
+         H2O_VMR[i] = rel_hum[i] * e_sat[i] / player[i];
      }
     return;
 }
@@ -358,8 +358,8 @@ int main() {
   vector<double> E_up(Consts::nlevel);   // vector of upgoing thermal irradiances for each level  
   vector<double> e_sat(Consts::nlevel);     // vector of saturated vapour pressure for each level
   vector<double> rel_hum(Consts::nlevel);   // vector of relative humidity for each level
-
   
+    
   /*
   ====================================================================================
   Reading profiles from file (z, p, T and profiles of all trace spacies)
@@ -367,7 +367,7 @@ int main() {
   */
     
   vector<vector<double>> data;   // 2D vector for reading column by column
-  ifstream input_file("./repwvl_V1.0_cpp/test.atm");
+  ifstream input_file("./repwvl_V2.0_cpp/test.atm");
   string line;
   double value;
 
@@ -451,22 +451,15 @@ int main() {
   */ 
     
    int nwvl=0;  // number of wavelengths
+   int T_at_Lev=0;  // bool parameter, 0 for Tlevel and 1 for Tlayer
    double *wvl = NULL;    // array of wavelengths 
    double *weight = NULL; // array of wavelenght weightes
    double **tau = NULL;   // 2D array of optical thicknesses
       
-   read_tau("./repwvl_V1.0_cpp/Reduced100Forcing.nc", Consts::nlevel, plevel, Tlevel,
+   read_tau("./repwvl_V2.0_cpp/Reduced100Forcing.nc", Consts::nlevel, plevel, Tlayer,
             H2O_VMR, CO2_VMR, O3_VMR, N2O_VMR, CO_VMR, CH4_VMR, O2_VMR, HNO3_VMR, N2_VMR,
-            &tau, &wvl, &weight, &nwvl);
+            &tau, &wvl, &weight, &nwvl, T_at_Lev);
     
-    
-   // computation of plevel for new temperature profile ???
-   plevel[Consts::nlevel-1] = plevel[Consts::nlevel-1];
-   plevel[Consts::nlevel-2] = (player[Consts::nlayer-1] + plevel[Consts::nlevel-1]) / 2.0;
-     for (int ilyr=Consts::nlayer - 2; ilyr>=0; ilyr--) {
-       plevel[ilyr] = (player[ilyr+1] + player[ilyr]) / 2.0;
-     }
-  
   /*
   ====================================================================================
   Setup of solar radiative transfer
@@ -522,19 +515,12 @@ int main() {
       wvl = NULL;
       weight = NULL; 
       tau = NULL;   
-      
-      // computation of Tlevel for new temperature profile ???
-      Tlevel[Consts::nlevel-1] = T_surface;
-      Tlevel[Consts::nlevel-2] = (Tlayer[Consts::nlayer - 1] + T_surface) / 2.0;
-        for (int ilyr=Consts::nlayer-2; ilyr>=0; ilyr--) {
-          Tlevel[ilyr] = (Tlayer[ilyr+1] + Tlayer[ilyr]) / 2.0;
-        }
         
-      water_vapor_feedback(e_sat, Tlevel, rel_hum, plevel, H2O_VMR);
+      water_vapor_feedback(e_sat, Tlayer, rel_hum, player, H2O_VMR);
       
-      read_tau("./repwvl_V1.0_cpp/Reduced100Forcing.nc", Consts::nlevel, plevel, Tlevel,
+      read_tau("./repwvl_V2.0_cpp/Reduced100Forcing.nc", Consts::nlevel, plevel, Tlayer,
                H2O_VMR, CO2_VMR, O3_VMR, N2O_VMR, CO_VMR, CH4_VMR, O2_VMR, HNO3_VMR, N2_VMR,
-               &tau, &wvl, &weight, &nwvl);
+               &tau, &wvl, &weight, &nwvl, T_at_Lev);
         
       delete_check = 1;
     }
