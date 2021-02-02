@@ -1,9 +1,11 @@
 /*
 =================================================================================
 Authors: Tatsiana Bardachova, Samkeyat Shohan, Pablo Conrat
-Date: 22.01.2021
+Date: 02.02.2021
 Description: 1D Radiation-Convection Model 
-             Representative wavelenght parametrization for Radiative Transfer
+             Representative wavelenght parametrization for Thermal Radiative Transfer
+             Solar Radiative Transfer
+                 Water Vapor Feedback
 =================================================================================
 */
 
@@ -18,7 +20,7 @@ Description: 1D Radiation-Convection Model
 #include <fstream>
 #include <sstream>
 #include <netcdf>
-#include "./repwvl_V1.0_cpp/repwvl_thermal.h"
+#include "./repwvl_V2.0_cpp/repwvl_thermal.h"
 
 using namespace std;
 
@@ -34,13 +36,14 @@ public:
     static const double kappa; // adiabatic exponent [/]
     static const double c_air; // specific heat capacity [J/kg K]
     static const double g;     // gravity acceleration [m/s^2]
-    static const double E_abs; // heating rate from surface [W/m^2]
+    static const double E_0; // heating rate from surface [W/m^2]
     static const double h;     // Planck constant [J/s]
     static const double c;     // speed of light in vacuum [m/s]
     static const double kB;    // Boltzmann constant [J/K]
     static const double sigma; // Stefan–Boltzmann constant [W/m^2 K^4]
     static const double M;     // molar mass of dry air [kg/mol]
     static const double R0;    // universal gas constant [J/mol K]
+    static const double Tkelvin; // temperature for converting Kelvin into Celsius, [K]
   
     static const int nlayer; // number of layers
     static const int nlevel; // number of levels
@@ -49,27 +52,41 @@ public:
     static const float max_dT; // maximal temperature change per timestep for stability [K]
     static const int n_steps;  // number of timesteps [/]
     static const int output_steps; // intervall in which the model produces output [/]
+    
+    static const double tau_s; // optical thickness in the solar spectral range [1/m] ?
+    static const double mu_s; // solar zenith angle [°]
+    static const int doublings; // number of doublings in the doubling-adding method [/]
+    static const double g_asym; // asymmetry factor [/]
+    static const double albedo; // surface albedo [/]
+    static const float daytime; // proportion of day with sun [/]
 };
 
 const double Consts::kappa = 2.0 / 7.0;
 const double Consts::c_air = 1004;
 const double Consts::g = 9.80665; 
-const double Consts::E_abs = 235.0;
+const double Consts::E_0 = 1361.0;
 const double Consts::h = 6.62607e-34;
 const double Consts::c = 299792458;
 const double Consts::kB = 1.380649e-23;
 const double Consts::sigma = 5.670373e-8;
 const double Consts::M = 0.02896;
 const double Consts::R0 = 8.3144;
+const double Consts::Tkelvin = 273.15;
 
 const int Consts::nlayer = 20; 
 const int Consts::nlevel = Consts::nlayer + 1; 
 const int Consts::nangle = 30; 
 
 const float Consts::max_dT = 5;
-const int Consts::n_steps = 3000;
+const int Consts::n_steps = 2000;
 const int Consts::output_steps = 10;
 
+const double Consts::tau_s = 2.1;
+const double Consts::mu_s = cos( 60 * M_PI / 180.0 );
+const int Consts::doublings = 20;
+const double Consts::g_asym = 0.85;
+const double Consts::albedo = 0.12;
+const float Consts::daytime = 0.5;
 
 /*
 =================================================================
@@ -85,7 +102,7 @@ void output_conv(const float &time, const vector<double> &player,
 
   // print the pressure, temperature, and potential temperature of each layer and the time
   for (int i=0; i<Consts::nlayer; ++i) {
-    printf("%d, %f, %f, %f, %f \n",
+    printf("%d,%f,%f,%f,%f\n",
             i, player[i], Tlayer[i], theta[i], time);
   }
     
@@ -182,6 +199,73 @@ void emissivity(vector<double> &alpha, double* tau, const double &mu){
   return;
 }
 
+void doubling_adding(double &r_dir, double &s_dir, double &t_dir, double &r, double &t) {
+  // assume asymmetry factor g = 0
+  double tau = (1 - Consts::g_asym) * Consts::tau_s;
+  double dtau = tau / pow(2, Consts::doublings);
+  double r_new; double one_minus_rsq;
+  double t_new;
+  // temporary variables for iterative loop
+  double r_dir_new; double s_dir_new; double t_dir_new;
+
+  r = 0.5 * dtau/Consts::mu_s;
+  t = 1.0 - r;
+  r_dir = dtau/Consts::mu_s * 0.5; // (1-exp(-dtau/mu))
+  s_dir = r_dir;
+  t_dir = 1 - dtau/Consts::mu_s;
+  
+  //freopen("output.txt","a",stdout);
+  //printf("dtau %f, r %f, t %f, s_dir %f, r_dir %f, t_dir %f \n", dtau, r, t, s_dir, r_dir, t_dir);
+
+  for(int i=0; i < Consts::doublings; ++i){
+    one_minus_rsq = (1 - r * r);
+    r_new = r + (r * t * t)/one_minus_rsq;
+    t_new = (t * t)/one_minus_rsq;
+
+    t_dir_new = pow(t_dir, 2);
+    s_dir_new = (t * s_dir + t_dir * r_dir * r * t)/one_minus_rsq + t_dir * s_dir;
+    r_dir_new = (t * s_dir * r + t * t_dir * r)/one_minus_rsq + r_dir;
+
+    r = r_new;
+    t = t_new;
+
+    t_dir = t_dir_new;
+    s_dir = s_dir_new;
+    r_dir = r_dir_new;
+
+    dtau = 2 * dtau;
+    //printf("iteration: %d, dtau %f, r %f, t %f, r_dir %f, s_dir %f, t_dir %f \n", i, dtau, r, t, r_dir, s_dir, t_dir);
+  }
+
+  return;
+}
+
+double solar_radiative_transfer_setup(double &r_total, const double &r_dir, const double &s_dir, const double &t_dir, const double &r, const double &t) {
+  
+  // integrate surface albedo into reflectivity of earth
+  r_total = r_dir + (t_dir + s_dir)/(1 - Consts::albedo * r) * t * Consts::albedo;
+  
+  double solar_irr = Consts::daytime * Consts::E_0 * Consts::mu_s * (1 - r_total);  
+  //freopen("output.txt","a",stdout);
+  //printf("solar irradiance: %f \n", solar_irr);
+  return solar_irr;
+}
+
+// Magnus equation for saturated vapour pressure
+double magnus(const double &Tlevel) {    
+    return 6.1094 * exp (17.625 * (Tlevel - Consts::Tkelvin) / (Tlevel - Consts::Tkelvin + 243.04)); // [hPa];
+}
+
+void water_vapor_feedback(vector<double> &e_sat, vector<double> &Tlayer, 
+                          const vector<double> &rel_hum, vector<double> &player, double* H2O_VMR){
+    
+     for (int i=0; i<Consts::nlayer; ++i){
+         e_sat[i] = magnus(Tlayer[i]);
+         H2O_VMR[i] = rel_hum[i] * e_sat[i] / player[i];
+     }
+    return;
+}
+
 void monochromatic_radiative_transfer(vector<double> &B, vector<double> &alpha, 
                                       vector<double> &E_down, vector<double> &E_up,
                                       const int &i_rad, double* tau, const double weight, int &nwvl, double* wvl,
@@ -212,7 +296,7 @@ void monochromatic_radiative_transfer(vector<double> &B, vector<double> &alpha,
 }
 
 void radiative_transfer(vector<double> &B, vector<double> &alpha,
-                        vector<double> &E_down, vector<double> &E_up, vector<double> &dE,
+                        vector<double> &E_down, vector<double> &E_up, vector<double> &dE, const double solar_irr,
                         vector<double> &mu, const double &dmu, 
                         vector<double> &Tlayer, const double &T_surface,
                         double** tau, double* weight, int &nwvl, double* wvl) {
@@ -232,7 +316,7 @@ void radiative_transfer(vector<double> &B, vector<double> &alpha,
     dE[i] = E_down[i] - E_down[i+1] + E_up[i+1] - E_up[i];
   }
 
-  dE[dE.size()-1] += Consts::E_abs + E_down[Consts::nlevel-1] - E_up[Consts::nlevel-1];
+  dE[dE.size()-1] += solar_irr + E_down[Consts::nlevel-1] - E_up[Consts::nlevel-1];
 
   return;
 }
@@ -252,10 +336,12 @@ int main() {
   double timestep = 0.0;
   float time = 0.0;
   int delete_check = 0;
-
-  freopen("output.txt","a",stdout);
-  // print at what timestep the model is
-  printf("layer,player,Tlayer,theta,time\n" );
+  double r_dir;
+  double s_dir;
+  double t_dir;
+  double r;
+  double t;
+  double r_total;
 
   vector<double> plevel(Consts::nlevel); // vector of pressures between the layers
   vector<double> player(Consts::nlayer); // vector of pressures for each layer
@@ -268,10 +354,12 @@ int main() {
   vector<double> B(Consts::nlayer); // vector of weighted radiance for one wavelength according to Planck's law
   vector<double> alpha(Consts::nangle); // vector of emissivity for one tau value for every angle
   vector<double> dE(Consts::nlayer); // vector of net radiative fluxes after radiative transfer
-  vector<double> E_down(Consts::nlevel); // vector of downgoing thermal irradiances for each layer
-  vector<double> E_up(Consts::nlevel);   // vector of upgoing thermal irradiances for each layer
-
+  vector<double> E_down(Consts::nlevel); // vector of downgoing thermal irradiances for each level
+  vector<double> E_up(Consts::nlevel);   // vector of upgoing thermal irradiances for each level  
+  vector<double> e_sat(Consts::nlevel);     // vector of saturated vapour pressure for each level
+  vector<double> rel_hum(Consts::nlevel);   // vector of relative humidity for each level
   
+    
   /*
   ====================================================================================
   Reading profiles from file (z, p, T and profiles of all trace spacies)
@@ -279,7 +367,7 @@ int main() {
   */
     
   vector<vector<double>> data;   // 2D vector for reading column by column
-  ifstream input_file("./repwvl_V1.0_cpp/test.atm");
+  ifstream input_file("./repwvl_V2.0_cpp/test.atm");
   string line;
   double value;
 
@@ -334,6 +422,9 @@ int main() {
     // initialize irradiance vectors to 0
     E_down[i] = 0.0; 
     E_up[i] = 0.0;
+      
+    e_sat[i] = magnus(Tlevel[i]);
+    rel_hum[i] = H2O_VMR[i] * plevel[i] / e_sat[i];
   }
 
   for (int i=0; i<Consts::nlayer; ++i) {
@@ -360,20 +451,38 @@ int main() {
   */ 
     
    int nwvl=0;  // number of wavelengths
+   int T_at_Lev=0;  // bool parameter, 0 for Tlevel and 1 for Tlayer
    double *wvl = NULL;    // array of wavelengths 
    double *weight = NULL; // array of wavelenght weightes
    double **tau = NULL;   // 2D array of optical thicknesses
       
-   read_tau("./repwvl_V1.0_cpp/Reduced100Forcing.nc", Consts::nlevel, plevel, Tlevel,
+   read_tau("./repwvl_V2.0_cpp/Reduced100Forcing.nc", Consts::nlevel, plevel, Tlayer,
             H2O_VMR, CO2_VMR, O3_VMR, N2O_VMR, CO_VMR, CH4_VMR, O2_VMR, HNO3_VMR, N2_VMR,
-            &tau, &wvl, &weight, &nwvl);
+            &tau, &wvl, &weight, &nwvl, T_at_Lev);
     
-    
+  /*
+  ====================================================================================
+  Setup of solar radiative transfer
+  ====================================================================================
+  */
+  
+  freopen("output.txt","a",stdout);
+  printf("\n ===================new run===================== \n");
+  doubling_adding(r_dir, s_dir, t_dir, r, t);
+  double solar_irr = solar_radiative_transfer_setup(r_total, r_dir, s_dir, t_dir, r, t);
+  printf("Planetary albedo for an optical thickness of %2.3f and an cos(SZA) of %2.2f: %f \n", Consts::tau_s, Consts::mu_s, r_total);
+  printf("rdir %f, sdir %f, and tdir %f \n", r_dir, s_dir, t_dir);
+  printf("sum: %f \n", r_dir + t_dir + s_dir);
+  printf("solar irradiance: %f \n", solar_irr);
+  
   /*
   =================================================================
   Model Run
   =================================================================
   */
+  
+  // print at what timestep the model is
+  printf("layer,player,Tlayer,theta,time\n" );
     
   // loop over time steps
   for (int i=0; i<=Consts::n_steps; i++) {
@@ -393,8 +502,8 @@ int main() {
       output_conv(time, player, Tlayer, theta);
     }
     
-    // recall of optical thickness computations for new temperature profile (every 50 steps)
-    if (i != 0 and i % 50 == 0) {
+    // recall of optical thickness computations for new temperature profile (every step)
+    if (i != 0 and i % 1 == 0) {
         
       for (int iwvl=0; iwvl<nwvl; ++iwvl){
         delete[] tau[iwvl]; 
@@ -406,22 +515,17 @@ int main() {
       wvl = NULL;
       weight = NULL; 
       tau = NULL;   
+        
+      water_vapor_feedback(e_sat, Tlayer, rel_hum, player, H2O_VMR);
       
-      // computation of Tlevel for new temperature profile  
-      Tlevel[0] = T_surface;
-      Tlevel[1] = (Tlayer[0] + T_surface) / 2.0;
-        for (int ilyr=0; ilyr<Consts::nlayer-1; ++ilyr) {
-          Tlevel[ilyr+2] = (Tlayer[ilyr] + Tlayer[ilyr+1]) / 2.0;
-        }
-      
-      read_tau("./repwvl_V1.0_cpp/Reduced100Forcing.nc", Consts::nlevel, plevel, Tlevel,
+      read_tau("./repwvl_V2.0_cpp/Reduced100Forcing.nc", Consts::nlevel, plevel, Tlayer,
                H2O_VMR, CO2_VMR, O3_VMR, N2O_VMR, CO_VMR, CH4_VMR, O2_VMR, HNO3_VMR, N2_VMR,
-               &tau, &wvl, &weight, &nwvl);
+               &tau, &wvl, &weight, &nwvl, T_at_Lev);
         
       delete_check = 1;
     }
       
-    radiative_transfer(B, alpha, E_down, E_up, dE, mu, dmu, Tlayer, T_surface, tau, weight, nwvl, wvl); 
+    radiative_transfer(B, alpha, E_down, E_up, dE, solar_irr, mu, dmu, Tlayer, T_surface, tau, weight, nwvl, wvl); 
       
     calculate_timestep(dp, dE, timestep);
 
