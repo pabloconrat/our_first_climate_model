@@ -56,6 +56,7 @@ public:
     static const double g_asym; // asymmetry factor [/]
     static const double albedo; // surface albedo [/]
     static const float daytime; // proportion of day with sun [/]
+    static const int cloud_layer; // layer at which the cloud sits in thermal rad. transfer [/] 
 };
 
 const double Consts::kappa = 2.0 / 7.0;
@@ -74,15 +75,16 @@ const int Consts::nlevel = Consts::nlayer + 1;
 const int Consts::nangle = 30; 
 
 const float Consts::max_dT = 5;
-const int Consts::n_steps = 2000;
+const int Consts::n_steps = 1000;
 const int Consts::output_steps = 10;
 
-const double Consts::tau_s = 2.1;
+const double Consts::tau_s = 2.07672; // ideal to get 235 W/m^2 as E_0/4: 2.07672 )
 const double Consts::mu_s = cos( 60 * M_PI / 180.0 );
 const int Consts::doublings = 20;
 const double Consts::g_asym = 0.85;
 const double Consts::albedo = 0.12;
 const float Consts::daytime = 0.5;
+const int Consts::cloud_layer = 17;
 
 /*
 =================================================================
@@ -247,6 +249,16 @@ double solar_radiative_transfer_setup(double &r_total, const double &r_dir, cons
   return(solar_irr);
 }
 
+void cloud_into_tau(double** tau, const int &nwvl) {
+  double cloud_tau = Consts::tau_s / 2.0;
+
+  for (int i=0; i<nwvl; ++i) {
+    tau[i][Consts::cloud_layer] += cloud_tau;
+  }
+  
+  return;
+}
+
 void monochromatic_radiative_transfer(vector<double> &B, vector<double> &alpha, 
                                       vector<double> &E_down, vector<double> &E_up,
                                       const int &i_rad, double* tau, const double weight, int &nwvl, double* wvl,
@@ -358,7 +370,7 @@ int main() {
   for (int i = 0; i < 9; i++) {
     data.push_back(vector<double>());
   }
-    
+
   while (getline(input_file, line)) {
     stringstream ss(line);
     int col_index = 0;
@@ -435,6 +447,7 @@ int main() {
             H2O_VMR, CO2_VMR, O3_VMR, N2O_VMR, CO_VMR, CH4_VMR, O2_VMR, HNO3_VMR, N2_VMR,
             &tau, &wvl, &weight, &nwvl);
   
+  cloud_into_tau(tau, nwvl);
   /*
   ====================================================================================
   Setup of solar radiative transfer
@@ -445,7 +458,7 @@ int main() {
   printf("\n ===================new run===================== \n");
   doubling_adding(r_dir, s_dir, t_dir, r, t);
   double solar_irr = solar_radiative_transfer_setup(r_total, r_dir, s_dir, t_dir, r, t);
-  printf("Planetary albedo for an optical thickness of %2.3f and an cos(SZA) of %2.2f: %f \n", Consts::tau_s, Consts::mu_s, r_total);
+  printf("Planetary albedo for an optical thickness of %2.5f and an cos(SZA) of %2.2f: %f \n", Consts::tau_s, Consts::mu_s, r_total);
   printf("rdir %f, sdir %f, and tdir %f \n", r_dir, s_dir, t_dir);
   printf("sum: %f \n", r_dir + t_dir + s_dir);
   printf("solar irradiance: %f \n", solar_irr);
@@ -501,7 +514,9 @@ int main() {
       read_tau("./repwvl_V1.0_cpp/Reduced100Forcing.nc", Consts::nlevel, plevel, Tlevel,
                H2O_VMR, CO2_VMR, O3_VMR, N2O_VMR, CO_VMR, CH4_VMR, O2_VMR, HNO3_VMR, N2_VMR,
                &tau, &wvl, &weight, &nwvl);
-        
+      
+      cloud_into_tau(tau, nwvl);
+      
       delete_check = 1;
     }
       
