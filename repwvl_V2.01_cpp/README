@@ -1,0 +1,29 @@
+* repwvl V2.01 -- use representative wavelengths instead of full line-by-line spectrum
+  (Bachelor Thesis Michael de Mourgues, 02/212021)
+
+* void read_tau (...) returns an array of wavelengths, optical thicknesses and weights;
+  integrated thermal irradiance E is calculated as
+  E = sum ( weight[iv] * radiance ( B(wvl[iv]), tau[ilyr][iv] ) )
+  Note that radiances must be given in W / (m2 nm)!
+
+* wavelengths wvl[nm], pressure [Pa], mixing ratio in absolute units (0.0004 instead of 400 ppm)
+
+* all quantities (except pLev) are either level quantities (if prop_at_lev is 1) 
+  or layer quantities (if prop_at_lev is 0); pLev is always level quantity
+
+* compile example which only integrates Planck function at the surface using compile script compile.sh
+
+* C++ code needs to be compiled and linked with g++
+
+
+
+
+
+
+
+
+
+
+
+
+
