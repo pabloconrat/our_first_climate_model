@@ -1,12 +1,12 @@
 /*
-=================================================================================
+===================================================================================================================
 Authors: Tatsiana Bardachova, Samkeyat Shohan, Pablo Conrat
-Date: 01.02.2021
+Date: 03.02.2021
 Description: 1D Radiation-Convection Model 
-             Representative wavelenght parametrization for Thermal Radiative Transfer
+             Representative wavelenght parametrization for Thermal Radiative Transfer (repwl_V2.01)
              Solar Radiative Transfer
                  Water Vapor Feedback
-=================================================================================
+===================================================================================================================
 */
 
 #include <cstdio>
@@ -20,7 +20,7 @@ Description: 1D Radiation-Convection Model
 #include <fstream>
 #include <sstream>
 #include <netcdf>
-#include "./repwvl_V2.0_cpp/repwvl_thermal.h"
+#include "./repwvl_V2.01_cpp/repwvl_thermal.h"
 
 using namespace std;
 
@@ -134,6 +134,14 @@ void theta_to_t(const vector<double> &theta, vector<double> &Tlayer, const vecto
   return;
 }
     
+void VMR_level_to_layer(vector<double> &VMRlevel, double* VMRlayer) {
+    
+    for (int i=0; i<Consts::nlayer; ++i) {
+        VMRlayer[i] = (VMRlevel[i] + VMRlevel[i+1]) / 2.0;
+    }
+    return;
+}
+
 
 /*
 =================================================================
@@ -355,7 +363,12 @@ int main() {
   vector<double> alpha(Consts::nangle); // vector of emissivity for one tau value for every angle
   vector<double> dE(Consts::nlayer); // vector of net radiative fluxes after radiative transfer
   vector<double> E_down(Consts::nlevel); // vector of downgoing thermal irradiances for each level
-  vector<double> E_up(Consts::nlevel);   // vector of upgoing thermal irradiances for each level  
+  vector<double> E_up(Consts::nlevel);   // vector of upgoing thermal irradiances for each level    
+  vector<double> H2O_VMR_level(Consts::nlevel);   // vector of optical thickness profile for H2O for levels
+  vector<double> O3_VMR_level(Consts::nlevel); // vector of optical thickness profile for O3 for levels
+  vector<double> CO2_VMR_level(Consts::nlevel); // vector of optical thickness profile for CO2 for levels
+  vector<double> CH4_VMR_level(Consts::nlevel); // vector of optical thickness profile for CH4 for levels
+  vector<double> N2O_VMR_level(Consts::nlevel); // vector of optical thickness profile for N2O for levels
   vector<double> e_sat(Consts::nlevel);     // vector of saturated vapour pressure for each level
   vector<double> rel_hum(Consts::nlevel);   // vector of relative humidity for each level
   
@@ -367,7 +380,7 @@ int main() {
   */
     
   vector<vector<double>> data;   // 2D vector for reading column by column
-  ifstream input_file("./repwvl_V2.0_cpp/test.atm");
+  ifstream input_file("./repwvl_V2.01_cpp/test.atm");
   string line;
   double value;
 
@@ -395,17 +408,31 @@ int main() {
   plevel = data[1];
   Tlevel = data[2];
   
-  double* H2O_VMR = data[4].data(); // array of optical thickness profile for HO2
-  double* O3_VMR  = data[5].data(); // array of optical thickness profile for O3
-  double* CO2_VMR = data[6].data(); // array of optical thickness profile for CO2
-  double* CH4_VMR = data[7].data(); // array of optical thickness profile for CH4
-  double* N2O_VMR = data[8].data(); // array of optical thickness profile for N2O
+  // VMR for levels
+  H2O_VMR_level = data[4]; 
+  O3_VMR_level  = data[5]; 
+  CO2_VMR_level = data[6]; 
+  CH4_VMR_level = data[7]; 
+  N2O_VMR_level = data[8]; 
   
+  // VMR for layers
+  double* H2O_VMR  = new double[Consts::nlayer]; // array of optical thickness profile for HO2
+  double* O3_VMR   = new double[Consts::nlayer]; // array of optical thickness profile for O3
+  double* CO2_VMR  = new double[Consts::nlayer]; // array of optical thickness profile for CO2
+  double* CH4_VMR  = new double[Consts::nlayer]; // array of optical thickness profile for CH4
+  double* N2O_VMR  = new double[Consts::nlayer]; // array of optical thickness profile for N2O
+    
+  VMR_level_to_layer(H2O_VMR_level, H2O_VMR);
+  VMR_level_to_layer(O3_VMR_level, O3_VMR);
+  VMR_level_to_layer(CO2_VMR_level, CO2_VMR);
+  VMR_level_to_layer(CH4_VMR_level, CH4_VMR);
+  VMR_level_to_layer(N2O_VMR_level, N2O_VMR);
+    
   // define these species and initialize as zero, need them as arguments in read_tau function
-  double* CO_VMR = new double[Consts::nlevel]; // array of optical thickness profile for CO
-  double* O2_VMR = new double[Consts::nlevel]; // array of optical thickness profile for O2
-  double* HNO3_VMR = new double[Consts::nlevel]; // array of optical thickness profile for HNO3
-  double* N2_VMR = new double[Consts::nlevel]; // array of optical thickness profile for N2
+  double* CO_VMR   = new double[Consts::nlayer]; // array of optical thickness profile for CO
+  double* O2_VMR   = new double[Consts::nlayer]; // array of optical thickness profile for O2
+  double* HNO3_VMR = new double[Consts::nlayer]; // array of optical thickness profile for HNO3
+  double* N2_VMR   = new double[Consts::nlayer]; // array of optical thickness profile for N2
   
   // CO2 concentation factor
   double factor = 1;  
@@ -451,14 +478,14 @@ int main() {
   */ 
     
    int nwvl=0;  // number of wavelengths
-   int T_at_Lev=0;  // bool parameter, 0 for Tlevel and 1 for Tlayer
+   int prop_at_Lev=0;  // bool parameter, 0 for levels and 1 for layers
    double *wvl = NULL;    // array of wavelengths 
    double *weight = NULL; // array of wavelenght weightes
    double **tau = NULL;   // 2D array of optical thicknesses
       
-   read_tau("./repwvl_V2.0_cpp/Reduced100Forcing.nc", Consts::nlevel, plevel, Tlayer,
+   read_tau("./repwvl_V2.01_cpp/Reduced100Forcing.nc", Consts::nlevel, plevel, Tlayer,
             H2O_VMR, CO2_VMR, O3_VMR, N2O_VMR, CO_VMR, CH4_VMR, O2_VMR, HNO3_VMR, N2_VMR,
-            &tau, &wvl, &weight, &nwvl, T_at_Lev);
+            &tau, &wvl, &weight, &nwvl, prop_at_Lev);
     
   /*
   ====================================================================================
@@ -518,9 +545,9 @@ int main() {
         
       water_vapor_feedback(e_sat, Tlayer, rel_hum, player, H2O_VMR);
       
-      read_tau("./repwvl_V2.0_cpp/Reduced100Forcing.nc", Consts::nlevel, plevel, Tlayer,
+      read_tau("./repwvl_V2.01_cpp/Reduced100Forcing.nc", Consts::nlevel, plevel, Tlayer,
                H2O_VMR, CO2_VMR, O3_VMR, N2O_VMR, CO_VMR, CH4_VMR, O2_VMR, HNO3_VMR, N2_VMR,
-               &tau, &wvl, &weight, &nwvl, T_at_Lev);
+               &tau, &wvl, &weight, &nwvl, prop_at_Lev);
         
       delete_check = 1;
     }
