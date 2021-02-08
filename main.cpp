@@ -1,11 +1,7 @@
 /*
 ===================================================================================================================
 Authors: Tatsiana Bardachova, Samkeyat Shohan, Pablo Conrat
-<<<<<<< HEAD
-Date: 29.01.2021
-=======
 Date: 03.02.2021
->>>>>>> origin/master
 Description: 1D Radiation-Convection Model 
              Representative wavelenght parametrization for Thermal Radiative Transfer (repwl_V2.01)
              Solar Radiative Transfer
@@ -84,15 +80,10 @@ const int Consts::nlevel = Consts::nlayer + 1;
 const int Consts::nangle = 30; 
 
 const float Consts::max_dT = 5;
-<<<<<<< HEAD
 const int Consts::n_steps = 1;
 const int Consts::output_steps = 10;
 
 const double Consts::tau_s = 2.0; // ideal to get 235 W/m^2 as E_0/4: 2.07672 )
-const int Consts::n_steps = 2000;
-const int Consts::output_steps = 10;
-
-const double Consts::tau_s = 2.1;
 const double Consts::mu_s = cos( 60 * M_PI / 180.0 );
 const int Consts::doublings = 20;
 const double Consts::g_asym = 0.85;
@@ -280,7 +271,6 @@ void cloud_into_tau(double** tau, const int &nwvl) {
   }
   
   return;
-  return solar_irr;
 }
 
 // Magnus equation for saturated vapour pressure
@@ -509,7 +499,7 @@ int main() {
       
    read_tau("./repwvl_V2.01_cpp/Reduced100Forcing.nc", Consts::nlevel, plevel, Tlayer,
             H2O_VMR, CO2_VMR, O3_VMR, N2O_VMR, CO_VMR, CH4_VMR, O2_VMR, HNO3_VMR, N2_VMR,
-            &tau, &wvl, &weight, &nwvl);
+            &tau, &wvl, &weight, &nwvl, prop_at_Lev);
   
   cloud_into_tau(tau, nwvl);
   
@@ -571,9 +561,9 @@ int main() {
         
       water_vapor_feedback(e_sat, Tlayer, rel_hum, player, H2O_VMR);
       
-      read_tau("./repwvl_V2.01_cpp/Reduced100Forcing.nc", Consts::nlevel, plevel, Tlayer,
-               H2O_VMR, CO2_VMR, O3_VMR, N2O_VMR, CO_VMR, CH4_VMR, O2_VMR, HNO3_VMR, N2_VMR,
-               &tau, &wvl, &weight, &nwvl);
+     read_tau("./repwvl_V2.01_cpp/Reduced100Forcing.nc", Consts::nlevel, plevel, Tlayer,
+              H2O_VMR, CO2_VMR, O3_VMR, N2O_VMR, CO_VMR, CH4_VMR, O2_VMR, HNO3_VMR, N2_VMR,
+            &tau, &wvl, &weight, &nwvl, prop_at_Lev);
       
       cloud_into_tau(tau, nwvl);
       
