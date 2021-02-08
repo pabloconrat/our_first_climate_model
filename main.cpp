@@ -75,10 +75,10 @@ const int Consts::nlevel = Consts::nlayer + 1;
 const int Consts::nangle = 30; 
 
 const float Consts::max_dT = 5;
-const int Consts::n_steps = 1000;
+const int Consts::n_steps = 1;
 const int Consts::output_steps = 10;
 
-const double Consts::tau_s = 2.07672; // ideal to get 235 W/m^2 as E_0/4: 2.07672 )
+const double Consts::tau_s = 2.0; // ideal to get 235 W/m^2 as E_0/4: 2.07672 )
 const double Consts::mu_s = cos( 60 * M_PI / 180.0 );
 const int Consts::doublings = 20;
 const double Consts::g_asym = 0.85;
@@ -448,6 +448,7 @@ int main() {
             &tau, &wvl, &weight, &nwvl);
   
   cloud_into_tau(tau, nwvl);
+  
   /*
   ====================================================================================
   Setup of solar radiative transfer
