@@ -1,10 +1,16 @@
 /*
-=================================================================================
+===================================================================================================================
 Authors: Tatsiana Bardachova, Samkeyat Shohan, Pablo Conrat
+<<<<<<< HEAD
 Date: 29.01.2021
+=======
+Date: 03.02.2021
+>>>>>>> origin/master
 Description: 1D Radiation-Convection Model 
-             Representative wavelenght parametrization for Radiative Transfer
-=================================================================================
+             Representative wavelenght parametrization for Thermal Radiative Transfer (repwl_V2.01)
+             Solar Radiative Transfer
+                 Water Vapor Feedback
+===================================================================================================================
 */
 
 #include <cstdio>
@@ -18,7 +24,7 @@ Description: 1D Radiation-Convection Model
 #include <fstream>
 #include <sstream>
 #include <netcdf>
-#include "./repwvl_V1.0_cpp/repwvl_thermal.h"
+#include "./repwvl_V2.01_cpp/repwvl_thermal.h"
 
 using namespace std;
 
@@ -41,6 +47,7 @@ public:
     static const double sigma; // Stefan–Boltzmann constant [W/m^2 K^4]
     static const double M;     // molar mass of dry air [kg/mol]
     static const double R0;    // universal gas constant [J/mol K]
+    static const double Tkelvin; // temperature for converting Kelvin into Celsius, [K]
   
     static const int nlayer; // number of layers
     static const int nlevel; // number of levels
@@ -56,7 +63,10 @@ public:
     static const double g_asym; // asymmetry factor [/]
     static const double albedo; // surface albedo [/]
     static const float daytime; // proportion of day with sun [/]
+<<<<<<< HEAD
     static const int cloud_layer; // layer at which the cloud sits in thermal rad. transfer [/] 
+=======
+>>>>>>> origin/master
 };
 
 const double Consts::kappa = 2.0 / 7.0;
@@ -69,22 +79,33 @@ const double Consts::kB = 1.380649e-23;
 const double Consts::sigma = 5.670373e-8;
 const double Consts::M = 0.02896;
 const double Consts::R0 = 8.3144;
+const double Consts::Tkelvin = 273.15;
 
 const int Consts::nlayer = 20; 
 const int Consts::nlevel = Consts::nlayer + 1; 
 const int Consts::nangle = 30; 
 
 const float Consts::max_dT = 5;
+<<<<<<< HEAD
 const int Consts::n_steps = 1;
 const int Consts::output_steps = 10;
 
 const double Consts::tau_s = 2.0; // ideal to get 235 W/m^2 as E_0/4: 2.07672 )
+=======
+const int Consts::n_steps = 2000;
+const int Consts::output_steps = 10;
+
+const double Consts::tau_s = 2.1;
+>>>>>>> origin/master
 const double Consts::mu_s = cos( 60 * M_PI / 180.0 );
 const int Consts::doublings = 20;
 const double Consts::g_asym = 0.85;
 const double Consts::albedo = 0.12;
 const float Consts::daytime = 0.5;
+<<<<<<< HEAD
 const int Consts::cloud_layer = 17;
+=======
+>>>>>>> origin/master
 
 /*
 =================================================================
@@ -132,6 +153,14 @@ void theta_to_t(const vector<double> &theta, vector<double> &Tlayer, const vecto
   return;
 }
     
+void VMR_level_to_layer(vector<double> &VMRlevel, double* VMRlayer) {
+    
+    for (int i=0; i<Consts::nlayer; ++i) {
+        VMRlayer[i] = (VMRlevel[i] + VMRlevel[i+1]) / 2.0;
+    }
+    return;
+}
+
 
 /*
 =================================================================
@@ -246,6 +275,7 @@ double solar_radiative_transfer_setup(double &r_total, const double &r_dir, cons
   double solar_irr = Consts::daytime * Consts::E_0 * Consts::mu_s * (1 - r_total);  
   //freopen("output.txt","a",stdout);
   //printf("solar irradiance: %f \n", solar_irr);
+<<<<<<< HEAD
   return(solar_irr);
 }
 
@@ -257,6 +287,24 @@ void cloud_into_tau(double** tau, const int &nwvl) {
   }
   
   return;
+=======
+  return solar_irr;
+}
+
+// Magnus equation for saturated vapour pressure
+double magnus(const double &Tlevel) {    
+    return 6.1094 * exp (17.625 * (Tlevel - Consts::Tkelvin) / (Tlevel - Consts::Tkelvin + 243.04)); // [hPa];
+}
+
+void water_vapor_feedback(vector<double> &e_sat, vector<double> &Tlayer, 
+                          const vector<double> &rel_hum, vector<double> &player, double* H2O_VMR){
+    
+     for (int i=0; i<Consts::nlayer; ++i){
+         e_sat[i] = magnus(Tlayer[i]);
+         H2O_VMR[i] = rel_hum[i] * e_sat[i] / player[i];
+     }
+    return;
+>>>>>>> origin/master
 }
 
 void monochromatic_radiative_transfer(vector<double> &B, vector<double> &alpha, 
@@ -347,10 +395,17 @@ int main() {
   vector<double> B(Consts::nlayer); // vector of weighted radiance for one wavelength according to Planck's law
   vector<double> alpha(Consts::nangle); // vector of emissivity for one tau value for every angle
   vector<double> dE(Consts::nlayer); // vector of net radiative fluxes after radiative transfer
-  vector<double> E_down(Consts::nlevel); // vector of downgoing thermal irradiances for each layer
-  vector<double> E_up(Consts::nlevel);   // vector of upgoing thermal irradiances for each layer
-
+  vector<double> E_down(Consts::nlevel); // vector of downgoing thermal irradiances for each level
+  vector<double> E_up(Consts::nlevel);   // vector of upgoing thermal irradiances for each level    
+  vector<double> H2O_VMR_level(Consts::nlevel);   // vector of optical thickness profile for H2O for levels
+  vector<double> O3_VMR_level(Consts::nlevel); // vector of optical thickness profile for O3 for levels
+  vector<double> CO2_VMR_level(Consts::nlevel); // vector of optical thickness profile for CO2 for levels
+  vector<double> CH4_VMR_level(Consts::nlevel); // vector of optical thickness profile for CH4 for levels
+  vector<double> N2O_VMR_level(Consts::nlevel); // vector of optical thickness profile for N2O for levels
+  vector<double> e_sat(Consts::nlevel);     // vector of saturated vapour pressure for each level
+  vector<double> rel_hum(Consts::nlevel);   // vector of relative humidity for each level
   
+    
   /*
   ====================================================================================
   Reading profiles from file (z, p, T and profiles of all trace spacies)
@@ -358,7 +413,7 @@ int main() {
   */
     
   vector<vector<double>> data;   // 2D vector for reading column by column
-  ifstream input_file("./repwvl_V1.0_cpp/test.atm");
+  ifstream input_file("./repwvl_V2.01_cpp/test.atm");
   string line;
   double value;
 
@@ -386,17 +441,31 @@ int main() {
   plevel = data[1];
   Tlevel = data[2];
   
-  double* H2O_VMR = data[4].data(); // array of optical thickness profile for HO2
-  double* O3_VMR  = data[5].data(); // array of optical thickness profile for O3
-  double* CO2_VMR = data[6].data(); // array of optical thickness profile for CO2
-  double* CH4_VMR = data[7].data(); // array of optical thickness profile for CH4
-  double* N2O_VMR = data[8].data(); // array of optical thickness profile for N2O
+  // VMR for levels
+  H2O_VMR_level = data[4]; 
+  O3_VMR_level  = data[5]; 
+  CO2_VMR_level = data[6]; 
+  CH4_VMR_level = data[7]; 
+  N2O_VMR_level = data[8]; 
   
+  // VMR for layers
+  double* H2O_VMR  = new double[Consts::nlayer]; // array of optical thickness profile for HO2
+  double* O3_VMR   = new double[Consts::nlayer]; // array of optical thickness profile for O3
+  double* CO2_VMR  = new double[Consts::nlayer]; // array of optical thickness profile for CO2
+  double* CH4_VMR  = new double[Consts::nlayer]; // array of optical thickness profile for CH4
+  double* N2O_VMR  = new double[Consts::nlayer]; // array of optical thickness profile for N2O
+    
+  VMR_level_to_layer(H2O_VMR_level, H2O_VMR);
+  VMR_level_to_layer(O3_VMR_level, O3_VMR);
+  VMR_level_to_layer(CO2_VMR_level, CO2_VMR);
+  VMR_level_to_layer(CH4_VMR_level, CH4_VMR);
+  VMR_level_to_layer(N2O_VMR_level, N2O_VMR);
+    
   // define these species and initialize as zero, need them as arguments in read_tau function
-  double* CO_VMR = new double[Consts::nlevel]; // array of optical thickness profile for CO
-  double* O2_VMR = new double[Consts::nlevel]; // array of optical thickness profile for O2
-  double* HNO3_VMR = new double[Consts::nlevel]; // array of optical thickness profile for HNO3
-  double* N2_VMR = new double[Consts::nlevel]; // array of optical thickness profile for N2
+  double* CO_VMR   = new double[Consts::nlayer]; // array of optical thickness profile for CO
+  double* O2_VMR   = new double[Consts::nlayer]; // array of optical thickness profile for O2
+  double* HNO3_VMR = new double[Consts::nlayer]; // array of optical thickness profile for HNO3
+  double* N2_VMR   = new double[Consts::nlayer]; // array of optical thickness profile for N2
   
   // CO2 concentation factor
   double factor = 1;  
@@ -413,6 +482,9 @@ int main() {
     // initialize irradiance vectors to 0
     E_down[i] = 0.0; 
     E_up[i] = 0.0;
+      
+    e_sat[i] = magnus(Tlevel[i]);
+    rel_hum[i] = H2O_VMR[i] * plevel[i] / e_sat[i];
   }
 
   for (int i=0; i<Consts::nlayer; ++i) {
@@ -439,12 +511,14 @@ int main() {
   */ 
     
    int nwvl=0;  // number of wavelengths
+   int prop_at_Lev=0;  // bool parameter, 0 for levels and 1 for layers
    double *wvl = NULL;    // array of wavelengths 
    double *weight = NULL; // array of wavelenght weightes
    double **tau = NULL;   // 2D array of optical thicknesses
       
-   read_tau("./repwvl_V1.0_cpp/Reduced100Forcing.nc", Consts::nlevel, plevel, Tlevel,
+   read_tau("./repwvl_V2.01_cpp/Reduced100Forcing.nc", Consts::nlevel, plevel, Tlayer,
             H2O_VMR, CO2_VMR, O3_VMR, N2O_VMR, CO_VMR, CH4_VMR, O2_VMR, HNO3_VMR, N2_VMR,
+<<<<<<< HEAD
             &tau, &wvl, &weight, &nwvl);
   
   cloud_into_tau(tau, nwvl);
@@ -460,6 +534,25 @@ int main() {
   doubling_adding(r_dir, s_dir, t_dir, r, t);
   double solar_irr = solar_radiative_transfer_setup(r_total, r_dir, s_dir, t_dir, r, t);
   printf("Planetary albedo for an optical thickness of %2.5f and an cos(SZA) of %2.2f: %f \n", Consts::tau_s, Consts::mu_s, r_total);
+  printf("rdir %f, sdir %f, and tdir %f \n", r_dir, s_dir, t_dir);
+  printf("sum: %f \n", r_dir + t_dir + s_dir);
+  printf("solar irradiance: %f \n", solar_irr);
+  
+=======
+            &tau, &wvl, &weight, &nwvl, prop_at_Lev);
+    
+>>>>>>> origin/master
+  /*
+  ====================================================================================
+  Setup of solar radiative transfer
+  ====================================================================================
+  */
+  
+  freopen("output.txt","a",stdout);
+  printf("\n ===================new run===================== \n");
+  doubling_adding(r_dir, s_dir, t_dir, r, t);
+  double solar_irr = solar_radiative_transfer_setup(r_total, r_dir, s_dir, t_dir, r, t);
+  printf("Planetary albedo for an optical thickness of %2.3f and an cos(SZA) of %2.2f: %f \n", Consts::tau_s, Consts::mu_s, r_total);
   printf("rdir %f, sdir %f, and tdir %f \n", r_dir, s_dir, t_dir);
   printf("sum: %f \n", r_dir + t_dir + s_dir);
   printf("solar irradiance: %f \n", solar_irr);
@@ -491,8 +584,8 @@ int main() {
       output_conv(time, player, Tlayer, theta);
     }
     
-    // recall of optical thickness computations for new temperature profile (every 50 steps)
-    if (i != 0 and i % 50 == 0) {
+    // recall of optical thickness computations for new temperature profile (every step)
+    if (i != 0 and i % 1 == 0) {
         
       for (int iwvl=0; iwvl<nwvl; ++iwvl){
         delete[] tau[iwvl]; 
@@ -504,20 +597,20 @@ int main() {
       wvl = NULL;
       weight = NULL; 
       tau = NULL;   
+        
+      water_vapor_feedback(e_sat, Tlayer, rel_hum, player, H2O_VMR);
       
-      // computation of Tlevel for new temperature profile  
-      Tlevel[0] = T_surface;
-      Tlevel[1] = (Tlayer[0] + T_surface) / 2.0;
-        for (int ilyr=0; ilyr<Consts::nlayer-1; ++ilyr) {
-          Tlevel[ilyr+2] = (Tlayer[ilyr] + Tlayer[ilyr+1]) / 2.0;
-        }
-      
-      read_tau("./repwvl_V1.0_cpp/Reduced100Forcing.nc", Consts::nlevel, plevel, Tlevel,
+      read_tau("./repwvl_V2.01_cpp/Reduced100Forcing.nc", Consts::nlevel, plevel, Tlayer,
                H2O_VMR, CO2_VMR, O3_VMR, N2O_VMR, CO_VMR, CH4_VMR, O2_VMR, HNO3_VMR, N2_VMR,
+<<<<<<< HEAD
                &tau, &wvl, &weight, &nwvl);
       
       cloud_into_tau(tau, nwvl);
       
+=======
+               &tau, &wvl, &weight, &nwvl, prop_at_Lev);
+        
+>>>>>>> origin/master
       delete_check = 1;
     }
       

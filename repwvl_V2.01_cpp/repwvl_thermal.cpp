@@ -1,10 +1,11 @@
 
 #include <iostream>
 #include <vector>
+#include <algorithm> 
 #include <netcdf>
 #include <string>
-#include <algorithm>
 #include "repwvl_thermal.h"
+
 
 using namespace std;
 using namespace netCDF;
@@ -45,18 +46,24 @@ size_t LowerPos(vector<double> &tempsOnLayer, double &currT){
 
 
 
-void read_tau (const char *reducedLkpPath, int nLev, vector<double> &plevel, vector<double> &Tlevel, 
-               double *H20_VMR, double *CO2_VMR, double *O3_VMR, double *N2O_VMR, double *CO_VMR, double *CH4_VMR,
-               double *O2_VMR, double *HNO3_VMR, double *N2_VMR,
-               double ***tau, double **wvl, double **weight, int *nWvl) {
-    
+void read_tau (const char *reducedLkpPath, int nLev, vector<double> &plevel, vector<double> &Tvector, 
+               double *H20_VMR, double *CO2_VMR, double *O3_VMR, double *N2O_VMR, double *CO_VMR, 
+               double *CH4_VMR, double *O2_VMR, double *HNO3_VMR, double *N2_VMR,
+               double ***tau, double **wvl, double **weight, int *nWvl,
+               int prop_at_Lev) {
     //Optionally we could use default values for some trace gases and reduce input.
     const int numOfSpecies = 9;
-
+    int nProp=0;
+    
     vector<vector<double>> tauMat;
 
+    if (prop_at_Lev==0)  // temperature and mixing ratios for layers
+      nProp = nLev - 1;
+    else                 // temperature and mixing ratios for levels
+      nProp = nLev;
+    
     double* p = plevel.data();
-    double* T = Tlevel.data();
+    double* T = Tvector.data();
     
     double* plevPa = new double[nLev];
     
@@ -64,19 +71,19 @@ void read_tau (const char *reducedLkpPath, int nLev, vector<double> &plevel, vec
       /* convert pressure from hPa to Pa */
       plevPa[ilev] = p[ilev] * 100.0;
     }
-    
+
     //Convert data in arrays to vectors first.
     vector<double> currentPress(plevPa, plevPa + nLev);
-    vector<double> currentTemp(T, T + nLev);
-    vector<double> H20_VMR_VEC(H20_VMR, H20_VMR + nLev);
-    vector<double> CO2_VMR_VEC(CO2_VMR, CO2_VMR + nLev);
-    vector<double> O3_VMR_VEC(O3_VMR, O3_VMR + nLev);
-    vector<double> N2O_VMR_VEC(N2O_VMR, N2O_VMR + nLev);
-    vector<double> CO_VMR_VEC(CO_VMR, CO_VMR + nLev);
-    vector<double> CH4_VMR_VEC(CH4_VMR, CH4_VMR + nLev);
-    vector<double> O2_VMR_VEC(O2_VMR, O2_VMR + nLev);
-    vector<double> HNO3_VMR_VEC(HNO3_VMR, HNO3_VMR + nLev);
-    vector<double> N2_VMR_VEC(N2_VMR, N2_VMR + nLev);
+    vector<double> currentTemp(T, T + nProp);
+    vector<double> H20_VMR_VEC(H20_VMR, H20_VMR + nProp);
+    vector<double> CO2_VMR_VEC(CO2_VMR, CO2_VMR + nProp);
+    vector<double> O3_VMR_VEC(O3_VMR, O3_VMR + nProp);
+    vector<double> N2O_VMR_VEC(N2O_VMR, N2O_VMR + nProp);
+    vector<double> CO_VMR_VEC(CO_VMR, CO_VMR + nProp);
+    vector<double> CH4_VMR_VEC(CH4_VMR, CH4_VMR + nProp);
+    vector<double> O2_VMR_VEC(O2_VMR, O2_VMR + nProp);
+    vector<double> HNO3_VMR_VEC(HNO3_VMR, HNO3_VMR + nProp);
+    vector<double> N2_VMR_VEC(N2_VMR, N2_VMR + nProp);
 
     // need to reverse order of vectors
     reverse (currentPress.begin(), currentPress.end());
@@ -205,10 +212,18 @@ void read_tau (const char *reducedLkpPath, int nLev, vector<double> &plevel, vec
             for(int spec = 0; spec != numOfSpecies; ++spec){
 
                 midP = (currentPress[lyr + 1] + currentPress[lyr]) / 2;
-                midT = (currentTemp[lyr + 1] + currentTemp[lyr]) / 2;
-                midVMR = (VMRS[spec][lyr] + VMRS[spec][lyr + 1]) / 2;
 
-                lowPosP = LowerPos(p_ref,midP);
+		if (prop_at_Lev == 0)  // properties specified at layers
+		  midT = currentTemp[lyr];
+		else                   // properties specified at levels
+		  midT = (currentTemp[lyr + 1] + currentTemp[lyr]) / 2;
+		  
+		if (prop_at_Lev == 0)  // properties specified at layers
+		  midVMR = VMRS[spec][lyr];
+		else                   // properties specified at layers
+		  midVMR = (VMRS[spec][lyr] + VMRS[spec][lyr + 1]) / 2;
+
+		lowPosP = LowerPos(p_ref,midP);
 
 
                 for(int pertNum = 0; pertNum != t_pert_nelem; ++pertNum){
@@ -243,5 +258,5 @@ void read_tau (const char *reducedLkpPath, int nLev, vector<double> &plevel, vec
       for (int ilyr=0; ilyr<nLev-1; ilyr++)
 	(*tau)[iwvl][ilyr] = tauMat[ilyr][iwvl];
     
-    delete[] plevPa;
+    delete[] plevPa;   
 }
