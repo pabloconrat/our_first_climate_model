@@ -1,11 +1,11 @@
 /*
 ===================================================================================================================
 Authors: Tatsiana Bardachova, Samkeyat Shohan, Pablo Conrat
-Date: 03.02.2021
+Date: 09.02.2021
 Description: 1D Radiation-Convection Model 
              Representative wavelenght parametrization for Thermal Radiative Transfer (repwl_V2.01)
              Solar Radiative Transfer
-                 Water Vapor Feedback
+             Water Vapor Feedback
 ===================================================================================================================
 */
 
@@ -60,6 +60,10 @@ public:
     static const double albedo; // surface albedo [/]
     static const float daytime; // proportion of day with sun [/]
     static const int cloud_layer; // layer at which the cloud sits in thermal rad. transfer [/] 
+    static const double alpha_ice;
+    static const double alpha_noice;
+    static const float t_ice;
+    static const float t_noice;
 
 };
 
@@ -80,17 +84,21 @@ const int Consts::nlevel = Consts::nlayer + 1;
 const int Consts::nangle = 30; 
 
 const float Consts::max_dT = 5;
-const int Consts::n_steps = 1;
-const int Consts::output_steps = 10;
+const int Consts::n_steps = 1000;
+const int Consts::output_steps = 100;
 
-const double Consts::tau_s = 2.0; // ideal to get 235 W/m^2 as E_0/4: 2.07672 )
+const double Consts::tau_s = 1.95; // ideal to get 235 W/m^2 as E_0/4: 2.07672 
 const double Consts::mu_s = cos( 60 * M_PI / 180.0 );
 const int Consts::doublings = 20;
 const double Consts::g_asym = 0.85;
 const double Consts::albedo = 0.12;
 const float Consts::daytime = 0.5;
-const int Consts::cloud_layer = 17;
-
+const int Consts::cloud_layer = 15;
+// 30% land and 70% ocean assumed 
+const double Consts::alpha_ice = 0.66; // ocean ice: 0.6, land snow: 0.8
+const double Consts::alpha_noice = 0.117; // land green grass: 0.25, ocean: 0.06
+const float Consts::t_ice = 273.15;
+const float Consts::t_noice = 292;
 
 /*
 =================================================================
@@ -109,7 +117,7 @@ void output_conv(const float &time, const vector<double> &player,
     printf("%d,%f,%f,%f,%f\n",
             i, player[i], Tlayer[i], theta[i], time);
   }
-    
+  
   return;
 }
 
@@ -175,6 +183,20 @@ void thermodynamics(vector<double> &Tlayer, const double &dp, vector<double> &dE
   return;
 }
 
+void albedo_feedback(const double &T_surface, double &surf_albedo){
+  
+  if(T_surface >= Consts::t_noice) {
+    surf_albedo = Consts::alpha_noice;
+  }
+  else if(T_surface <= Consts::t_ice) {
+    surf_albedo = Consts::alpha_ice;
+  }
+  else {
+    surf_albedo = (Consts::t_noice - Consts::t_ice) / (Consts::alpha_noice - Consts::alpha_ice) * (T_surface - Consts::t_ice);
+  }
+  
+  return;
+}
 
 /*
 =================================================================
@@ -252,10 +274,11 @@ void doubling_adding(double &r_dir, double &s_dir, double &t_dir, double &r, dou
   return;
 }
 
-double solar_radiative_transfer_setup(double &r_total, const double &r_dir, const double &s_dir, const double &t_dir, const double &r, const double &t) {
+double solar_radiative_transfer_setup(double &r_total, const double &r_dir, const double &s_dir,
+                                      const double &t_dir, const double &r, const double &t, const double &albedo) {
   
   // integrate surface albedo into reflectivity of earth
-  r_total = r_dir + (t_dir + s_dir)/(1 - Consts::albedo * r) * t * Consts::albedo;
+  r_total = r_dir + (t_dir + s_dir)/(1 - albedo * r) * t * albedo;
   
   double solar_irr = Consts::daytime * Consts::E_0 * Consts::mu_s * (1 - r_total);  
   //freopen("output.txt","a",stdout);
@@ -337,7 +360,7 @@ void radiative_transfer(vector<double> &B, vector<double> &alpha,
   for (int i=0; i<Consts::nlayer; ++i){
     dE[i] = E_down[i] - E_down[i+1] + E_up[i+1] - E_up[i];
   }
-
+  
   dE[dE.size()-1] += solar_irr + E_down[Consts::nlevel-1] - E_up[Consts::nlevel-1];
 
   return;
@@ -449,7 +472,7 @@ int main() {
   double* N2_VMR   = new double[Consts::nlayer]; // array of optical thickness profile for N2
   
   // CO2 concentation factor
-  double factor = 1;  
+  double factor = 1.0;  
     
   for (int i=0; i<Consts::nlevel; ++i) {
     // convert from ppm to absolute concentrations
@@ -511,8 +534,11 @@ int main() {
   
   freopen("output.txt","a",stdout);
   printf("\n ===================new run===================== \n");
+  
   doubling_adding(r_dir, s_dir, t_dir, r, t);
-  double solar_irr = solar_radiative_transfer_setup(r_total, r_dir, s_dir, t_dir, r, t);
+  double surf_albedo = Consts::albedo;
+  double solar_irr = solar_radiative_transfer_setup(r_total, r_dir, s_dir, t_dir, r, t, surf_albedo);
+  
   printf("Planetary albedo for an optical thickness of %2.3f and an cos(SZA) of %2.2f: %f \n", Consts::tau_s, Consts::mu_s, r_total);
   printf("rdir %f, sdir %f, and tdir %f \n", r_dir, s_dir, t_dir);
   printf("sum: %f \n", r_dir + t_dir + s_dir);
@@ -561,9 +587,9 @@ int main() {
         
       water_vapor_feedback(e_sat, Tlayer, rel_hum, player, H2O_VMR);
       
-     read_tau("./repwvl_V2.01_cpp/Reduced100Forcing.nc", Consts::nlevel, plevel, Tlayer,
-              H2O_VMR, CO2_VMR, O3_VMR, N2O_VMR, CO_VMR, CH4_VMR, O2_VMR, HNO3_VMR, N2_VMR,
-            &tau, &wvl, &weight, &nwvl, prop_at_Lev);
+      read_tau("./repwvl_V2.01_cpp/Reduced100Forcing.nc", Consts::nlevel, plevel, Tlayer,
+               H2O_VMR, CO2_VMR, O3_VMR, N2O_VMR, CO_VMR, CH4_VMR, O2_VMR, HNO3_VMR, N2_VMR,
+               &tau, &wvl, &weight, &nwvl, prop_at_Lev);
       
       cloud_into_tau(tau, nwvl);
       
@@ -576,6 +602,9 @@ int main() {
     calculate_timestep(dp, dE, timestep);
 
     thermodynamics(Tlayer, dp, dE, timestep, T_surface, conversion_factors);
+    
+    albedo_feedback(T_surface, surf_albedo);
+    solar_irr = solar_radiative_transfer_setup(r_total, r_dir, s_dir, t_dir, r, t, surf_albedo);
 
     // compute current time in hours from start
     time += (float) timestep / 3600; // [hours]
